@@ -56,9 +56,15 @@ package ui
 		private var uniqueId:int = 0;
 		
 		private const spellButtonUIName:String = "SpellButton";
-		private const spellButtonWidth:int = 42;
-		private const spellButtonHeight:int = 42;
-		private const spaceBetweenSpellButton:int = 10;
+		private const spellButtonWidth:int = 44;
+		private const spellButtonHeight:int = 44;
+		private const spellButtonX:int = -44;
+		private const spellButtonY:int = 9;
+		private const spaceBetweenSpellButton:int = spellButtonWidth + 10;
+		private const backgroundWidth:int = spellButtonWidth + 17;
+		private const backgroundHeight:int = 62;
+		private const backgroundX:int = 0;
+		private const backgroundY:int = 0;
 		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Methods
@@ -109,12 +115,12 @@ package ui
 		 */
 		private function unloadSpellButtons():void
 		{
-			tx_background.width = 60;
-			tx_background.x = 0;
-			
-			for each (var instanceName:String in spellButtonList)
+			for each (var list:Array in spellButtonList)
 			{
-				uiApi.unloadUi(instanceName);
+				for each (var instanceName:String in list)
+				{
+					uiApi.unloadUi(instanceName);
+				}
 			}
 			
 			spellButtonList = new Array();
@@ -125,9 +131,41 @@ package ui
 		 *
 		 * @param	instanceName	Instance name to tack.
 		 */
-		private function trackSpellButtonName(instanceName:String):void
+		private function trackSpellButton(line:int, instanceName:String):void
 		{
-			spellButtonList.push(instanceName);
+			if (spellButtonList[line] == undefined)
+				spellButtonList[line] = new Array();
+			
+			spellButtonList[line].push(instanceName);
+		}
+		
+		/**
+		 * Get the number of spell buttons of the longest line.
+		 *
+		 * @return The number of spell buttons.
+		 */
+		private function getNbSpellButtonsMax():int
+		{
+			var max:int = 0;
+			
+			for each (var list:Array in spellButtonList)
+				if (list.length > max)
+					max = list.length;
+			
+			return max;
+		}
+		
+		/**
+		 * Get the number of spell buttons of the line <code>line</code>.
+		 *
+		 * @return The number of spell buttons.
+		 */
+		private function getNbSpellButtons(line:int):int
+		{
+			if (spellButtonList[line] == undefined)
+				return 0;
+			
+			return spellButtonList[line].length;
 		}
 		
 		/**
@@ -136,15 +174,20 @@ package ui
 		 * @param	spellList	Spell's list to display.
 		 * @param	turn	Turn's number to display.
 		 */
-		public function updateSpellButtons(spellList:Array, turn:int):void
+		public function updateSpellButtons(spellList:Array, spellListSize:int, turn:int):void
 		{
 			unloadSpellButtons();
+
+			actualizeAssets(0, spellListSize);
 			
 			displayTurn(turn);
 			
-			for each (var spellData:SpellData in spellList)
+			for (var ii:int = 0; ii < spellListSize; ii++)
 			{
-				addSpellButton(spellData);
+				for each (var spellData:SpellData in spellList[ii])
+				{
+					addSpellButton(ii, spellData);
+				}
 			}
 		}
 		
@@ -153,20 +196,50 @@ package ui
 		 *
 		 * @param	spellData	Spell's data to display.
 		 */
-		public function addSpellButton(spellData:SpellData):void
+		public function addSpellButton(line:int, spellData:SpellData):void
 		{
 			var instanceName:String = createInstanceName();
 			
-			var newUi:Object;
-			newUi = uiApi.loadUiInside(spellButtonUIName, ctr_concealable, instanceName, spellData);
+			var spellButton:Object = uiApi.loadUiInside(spellButtonUIName, ctr_concealable, instanceName, spellData);
 			
-			tx_background.width += spellButtonWidth + spaceBetweenSpellButton;
-			tx_background.x -= spellButtonWidth + spaceBetweenSpellButton;
+			trackSpellButton(line, instanceName);
 			
-			newUi.x = tx_background.x + 10;
-			newUi.y = 10;
+			actualizeAssets(getNbSpellButtonsMax());
+			actualizeSpellButton(spellButton, getNbSpellButtons(line) - 1, line);
+		}
+		
+		/**
+		 * ...
+		 * 
+		 * @param	nbButtons
+		 * @param	nbLines
+		 */
+		public function actualizeAssets(nbButtons:int = -1, nbLines:int = -1):void
+		{
+			if (nbLines != -1)
+			{
+				var height:int = backgroundHeight * (nbLines - 1);
+				tx_background.height = backgroundHeight + height;
+				tx_background.y = backgroundY - height;
+			}
 			
-			trackSpellButtonName(instanceName);
+			if (nbButtons != -1)
+			{
+				var width:int = spaceBetweenSpellButton * nbButtons;
+				tx_background.width = backgroundWidth + width;
+				tx_background.x = backgroundX - width;
+			}
+		}
+		
+		/**
+		 * ...
+		 * 
+		 * @param	spellButton
+		 */
+		private function actualizeSpellButton(spellButton:Object, collumn:int, line:int):void
+		{
+			spellButton.x = spellButtonX - (collumn * spaceBetweenSpellButton);
+			spellButton.y = spellButtonY - (line * backgroundHeight);
 		}
 		
 		/**

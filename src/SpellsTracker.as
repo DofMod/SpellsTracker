@@ -52,6 +52,8 @@ package
 		private var displayedFighterId:int = 0;
 		private var displayedTurn:int = 0;
 		
+		private var nbLines:int = 3;
+		
 		private const containerUIName:String = "SpellButtonContainer";
 		private const containerUIInstanceName:String = "SpellTracker";
 		
@@ -176,7 +178,20 @@ package
 				}
 			}
 			
-			containerUI.uiClass.updateSpellButtons(spellList, displayedTurn);
+			var spellListArray:Array = new Array(spellList);
+			var spellListArraySize:int = nbLines;
+			for (var ii:int = 1; ii < nbLines; ii++)
+			{
+				if (displayedTurn - ii < 1)
+				{
+					spellListArraySize = ii;
+					break;
+				}
+				
+				spellListArray.push(getSpellData(displayedFighterId, displayedTurn - ii));
+			}
+			
+			containerUI.uiClass.updateSpellButtons(spellListArray, spellListArraySize, displayedTurn);
 		}
 		
 		/**
@@ -212,7 +227,7 @@ package
 			if (!containerUI)
 				return;
 			
-			containerUI.uiClass.addSpellButton(spellData);
+			containerUI.uiClass.addSpellButton(0, spellData);
 		}
 		
 		//::////////////////////////////////////////////////////////////////////
