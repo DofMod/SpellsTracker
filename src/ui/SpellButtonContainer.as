@@ -327,7 +327,7 @@ package ui
 		 *
 		 * @private
 		 *
-		 * @param	target	Button compoment released.
+		 * @param	target	Button compoment.
 		 */
 		public function onRollOver(target:Object):void
 		{
