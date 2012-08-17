@@ -73,12 +73,12 @@
 					</Hooks>
 				</Common>
 				<State type="OVER">
-					<SetProperties target="btn_rightArrow_tx">
+					<SetProperties target="btn_previousTurn_tx">
 						<gotoAndStop>over</gotoAndStop>
 					</SetProperties>
 				</State>
 				<State type="PRESSED">
-					<SetProperties target="btn_rightArrow_tx">
+					<SetProperties target="btn_previousTurn_tx">
 						<gotoAndStop>pressed</gotoAndStop>
 					</SetProperties>
 				</State>
@@ -104,12 +104,12 @@
 					</Hooks>
 				</Common>
 				<State type="OVER">
-					<SetProperties target="btn_leftArrow_tx">
+					<SetProperties target="btn_nextTurn_tx">
 						<gotoAndStop>over</gotoAndStop>
 					</SetProperties>
 				</State>
 				<State type="PRESSED">
-					<SetProperties target="btn_leftArrow_tx">
+					<SetProperties target="btn_nextTurn_tx">
 						<gotoAndStop>pressed</gotoAndStop>
 					</SetProperties>
 				</State>
