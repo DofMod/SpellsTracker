@@ -1,5 +1,6 @@
 package ui
 {
+	import d2api.FightApi;
 	import d2api.SystemApi;
 	import d2api.UiApi;
 	import d2components.ButtonContainer;
@@ -23,6 +24,12 @@ package ui
 		// APIs
 		/**
 		 * @private
+		 * 
+		 * getTurnCount
+		 */
+		public var fightApi:FightApi;
+		/**
+		 * @private
 		 *
 		 * log
 		 */
@@ -41,6 +48,7 @@ package ui
 		public var lbl_turn:Label;
 		public var btn_previousTurn:ButtonContainer;
 		public var btn_nextTurn:ButtonContainer;
+		public var btn_lastTurn:ButtonContainer;
 		
 		[Module(name="SpellsTracker")]
 		/**
@@ -92,6 +100,7 @@ package ui
 			uiApi.addComponentHook(btn_minimize, ComponentHookList.ON_RELEASE);
 			uiApi.addComponentHook(btn_previousTurn, ComponentHookList.ON_RELEASE);
 			uiApi.addComponentHook(btn_nextTurn, ComponentHookList.ON_RELEASE);
+			uiApi.addComponentHook(btn_lastTurn, ComponentHookList.ON_RELEASE);
 		}
 		
 		/**
@@ -300,6 +309,10 @@ package ui
 			else if (target == btn_previousTurn)
 			{
 				modSpellsTraker.requestUpdateSpells(getTurn() - 1);
+			}
+			else if (target == btn_lastTurn)
+			{
+				modSpellsTraker.requestUpdateSpells(fightApi.getTurnsCount());
 			}
 		}
 		
