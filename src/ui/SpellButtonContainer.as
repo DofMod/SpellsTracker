@@ -101,6 +101,11 @@ package ui
 			uiApi.addComponentHook(btn_previousTurn, ComponentHookList.ON_RELEASE);
 			uiApi.addComponentHook(btn_nextTurn, ComponentHookList.ON_RELEASE);
 			uiApi.addComponentHook(btn_lastTurn, ComponentHookList.ON_RELEASE);
+			
+			uiApi.addComponentHook(btn_minimize, ComponentHookList.ON_ROLL_OVER);
+			uiApi.addComponentHook(btn_previousTurn, ComponentHookList.ON_ROLL_OVER);
+			uiApi.addComponentHook(btn_nextTurn, ComponentHookList.ON_ROLL_OVER);
+			uiApi.addComponentHook(btn_lastTurn, ComponentHookList.ON_ROLL_OVER);
 		}
 		
 		/**
@@ -313,6 +318,37 @@ package ui
 			else if (target == btn_lastTurn)
 			{
 				modSpellsTraker.requestUpdateSpells(fightApi.getTurnsCount());
+			}
+		}
+		
+		/**
+		 * This callback is process when mouse move over the the button. Display
+		 * tooltip information.
+		 *
+		 * @private
+		 *
+		 * @param	target	Button compoment released.
+		 */
+		public function onRollOver(target:Object):void
+		{
+			if (target == btn_minimize)
+			{
+				if (ctr_concealable.visible)
+					uiApi.showTooltip("Afficher les informations de suivi", target);
+				else
+					uiApi.showTooltip("Cacher les informations de suivi", target);
+			}
+			else if (target == btn_nextTurn)
+			{
+				uiApi.showTooltip("Afficher les informations du tour suivant", target);
+			}
+			else if (target == btn_previousTurn)
+			{
+				uiApi.showTooltip("Afficher les informations du tour précédant", target);
+			}
+			else if (target == btn_lastTurn)
+			{
+				uiApi.showTooltip("Afficher les informations du dernier tour", target);
 			}
 		}
 		
