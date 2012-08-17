@@ -7,6 +7,7 @@ package
 	import d2hooks.FighterSelected;
 	import d2hooks.FightEvent;
 	import d2hooks.GameFightEnd;
+	import d2hooks.GameFightTurnStart;
 	import d2hooks.UiLoaded;
 	import flash.display.Sprite;
 	import ui.SpellButtonContainer;
@@ -48,9 +49,11 @@ package
 		public var uiApi:UiApi;
 		
 		// Divers
-		private var spellList:Array = new Array();
-		private var displayedFighterId:int = 0;
-		private var displayedTurn:int = 0;
+		private var currentFighterId:int;
+		private var displayedFighterId:int;
+		private var displayedTurn:Array;
+		private var autoUpdate:Array;
+		private var spellList:Array;
 		
 		private var nbLines:int = 3;
 		
@@ -66,10 +69,25 @@ package
 		 */
 		public function main():void
 		{
+			initGlobals();
+			
 			sysApi.addHook(FighterSelected, onFighterSelected);
 			sysApi.addHook(FightEvent, onFightEvent);
 			sysApi.addHook(GameFightEnd, onGameFightEnd);
+			sysApi.addHook(GameFightTurnStart, onGameFightTurnStart);
 			sysApi.addHook(UiLoaded, onUiLoaded);
+		}
+		
+		/**
+		 * Reset the globals
+		 */
+		private function initGlobals():void
+		{
+			currentFighterId = 0;
+			displayedFighterId = 0;
+			displayedTurn = new Array();
+			autoUpdate = new Array();
+			spellList = new Array();
 		}
 		
 		/**
@@ -151,19 +169,15 @@ package
 			if (!containerUI)
 				return;
 			
-			displayedTurn = turn;
-			
-			var spellList:Array = getSpellData(displayedFighterId, displayedTurn);
+			var spellList:Array = getSpellData(displayedFighterId, turn);
 			
 			/**
 			 * If the spell's list of the current turn is empty, check if the
 			 * displayed fighter has already play his turn. If not, display the
 			 * spell's list of the previous turn.
 			 */
-			if (!spellList && displayedTurn > 1)
+			if (!spellList && turn > 1 && turn == fightApi.getTurnsCount())
 			{
-				var currentFighterId:int = fightApi.getCurrentPlayedFighterId();
-				
 				var fighters:Object = fightApi.getFighters();
 				for (var key:String in fighters)
 				{
@@ -172,33 +186,36 @@ package
 					
 					if (fighters[key] == currentFighterId)
 					{
-						spellList = getSpellData(displayedFighterId, --displayedTurn);
+						displayedTurn[displayedFighterId] = (--turn);
+						spellList = getSpellData(displayedFighterId, turn);
 						break;
 					}
 				}
 			}
 			
+			// Gather the other spell's list
 			var spellListArray:Array = new Array(spellList);
 			var spellListArraySize:int = nbLines;
 			for (var ii:int = 1; ii < nbLines; ii++)
 			{
-				if (displayedTurn - ii < 1)
+				if (turn - ii < 1)
 				{
 					spellListArraySize = ii;
 					break;
 				}
 				
-				spellListArray.push(getSpellData(displayedFighterId, displayedTurn - ii));
+				spellListArray.push(getSpellData(displayedFighterId, turn - ii));
 			}
 			
-			containerUI.uiClass.updateSpellButtons(spellListArray, spellListArraySize, displayedTurn);
+			containerUI.uiClass.updateSpellButtons(spellListArray, spellListArraySize, turn);
 		}
 		
 		/**
 		 * Request the displaying of the spell's list og the turn
 		 * <code>turn</code> of the current displayed fighter.
 		 *
-		 * @param	turn	Turn of the spell's list to display.
+		 * @param	turn	Turn of the spell's list to display. Must be between
+		 * 1 and fightApi.getTurnCount().
 		 */
 		public function requestUpdateSpells(turn:int):void
 		{
@@ -208,7 +225,19 @@ package
 			if (turn > fightApi.getTurnsCount())
 				return;
 			
+			autoUpdate[displayedFighterId] = false;
+			displayedTurn[displayedFighterId] = turn;
 			updateSpells(turn);
+		}
+		
+		/**
+		 * Toggle the auto update spell's list.
+		 */
+		public function requestAutoUpdate():void
+		{
+			autoUpdate[displayedFighterId] = true;
+			displayedTurn[displayedFighterId] = fightApi.getTurnsCount();
+			updateSpells(displayedTurn[displayedFighterId]);
 		}
 		
 		/**
@@ -220,7 +249,7 @@ package
 		 */
 		private function tryDisplaySpellData(spellData:SpellData):void
 		{
-			if (spellData._fighterId != displayedFighterId || fightApi.getTurnsCount() != displayedTurn)
+			if (spellData._fighterId != displayedFighterId || fightApi.getTurnsCount() != displayedTurn[displayedFighterId])
 				return;
 			
 			var containerUI:Object = uiApi.getUi(containerUIInstanceName);
@@ -280,18 +309,18 @@ package
 			else
 			{
 				if (fighterId == displayedFighterId)
-				{
-					displayedFighterId = 0;
-					displayedTurn = 0;
-					
 					uiApi.unloadUi(containerUIInstanceName);
-				}
 				else
 				{
 					displayedFighterId = fighterId;
 					
-					var turn:int = fightApi.getTurnsCount();
-					requestUpdateSpells(turn < 1 ? 1 : turn);
+					if (autoUpdate[displayedFighterId] || displayedTurn[displayedFighterId] == undefined)
+					{
+						requestAutoUpdate();
+						return;
+					}
+					
+					requestUpdateSpells(displayedTurn[displayedFighterId]);
 				}
 			}
 		}
@@ -306,8 +335,13 @@ package
 		{
 			if (instanceName == containerUIInstanceName)
 			{
-				var turn:int = fightApi.getTurnsCount();
-				requestUpdateSpells(turn < 1 ? 1 : turn);
+				if (autoUpdate[displayedFighterId] || displayedTurn[displayedFighterId] == undefined)
+				{
+					requestAutoUpdate();
+					return;
+				}
+				
+				requestUpdateSpells(displayedTurn[displayedFighterId]);
 			}
 		}
 		
@@ -319,9 +353,19 @@ package
 		 */
 		private function onGameFightEnd(params:Object):void
 		{
-			spellList = new Array();
+			initGlobals();
 			
 			uiApi.unloadUi(containerUIInstanceName);
+		}
+		
+		
+		private function onGameFightTurnStart(fighterId:int, waitTime:int, displayImage:Boolean):void
+		{
+			currentFighterId = fighterId;
+			if (currentFighterId == displayedFighterId && autoUpdate[fighterId])
+			{
+				requestAutoUpdate();
+			}
 		}
 		
 		//::////////////////////////////////////////////////////////////////////

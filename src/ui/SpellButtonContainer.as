@@ -1,6 +1,5 @@
 package ui
 {
-	import d2api.FightApi;
 	import d2api.SystemApi;
 	import d2api.UiApi;
 	import d2components.ButtonContainer;
@@ -22,12 +21,6 @@ package ui
 		//::////////////////////////////////////////////////////////////////////
 		
 		// APIs
-		/**
-		 * @private
-		 * 
-		 * getTurnCount
-		 */
-		public var fightApi:FightApi;
 		/**
 		 * @private
 		 *
@@ -317,7 +310,7 @@ package ui
 			}
 			else if (target == btn_lastTurn)
 			{
-				modSpellsTraker.requestUpdateSpells(fightApi.getTurnsCount());
+				modSpellsTraker.requestAutoUpdate();
 			}
 		}
 		
