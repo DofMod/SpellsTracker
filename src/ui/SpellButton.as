@@ -6,6 +6,8 @@ package ui
 	import d2components.ButtonContainer;
 	import d2components.GraphicContainer;
 	import d2components.Texture;
+	import d2data.Spell;
+	import d2enums.ComponentHookList;
 	
 	/**
 	 * Spell's button UI.
@@ -43,6 +45,9 @@ package ui
 		public var btn_spell:ButtonContainer;
 		public var btn_spell_tx:Texture;
 		
+		// Divers
+		private var spellData:SpellData;
+		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Methods
 		//::////////////////////////////////////////////////////////////////////
@@ -54,9 +59,14 @@ package ui
 		 */
 		public function main(spellData:SpellData):void
 		{
-			var spellItem:Object = dataApi.getSpellItem(spellData._spellId);
+			this.spellData = spellData;
 			
+			var spellItem:Object = dataApi.getSpellItem(spellData._spellId);
 			btn_spell_tx.uri = uiApi.createUri(spellItem.iconUri);
+			
+			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OVER);
+			
+			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OUT);
 		}
 		
 		/**
@@ -69,6 +79,32 @@ package ui
 		//::////////////////////////////////////////////////////////////////////
 		//::// Events
 		//::////////////////////////////////////////////////////////////////////
+		
+		/**
+		 * 
+		 * @param	target
+		 */
+		public function onRollOver(target:Object):void
+		{
+			if (target == ctn_main)
+			{
+				var spell:Spell = dataApi.getSpell(spellData._spellId);
+				
+				uiApi.showTooltip(spell.description, target);
+			}
+		}
+		
+		/**
+		 * 
+		 * @param	target
+		 */
+		public function onRollOut(target:Object):void
+		{
+			if (target == ctn_main)
+			{
+				uiApi.hideTooltip();
+			}
+		}
 		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Debug
