@@ -8,6 +8,7 @@ package ui
 	import d2components.Texture;
 	import d2data.Spell;
 	import d2enums.ComponentHookList;
+	import d2enums.FightSpellCastCriticalEnum;
 	
 	/**
 	 * Spell's button UI.
@@ -44,6 +45,8 @@ package ui
 		public var ctn_main:GraphicContainer;
 		public var btn_spell:ButtonContainer;
 		public var btn_spell_tx:Texture;
+		public var tx_criticalHit:Texture;
+		public var tx_criticalFailure:Texture;
 		
 		// Divers
 		private var spellData:SpellData;
@@ -61,8 +64,8 @@ package ui
 		{
 			this.spellData = spellData;
 			
-			var spellItem:Object = dataApi.getSpellItem(spellData._spellId);
-			btn_spell_tx.uri = uiApi.createUri(spellItem.iconUri);
+			updateSpellTexture(spellData._spellId);
+			displayCritical(spellData._spellCritical);
 			
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OVER);
 			
@@ -74,6 +77,21 @@ package ui
 		 */
 		public function unload():void
 		{
+		}
+		
+		public function updateSpellTexture(spellId:int):void
+		{
+			var spellItem:Object = dataApi.getSpellItem(spellId);
+			btn_spell_tx.uri = uiApi.createUri(spellItem.iconUri);
+		}
+		
+		public function displayCritical(spellCritical:int):void
+		{
+			if (spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_FAIL)
+				tx_criticalFailure.visible = true;
+			
+			if (spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_HIT)
+				tx_criticalHit.visible = true;
 		}
 		
 		//::////////////////////////////////////////////////////////////////////

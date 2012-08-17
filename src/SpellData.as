@@ -31,6 +31,6 @@ package
 		/**
 		 * 1 : normal, 2 : cricial, 3 : critical failure ?
 		 */
-		public var _spellCritical:Boolean;
+		public var _spellCritical:int;
 	}
 }

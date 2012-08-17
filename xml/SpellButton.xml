@@ -6,12 +6,26 @@
 		<Constant name="css" value="[config.ui.skin]css/" />
 	</Constants>
 
-	<Container name="ctn_main">				
+	<Container name="ctn_main">
 		<Button name="btn_spell">
 			<Common>
 				<Texture name="btn_spell_tx">
 				</Texture>
 			</Common>
 		</Button>
+		<Texture name="tx_criticalFailure">
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]Challenge_tx_Perdu</uri>
+			<visible>false</visible>
+		</Texture>
+		<Texture name="tx_criticalHit">
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]etoile1</uri>
+			<visible>false</visible>
+		</Texture>
 	</Container>
 </Definition>
