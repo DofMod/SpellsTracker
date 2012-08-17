@@ -99,6 +99,11 @@ package ui
 			uiApi.addComponentHook(btn_previousTurn, ComponentHookList.ON_ROLL_OVER);
 			uiApi.addComponentHook(btn_nextTurn, ComponentHookList.ON_ROLL_OVER);
 			uiApi.addComponentHook(btn_lastTurn, ComponentHookList.ON_ROLL_OVER);
+			
+			uiApi.addComponentHook(btn_minimize, ComponentHookList.ON_ROLL_OUT);
+			uiApi.addComponentHook(btn_previousTurn, ComponentHookList.ON_ROLL_OUT);
+			uiApi.addComponentHook(btn_nextTurn, ComponentHookList.ON_ROLL_OUT);
+			uiApi.addComponentHook(btn_lastTurn, ComponentHookList.ON_ROLL_OUT);
 		}
 		
 		/**
@@ -315,8 +320,8 @@ package ui
 		}
 		
 		/**
-		 * This callback is process when mouse move over the the button. Display
-		 * tooltip information.
+		 * This callback is process when mouse roll over the button. Display
+		 * tooltip informations.
 		 *
 		 * @private
 		 *
@@ -342,6 +347,20 @@ package ui
 			else if (target == btn_lastTurn)
 			{
 				uiApi.showTooltip("Afficher les informations du dernier tour", target);
+			}
+		}
+		
+		/**
+		 * This callback is process when mouse roll out the button. Hide the
+		 * tooltips.
+		 * 
+		 * @param	target	Button compoment.
+		 */
+		public function onRollOut(target:Object):void
+		{
+			if (target == btn_minimize || target == btn_nextTurn || target == btn_previousTurn || target == btn_lastTurn)
+			{
+				uiApi.hideTooltip();
 			}
 		}
 		
