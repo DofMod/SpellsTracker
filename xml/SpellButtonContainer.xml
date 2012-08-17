@@ -4,6 +4,16 @@
 	<Constants>
 		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
 		<Constant name="css" value="[config.ui.skin]css/" />
+		
+		<Constant name="spellButtonWidth" value="44" type="int" />
+		<Constant name="spellButtonHeight" value="44" type="int" />
+		<Constant name="spellButtonX" value="-44" type="int" />
+		<Constant name="spellButtonY" value="9" type="int" />
+		<Constant name="spaceBetweenSpellButton" value="53" type="int" /> <!-- spellButtonWidth + spellButtonY -->
+		<Constant name="backgroundWidth" value="61" type="int" /> <!-- spellButtonWidth + 17 -->
+		<Constant name="backgroundHeight" value="62" type="int" />
+		<Constant name="backgroundX" value="0" type="int" />
+		<Constant name="backgroundY" value="0" type="int" />
 	</Constants>
 
 

@@ -56,15 +56,17 @@ package ui
 		private var uniqueId:int = 0;
 		
 		private const spellButtonUIName:String = "SpellButton";
-		private const spellButtonWidth:int = 44;
-		private const spellButtonHeight:int = 44;
-		private const spellButtonX:int = -44;
-		private const spellButtonY:int = 9;
-		private const spaceBetweenSpellButton:int = spellButtonWidth + 10;
-		private const backgroundWidth:int = spellButtonWidth + 17;
-		private const backgroundHeight:int = 62;
-		private const backgroundX:int = 0;
-		private const backgroundY:int = 0;
+		
+		// Default values
+		private var spellButtonWidth:int;
+		private var spellButtonHeight:int;
+		private var spellButtonX:int;
+		private var spellButtonY:int;
+		private var spaceBetweenSpellButton:int;
+		private var backgroundWidth:int;
+		private var backgroundHeight:int;
+		private var backgroundX:int;
+		private var backgroundY:int;
 		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Methods
@@ -77,6 +79,16 @@ package ui
 		 */
 		public function main(params:Object):void
 		{
+			spellButtonWidth = uiApi.me().getConstant("spellButtonWidth");
+			spellButtonHeight = uiApi.me().getConstant("spellButtonHeight");
+			spellButtonX = uiApi.me().getConstant("spellButtonX");
+			spellButtonY = uiApi.me().getConstant("spellButtonY");
+			spaceBetweenSpellButton = uiApi.me().getConstant("spaceBetweenSpellButton");
+			backgroundWidth = uiApi.me().getConstant("backgroundWidth");
+			backgroundHeight = uiApi.me().getConstant("backgroundHeight");
+			backgroundX = uiApi.me().getConstant("backgroundX");
+			backgroundY = uiApi.me().getConstant("backgroundY");
+			
 			uiApi.addComponentHook(btn_minimize, ComponentHookList.ON_RELEASE);
 			uiApi.addComponentHook(btn_previousTurn, ComponentHookList.ON_RELEASE);
 			uiApi.addComponentHook(btn_nextTurn, ComponentHookList.ON_RELEASE);
