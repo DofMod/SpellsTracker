@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition usePropertiesCache="false">
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+
+	<Container name="ctn_main">				
+		<Button name="btn_spell">
+			<Common>
+				<Texture name="btn_spell_tx">
+				</Texture>
+			</Common>
+		</Button>
+	</Container>
+</Definition>
