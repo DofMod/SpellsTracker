@@ -12,6 +12,7 @@ package
 	import flash.display.Sprite;
 	import ui.SpellButtonContainer;
 	import ui.SpellButton;
+	import ui.SpellsTrackerConfig;
 	
 	/**
 	 * Main function of the SpellsTracker module. Tracks the spell's data and
@@ -26,7 +27,7 @@ package
 		//::////////////////////////////////////////////////////////////////////
 		
 		// Includes
-		private var includes:Array = [SpellButtonContainer, SpellButton];
+		private var includes:Array = [SpellButtonContainer, SpellButton, SpellsTrackerConfig];
 		
 		// APIs
 		/**
@@ -48,6 +49,15 @@ package
 		 */
 		public var uiApi:UiApi;
 		
+		// Components
+		[Module(name = "Ankama_Common")]
+		/**
+		 * Module Ankama_Common reference.
+		 * 
+		 * @private
+		 */
+		public var modCommon:Object;
+		
 		// Divers
 		private var currentFighterId:int;
 		private var displayedFighterId:int;
@@ -55,7 +65,7 @@ package
 		private var autoUpdate:Array;
 		private var spellList:Array;
 		
-		private var nbLines:int = 3;
+		private var maxDisplayedTurn:int;
 		
 		private const containerUIName:String = "SpellButtonContainer";
 		private const containerUIInstanceName:String = "SpellTracker";
@@ -70,12 +80,18 @@ package
 		public function main():void
 		{
 			initGlobals();
+			reloadConfig();
 			
 			sysApi.addHook(FighterSelected, onFighterSelected);
 			sysApi.addHook(FightEvent, onFightEvent);
 			sysApi.addHook(GameFightEnd, onGameFightEnd);
 			sysApi.addHook(GameFightTurnStart, onGameFightTurnStart);
 			sysApi.addHook(UiLoaded, onUiLoaded);
+			
+			modCommon.addOptionItem("module_spellstracker",
+				"(M) Spells Tracker",
+				"Ces options servent à configurer le module SpellsTracker",
+				"SpellsTracker::SpellsTrackerConfig");
 		}
 		
 		/**
@@ -95,6 +111,14 @@ package
 		 */
 		public function unload():void
 		{
+		}
+		
+		/**
+		 * Reload the configuration file
+		 */
+		public function reloadConfig():void
+		{
+			maxDisplayedTurn = (sysApi.getData("cb_maxDisplayedTurn") == undefined) ? 3 : sysApi.getData("cb_maxDisplayedTurn");
 		}
 		
 		/**
@@ -195,8 +219,8 @@ package
 			
 			// Gather the other spell's list
 			var spellListArray:Array = new Array(spellList);
-			var spellListArraySize:int = nbLines;
-			for (var ii:int = 1; ii < nbLines; ii++)
+			var spellListArraySize:int = maxDisplayedTurn;
+			for (var ii:int = 1; ii < maxDisplayedTurn; ii++)
 			{
 				if (turn - ii < 1)
 				{
