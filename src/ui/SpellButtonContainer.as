@@ -332,9 +332,9 @@ package ui
 			if (target == btn_minimize)
 			{
 				if (ctr_concealable.visible)
-					uiApi.showTooltip("Afficher les informations de suivi", target);
+					uiApi.showTooltip("Cacher les informations de suivi", target);	
 				else
-					uiApi.showTooltip("Cacher les informations de suivi", target);
+					uiApi.showTooltip("Afficher les informations de suivi", target);
 			}
 			else if (target == btn_nextTurn)
 			{
