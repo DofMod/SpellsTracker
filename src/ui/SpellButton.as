@@ -6,6 +6,7 @@ package ui
 	import d2components.ButtonContainer;
 	import d2components.GraphicContainer;
 	import d2components.Texture;
+	import d2data.Item;
 	import d2data.Spell;
 	import d2enums.ComponentHookList;
 	import d2enums.FightSpellCastCriticalEnum;
@@ -64,7 +65,7 @@ package ui
 		{
 			this.spellData = spellData;
 			
-			updateSpellTexture(spellData._spellId);
+			updateSpellTexture(spellData._spellType, spellData._spellId);
 			displayCritical(spellData._spellCritical);
 			
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OVER);
@@ -79,10 +80,16 @@ package ui
 		{
 		}
 		
-		public function updateSpellTexture(spellId:int):void
+		public function updateSpellTexture(spellType:int,  spellId:int):void
 		{
-			var spellItem:Object = dataApi.getSpellItem(spellId);
-			btn_spell_tx.uri = uiApi.createUri(spellItem.iconUri);
+			if (spellType == SpellData.SPELL_TYPE_SPELL)
+			{
+				btn_spell_tx.uri = dataApi.getSpellItem(spellId).iconUri;
+			}
+			else if (spellType == SpellData.SPELL_TYPE_WEAPON)
+			{
+				btn_spell_tx.uri = uiApi.createUri(uiApi.me().getConstant("weapon") + dataApi.getItem(spellId).typeId);
+			}
 		}
 		
 		public function displayCritical(spellCritical:int):void
@@ -106,9 +113,14 @@ package ui
 		{
 			if (target == ctn_main)
 			{
-				var spell:Spell = dataApi.getSpell(spellData._spellId);
-				
-				uiApi.showTooltip(spell.description, target);
+				if (spellData._spellType == SpellData.SPELL_TYPE_SPELL)
+				{
+					uiApi.showTooltip(dataApi.getSpell(spellData._spellId).description, target);
+				}
+				else if (spellData._spellType == SpellData.SPELL_TYPE_WEAPON)
+				{
+					uiApi.showTooltip(dataApi.getItem(spellData._spellId).description, target);
+				}
 			}
 		}
 		

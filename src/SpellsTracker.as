@@ -273,15 +273,18 @@ package
 		 */
 		private function onFightEvent(eventName:String, params:Object, targetList:Object = null):void
 		{
+			var spellData:SpellData;
 			if (eventName == FightEventEnum.FIGHTER_CASTED_SPELL)
 			{
-				var spellData:SpellData = new SpellData();
-				spellData._fighterId = params[0];
-				spellData._cellId = params[1];
-				spellData._sourceCellId = params[2];
-				spellData._spellId = params[3];
-				spellData._spellRank = params[4];
-				spellData._spellCritical = params[5];
+				spellData = new SpellData(params[0], params[5], SpellData.SPELL_TYPE_SPELL, params[3], params[4], params[1], params[2]);
+				
+				trackSpellData(spellData);
+				
+				tryDisplaySpellData(spellData);
+			}
+			else if (eventName == FightEventEnum.FIGHTER_CLOSE_COMBAT)
+			{
+				spellData = new SpellData(params[0], params[2], SpellData.SPELL_TYPE_WEAPON, params[1]);
 				
 				trackSpellData(spellData);
 				
