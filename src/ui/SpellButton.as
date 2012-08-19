@@ -1,6 +1,7 @@
 package ui
 {
 	import d2api.DataApi;
+	import d2api.HighlightApi;
 	import d2api.SystemApi;
 	import d2api.UiApi;
 	import d2components.ButtonContainer;
@@ -23,6 +24,12 @@ package ui
 		//::////////////////////////////////////////////////////////////////////
 		
 		// APIs
+		/**
+		 * @private
+		 * 
+		 * ?
+		 */
+		public var hlApi:HighlightApi;
 		/**
 		 * @private
 		 * 
@@ -116,6 +123,9 @@ package ui
 				if (spellData._spellType == SpellData.SPELL_TYPE_SPELL)
 				{
 					uiApi.showTooltip(dataApi.getSpell(spellData._spellId).description, target);
+					
+					hlApi.highlightCell([spellData._cellId]);
+					hlApi.highlightAbsolute(200, 200, 0);
 				}
 				else if (spellData._spellType == SpellData.SPELL_TYPE_WEAPON)
 				{
@@ -133,6 +143,7 @@ package ui
 			if (target == ctn_main)
 			{
 				uiApi.hideTooltip();
+				hlApi.stop();
 			}
 		}
 		
