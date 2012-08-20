@@ -14,6 +14,7 @@
 				</Texture>
 			</Common>
 		</Button>
+		
 		<Texture name="tx_criticalFailure">
 			<Size>
 				<AbsDimension x="20" y="20" />
@@ -21,6 +22,7 @@
 			<uri>[local.assets]Challenge_tx_Perdu</uri>
 			<visible>false</visible>
 		</Texture>
+		
 		<Texture name="tx_criticalHit">
 			<Size>
 				<AbsDimension x="20" y="20" />
@@ -28,5 +30,22 @@
 			<uri>[local.assets]etoile1</uri>
 			<visible>false</visible>
 		</Texture>
+		
+		<Label name="lbl_spellAreaLink">
+			<Anchors>
+				<Anchor relativePoint="TOPRIGHT" point="TOPRIGHT">
+					<AbsDimension x="0" y="-3" />
+				</Anchor>
+			</Anchors>
+			
+			<autoResize>false</autoResize>
+			<fixedWidth>true</fixedWidth>
+			<fixedHeight>true</fixedHeight>
+			<width>44</width>
+			<height>20</height>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+			<hyperlinkEnabled>true</hyperlinkEnabled>
+		</Label>
 	</Container>
 </Definition>

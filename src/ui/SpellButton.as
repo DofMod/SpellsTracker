@@ -6,6 +6,7 @@ package ui
 	import d2api.UiApi;
 	import d2components.ButtonContainer;
 	import d2components.GraphicContainer;
+	import d2components.Label;
 	import d2components.Texture;
 	import d2data.Item;
 	import d2data.ItemWrapper;
@@ -57,6 +58,7 @@ package ui
 		public var btn_spell_tx:Texture;
 		public var tx_criticalHit:Texture;
 		public var tx_criticalFailure:Texture;
+		public var lbl_spellAreaLink:Label;
 		
 		// Divers
 		private var spellData:SpellData;
@@ -80,6 +82,8 @@ package ui
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OVER);
 			
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OUT);
+			
+			lbl_spellAreaLink.text = "<a href='event:spellEffectArea," + spellData._fighterId + "," + spellData._cellId + "," + spellData._sourceCellId + "," + spellData._spellId + "," + spellData._spellRank + "'><b>+</b></a>";
 		}
 		
 		/**
