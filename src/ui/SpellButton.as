@@ -8,9 +8,11 @@ package ui
 	import d2components.GraphicContainer;
 	import d2components.Texture;
 	import d2data.Item;
+	import d2data.ItemWrapper;
 	import d2data.Spell;
 	import d2enums.ComponentHookList;
 	import d2enums.FightSpellCastCriticalEnum;
+	import d2enums.LocationEnum;
 	
 	/**
 	 * Spell's button UI.
@@ -45,7 +47,7 @@ package ui
 		/**
 		 * @private
 		 * 
-		 * getSpellItem
+		 * getSpellItem, getItemWrapper
 		 */
 		public var dataApi:DataApi;
 		
@@ -120,16 +122,20 @@ package ui
 		{
 			if (target == ctn_main)
 			{
+				var cacheName:String;
 				if (spellData._spellType == SpellData.SPELL_TYPE_SPELL)
 				{
-					uiApi.showTooltip(dataApi.getSpell(spellData._spellId).description, target);
+					var spell:Object = dataApi.getSpellItem(spellData._spellId, spellData._spellRank);
+					cacheName = "spell-id" + spellData._spellId + "-lvl" + spellData._spellRank;
 					
-					hlApi.highlightCell([spellData._cellId]);
-					hlApi.highlightAbsolute(200, 200, 0);
+					uiApi.showTooltip(spell, target, false, "standard", LocationEnum.POINT_BOTTOMRIGHT, LocationEnum.POINT_TOPRIGHT, 3, null, null, null, cacheName);
 				}
 				else if (spellData._spellType == SpellData.SPELL_TYPE_WEAPON)
 				{
-					uiApi.showTooltip(dataApi.getItem(spellData._spellId).description, target);
+					var weapon:ItemWrapper = dataApi.getItemWrapper(spellData._spellId);
+					cacheName = "weapon-id" + spellData._spellId;
+					
+					uiApi.showTooltip(weapon, target, false, "standard", LocationEnum.POINT_BOTTOMRIGHT, LocationEnum.POINT_TOPRIGHT, 3, null, null, null, cacheName);
 				}
 			}
 		}
@@ -143,7 +149,6 @@ package ui
 			if (target == ctn_main)
 			{
 				uiApi.hideTooltip();
-				hlApi.stop();
 			}
 		}
 		
