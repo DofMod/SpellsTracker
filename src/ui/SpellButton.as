@@ -91,9 +91,10 @@ package ui
 		 */
 		public function unload():void
 		{
+			uiApi.hideTooltip();
 		}
 		
-		public function updateSpellTexture(spellType:int,  spellId:int):void
+		private function updateSpellTexture(spellType:int,  spellId:int):void
 		{
 			if (spellType == SpellData.SPELL_TYPE_SPELL)
 			{
@@ -105,13 +106,32 @@ package ui
 			}
 		}
 		
-		public function displayCritical(spellCritical:int):void
+		private function displayCritical(spellCritical:int):void
 		{
 			if (spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_FAIL)
 				tx_criticalFailure.visible = true;
 			
 			if (spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_HIT)
 				tx_criticalHit.visible = true;
+		}
+		
+		private function showTooltip(target:Object):void
+		{
+			var cacheName:String;
+			if (spellData._spellType == SpellData.SPELL_TYPE_SPELL)
+			{
+				var spell:Object = dataApi.getSpellItem(spellData._spellId, spellData._spellRank);
+				cacheName = "spell-id" + spellData._spellId + "-lvl" + spellData._spellRank;
+				
+				uiApi.showTooltip(spell, target, false, "standard", LocationEnum.POINT_BOTTOMRIGHT, LocationEnum.POINT_TOPRIGHT, 3, null, null, null, cacheName);
+			}
+			else if (spellData._spellType == SpellData.SPELL_TYPE_WEAPON)
+			{
+				var weapon:ItemWrapper = dataApi.getItemWrapper(spellData._spellId);
+				cacheName = "weapon-id" + spellData._spellId;
+				
+				uiApi.showTooltip(weapon, target, false, "standard", LocationEnum.POINT_BOTTOMRIGHT, LocationEnum.POINT_TOPRIGHT, 3, null, null, null, cacheName);
+			}
 		}
 		
 		//::////////////////////////////////////////////////////////////////////
@@ -126,21 +146,7 @@ package ui
 		{
 			if (target == ctn_main)
 			{
-				var cacheName:String;
-				if (spellData._spellType == SpellData.SPELL_TYPE_SPELL)
-				{
-					var spell:Object = dataApi.getSpellItem(spellData._spellId, spellData._spellRank);
-					cacheName = "spell-id" + spellData._spellId + "-lvl" + spellData._spellRank;
-					
-					uiApi.showTooltip(spell, target, false, "standard", LocationEnum.POINT_BOTTOMRIGHT, LocationEnum.POINT_TOPRIGHT, 3, null, null, null, cacheName);
-				}
-				else if (spellData._spellType == SpellData.SPELL_TYPE_WEAPON)
-				{
-					var weapon:ItemWrapper = dataApi.getItemWrapper(spellData._spellId);
-					cacheName = "weapon-id" + spellData._spellId;
-					
-					uiApi.showTooltip(weapon, target, false, "standard", LocationEnum.POINT_BOTTOMRIGHT, LocationEnum.POINT_TOPRIGHT, 3, null, null, null, cacheName);
-				}
+				showTooltip(target);
 			}
 		}
 		
