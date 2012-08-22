@@ -11,6 +11,7 @@ package
 	import d2hooks.UiLoaded;
 	import flash.display.Sprite;
 	import managers.SpellWindowManager;
+	import types.SpellData;
 	import ui.SpellButtonContainer;
 	import ui.SpellButton;
 	import ui.SpellsTrackerConfig;

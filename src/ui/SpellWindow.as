@@ -11,6 +11,7 @@ package ui
 	import d2data.FighterInformations;
 	import d2enums.ComponentHookList;
 	import flash.geom.Rectangle;
+	import types.SpellData;
 	/**
 	 * ...
 	 * @author Relena

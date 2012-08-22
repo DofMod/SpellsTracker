@@ -14,6 +14,7 @@ package ui
 	import d2enums.ComponentHookList;
 	import d2enums.FightSpellCastCriticalEnum;
 	import d2enums.LocationEnum;
+	import types.SpellData;
 	
 	/**
 	 * Spell's button UI.

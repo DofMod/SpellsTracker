@@ -1,5 +1,6 @@
 package managers
 {
+	import types.SpellData;
 	
 	/**
 	 * Manager for the SpellWindow UIs.
