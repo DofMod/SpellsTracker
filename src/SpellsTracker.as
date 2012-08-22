@@ -10,6 +10,7 @@ package
 	import d2hooks.GameFightTurnStart;
 	import d2hooks.UiLoaded;
 	import flash.display.Sprite;
+	import managers.SpellWindowManager;
 	import ui.SpellButtonContainer;
 	import ui.SpellButton;
 	import ui.SpellsTrackerConfig;
@@ -81,6 +82,7 @@ package
 		 */
 		public function main():void
 		{
+			initApis();
 			initGlobals();
 			reloadConfig();
 			
@@ -94,6 +96,13 @@ package
 				"(M) Spells Tracker",
 				"Ces options servent à configurer le module SpellsTracker",
 				"SpellsTracker::SpellsTrackerConfig");
+		}
+		
+		private function initApis():void
+		{
+			Api.fight = fightApi;
+			Api.system = sysApi;
+			Api.ui = uiApi;
 		}
 		
 		/**
@@ -272,27 +281,14 @@ package
 			containerUI.uiClass.addSpellButton(0, spellData);
 		}
 		
-		private var spellWindowId:int = 0
-		private function createSpellWindowName(id:int = -1):String
-		{
-			if (id == -1)
-				return "SpellWindow_" + (spellWindowId++);
-			
-			return "SpellWindow_" + id;
-		}
-		
 		public function createSpellWindow(spellData:SpellData):void
 		{
-			uiApi.loadUi("SpellWindow", createSpellWindowName(), spellData);
+			SpellWindowManager.getInstance().createUi(spellData);
 		}
 		
 		public function closeSpellWindows():void
 		{
-			for (var id:int = spellWindowId; id >= 0; id--)
-			{
-				sysApi.log(2, createSpellWindowName(id));
-				uiApi.unloadUi(createSpellWindowName(id));
-			}
+			SpellWindowManager.getInstance().closeUis();
 		}
 		
 		//::////////////////////////////////////////////////////////////////////
