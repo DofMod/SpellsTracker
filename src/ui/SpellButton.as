@@ -60,6 +60,14 @@ package ui
 		public var tx_criticalFailure:Texture;
 		public var lbl_spellAreaLink:Label;
 		
+		[Module(name = "SpellsTracker")]
+		/**
+		 * @private
+		 * 
+		 * SpellsTracker module reference.
+		 */
+		public var modSpellsTracker:Object;
+		
 		// Divers
 		private var spellData:SpellData;
 		
@@ -80,8 +88,8 @@ package ui
 			displayCritical(spellData._spellCritical);
 			
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OVER);
-			
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OUT);
+			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_RELEASE);
 			
 			lbl_spellAreaLink.text = "<a href='event:spellEffectArea," + spellData._fighterId + "," + spellData._cellId + "," + spellData._sourceCellId + "," + spellData._spellId + "," + spellData._spellRank + "'><b>+</b></a>";
 		}
@@ -159,6 +167,18 @@ package ui
 			if (target == ctn_main)
 			{
 				uiApi.hideTooltip();
+			}
+		}
+		
+		/**
+		 * 
+		 * @param	target
+		 */
+		public function onRelease(target:Object):void
+		{
+			if (target == ctn_main)
+			{
+				modSpellsTracker.createSpellWindow(spellData);
 			}
 		}
 		

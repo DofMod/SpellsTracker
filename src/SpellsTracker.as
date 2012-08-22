@@ -13,6 +13,7 @@ package
 	import ui.SpellButtonContainer;
 	import ui.SpellButton;
 	import ui.SpellsTrackerConfig;
+	import ui.SpellWindow;
 	
 	/**
 	 * Main function of the SpellsTracker module. Tracks the spell's data and
@@ -27,7 +28,7 @@ package
 		//::////////////////////////////////////////////////////////////////////
 		
 		// Includes
-		private var includes:Array = [SpellButtonContainer, SpellButton, SpellsTrackerConfig];
+		private var includes:Array = [SpellButtonContainer, SpellButton, SpellWindow, SpellsTrackerConfig];
 		
 		// APIs
 		/**
@@ -271,6 +272,29 @@ package
 			containerUI.uiClass.addSpellButton(0, spellData);
 		}
 		
+		private var spellWindowId:int = 0
+		private function createSpellWindowName(id:int = -1):String
+		{
+			if (id == -1)
+				return "SpellWindow_" + (spellWindowId++);
+			
+			return "SpellWindow_" + id;
+		}
+		
+		public function createSpellWindow(spellData:SpellData):void
+		{
+			uiApi.loadUi("SpellWindow", createSpellWindowName(), spellData);
+		}
+		
+		public function closeSpellWindows():void
+		{
+			for (var id:int = spellWindowId; id >= 0; id--)
+			{
+				sysApi.log(2, createSpellWindowName(id));
+				uiApi.unloadUi(createSpellWindowName(id));
+			}
+		}
+		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Events
 		//::////////////////////////////////////////////////////////////////////
@@ -369,6 +393,8 @@ package
 		private function onGameFightEnd(params:Object):void
 		{
 			initGlobals();
+			
+			closeSpellWindows()
 			
 			uiApi.unloadUi(containerUIInstanceName);
 		}

@@ -5,7 +5,7 @@
         <!-- Nom affiché dans la liste des modules -->
         <name>SpellsTracker</name>        
         <!-- Version du module -->
-        <version>0.255</version>
+        <version>0.349</version>
         <!-- Dernière version de dofus pour laquelle ce module fonctionne -->
         <dofusVersion>2.6.0</dofusVersion>
         <!-- Auteur du module -->
@@ -20,6 +20,7 @@
     <uis>
         <ui class="ui::SpellButtonContainer" file="xml/SpellButtonContainer.xml" name="SpellButtonContainer"/>
 		<ui class="ui::SpellButton" file="xml/SpellButton.xml" name="SpellButton"/>
+		<ui class="ui::SpellWindow" file="xml/SpellWindow.xml" name="SpellWindow"/>
 		<ui class="ui::SpellsTrackerConfig" file="xml/SpellsTrackerConfig.xml" name="SpellsTrackerConfig"/>
     </uis>
     
