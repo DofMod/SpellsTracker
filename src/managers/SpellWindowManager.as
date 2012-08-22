@@ -19,9 +19,11 @@ package managers
 		// Constants
 		private const _uiName:String = "SpellWindow";
 		private const _uiInstanceNamePrefix:String = "SpellWindow_";
+		private const _uiMainContainerName:String = "ctn_main";
 		
 		// Others
 		private var _uniqueId:int = 0;
+		private var _uiInstanceNames:Array = new Array();
 		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Methods
@@ -54,20 +56,13 @@ package managers
 		}
 		
 		/**
-		 * Create an return a new instance name. If <code>id</code> is not
-		 * <code>-1</code>, return the instane name create with this
-		 * <code>id</code>.
+		 * Create an return a new instance name.
 		 *
-		 * @param	id	An identifier to use to create the instance name.
-		 *
-		 * @return	An instance name.
+		 * @return	A new instance name.
 		 */
-		private function createInstanceName(id:int = -1):String
+		private function createInstanceName():String
 		{
-			if (id == -1)
-				return _uiInstanceNamePrefix + getUniqueId().toString();
-			
-			return _uiInstanceNamePrefix + id.toString();
+			return _uiInstanceNamePrefix + getUniqueId().toString();
 		}
 		
 		/**
@@ -87,7 +82,29 @@ package managers
 		 */
 		public function createUi(spellData:SpellData):void
 		{
-			Api.ui.loadUi(_uiName, createInstanceName(), spellData);
+			var newUi:Object = Api.ui.loadUi(_uiName, createInstanceName(), spellData);
+			
+			initUiPosition(newUi, getLastUi());
+			trackUi(newUi);
+		}
+		
+		/**
+		 * Initilize the position of <code>ui</code> according to
+		 * <code>refUi</code> positon.
+		 * 
+		 * @param	ui	Ui to move.
+		 * @param	refUi Reference Ui.
+		 */
+		private function initUiPosition(ui:Object, refUi:Object):void
+		{
+			if (refUi == null)
+				return
+			
+			var refUiContainer:Object = refUi.getElement(_uiMainContainerName);
+			var uiContainer:Object = ui.getElement(_uiMainContainerName);
+			
+			uiContainer.x = refUiContainer.x;
+			uiContainer.y = refUiContainer.y + refUiContainer.height;
 		}
 		
 		/**
@@ -95,10 +112,45 @@ package managers
 		 */
 		public function closeUis():void
 		{
-			for (var id:int = _uniqueId; id >= 0; id--)
+			for each (var instanceName:String in _uiInstanceNames)
 			{
-				Api.ui.unloadUi(createInstanceName(id));
+				Api.ui.unloadUi(instanceName);
 			}
+			
+			_uiInstanceNames = new Array();
+		}
+		
+		/**
+		 * Unload the SpellWindow instance
+		 */
+		public function closeUi(instanceName:String):void
+		{
+			var pos:int = _uiInstanceNames.indexOf(instanceName);
+			if (pos == -1)
+				return;
+			
+			Api.ui.unloadUi(_uiInstanceNames.splice(pos, 1)[0]);
+		}
+		
+		/**
+		 * 
+		 * @param	ui
+		 */
+		private function trackUi(ui:Object):void
+		{
+			_uiInstanceNames.push(ui.name);
+		}
+		
+		/**
+		 * 
+		 * @return
+		 */
+		private function getLastUi():Object
+		{
+			if (_uiInstanceNames.length == 0)
+				return null;
+			
+			return Api.ui.getUi(_uiInstanceNames[_uiInstanceNames.length - 1]);
 		}
 	}
 }

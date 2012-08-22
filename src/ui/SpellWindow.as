@@ -11,6 +11,7 @@ package ui
 	import d2data.FighterInformations;
 	import d2enums.ComponentHookList;
 	import flash.geom.Rectangle;
+	import managers.SpellWindowManager;
 	import types.SpellData;
 	/**
 	 * ...
@@ -152,7 +153,7 @@ package ui
 			}
 			else if (target == btn_quit)
 			{
-				uiApi.unloadUi(uiApi.me().name);
+				SpellWindowManager.getInstance().closeUi(uiApi.me().name);
 			}
 		}
 		
