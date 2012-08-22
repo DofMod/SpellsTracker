@@ -56,6 +56,19 @@ package managers
 		}
 		
 		/**
+		 * Create a new instance of the SpellWindow UI.
+		 *
+		 * @param	spellData	Parameter to send to the SpellWindow instance.
+		 */
+		public function createUi(spellData:SpellData):void
+		{
+			var newUi:Object = Api.ui.loadUi(_uiName, createInstanceName(), spellData);
+			
+			initUiPosition(newUi, getLastUi());
+			trackUi(newUi);
+		}
+		
+		/**
 		 * Create an return a new instance name.
 		 *
 		 * @return	A new instance name.
@@ -76,16 +89,15 @@ package managers
 		}
 		
 		/**
-		 * Create a new instance of the SpellWindow UI.
-		 *
-		 * @param	spellData	Parameter to send to the SpellWindow instance.
+		 * 
+		 * @return
 		 */
-		public function createUi(spellData:SpellData):void
+		private function getLastUi():Object
 		{
-			var newUi:Object = Api.ui.loadUi(_uiName, createInstanceName(), spellData);
+			if (_uiInstanceNames.length == 0)
+				return null;
 			
-			initUiPosition(newUi, getLastUi());
-			trackUi(newUi);
+			return Api.ui.getUi(_uiInstanceNames[_uiInstanceNames.length - 1]);
 		}
 		
 		/**
@@ -105,6 +117,15 @@ package managers
 			
 			uiContainer.x = refUiContainer.x;
 			uiContainer.y = refUiContainer.y + refUiContainer.height;
+		}
+		
+		/**
+		 * 
+		 * @param	ui
+		 */
+		private function trackUi(ui:Object):void
+		{
+			_uiInstanceNames.push(ui.name);
 		}
 		
 		/**
@@ -130,27 +151,6 @@ package managers
 				return;
 			
 			Api.ui.unloadUi(_uiInstanceNames.splice(pos, 1)[0]);
-		}
-		
-		/**
-		 * 
-		 * @param	ui
-		 */
-		private function trackUi(ui:Object):void
-		{
-			_uiInstanceNames.push(ui.name);
-		}
-		
-		/**
-		 * 
-		 * @return
-		 */
-		private function getLastUi():Object
-		{
-			if (_uiInstanceNames.length == 0)
-				return null;
-			
-			return Api.ui.getUi(_uiInstanceNames[_uiInstanceNames.length - 1]);
 		}
 	}
 }
