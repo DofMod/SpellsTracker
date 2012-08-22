@@ -79,7 +79,7 @@ package ui
 		/**
 		 * Initialize the ui.
 		 *
-		 * @param	params	(not used)
+		 * @param	params	(not used).
 		 */
 		public function main(spellData:SpellData):void
 		{
@@ -103,6 +103,12 @@ package ui
 			uiApi.hideTooltip();
 		}
 		
+		/**
+		 * Display the write spell asset.
+		 * 
+		 * @param	spellType
+		 * @param	spellId
+		 */
 		private function updateSpellTexture(spellType:int,  spellId:int):void
 		{
 			if (spellType == SpellData.SPELL_TYPE_SPELL)
@@ -115,6 +121,11 @@ package ui
 			}
 		}
 		
+		/**
+		 * Display the criticals assets.
+		 * 
+		 * @param	spellCritical
+		 */
 		private function displayCritical(spellCritical:int):void
 		{
 			if (spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_FAIL)
@@ -124,6 +135,11 @@ package ui
 				tx_criticalHit.visible = true;
 		}
 		
+		/**
+		 * Display a tooltip.
+		 * 
+		 * @param	target
+		 */
 		private function showTooltip(target:Object):void
 		{
 			var cacheName:String;
@@ -148,6 +164,9 @@ package ui
 		//::////////////////////////////////////////////////////////////////////
 		
 		/**
+		 * Display a tooltip.
+		 * 
+		 * @private
 		 * 
 		 * @param	target
 		 */
@@ -160,6 +179,9 @@ package ui
 		}
 		
 		/**
+		 * Hide ths tooltips.
+		 * 
+		 * @private
 		 * 
 		 * @param	target
 		 */
@@ -172,6 +194,9 @@ package ui
 		}
 		
 		/**
+		 * Request the creation of a new spell window.
+		 * 
+		 * @private
 		 * 
 		 * @param	target
 		 */
@@ -181,20 +206,6 @@ package ui
 			{
 				modSpellsTracker.createSpellWindow(spellData);
 			}
-		}
-		
-		//::////////////////////////////////////////////////////////////////////
-		//::// Debug
-		//::////////////////////////////////////////////////////////////////////
-		
-		/**
-		 * Wrapper for sysApi.log(2, ...).
-		 *
-		 * @param	object	The current object to display in the console.
-		 */
-		public function traceDofus(object:*):void
-		{
-			sysApi.log(2, object);
 		}
 	}
 }

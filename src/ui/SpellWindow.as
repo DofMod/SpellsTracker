@@ -99,6 +99,9 @@ package ui
 		{
 		}
 		
+		/**
+		 * Drag the current ui.
+		 */
 		private function dragUiStart() : void
 		{
 			ctn_main.startDrag(
@@ -110,7 +113,10 @@ package ui
 						uiApi.getStageHeight() - ctn_main.height - 160)
 				);
 		}
-
+		
+		/**
+		 * Drop the current ui.
+		 */
 		private function dragUiStop() : void
 		{
 			ctn_main.stopDrag();
@@ -120,6 +126,11 @@ package ui
 		//::// Events
 		//::////////////////////////////////////////////////////////////////////
 		
+		/**
+		 * @private
+		 * 
+		 * @param	target
+		 */
 		public function onPress(target:GraphicContainer):void
 		{
 			if (target == ctn_background)
@@ -128,6 +139,11 @@ package ui
 			}
 		}
 		
+		/**
+		 * @private
+		 * 
+		 * @param	target
+		 */
 		public function onRelease(target:GraphicContainer):void
 		{
 			if (target == ctn_background)
@@ -140,6 +156,11 @@ package ui
 			}
 		}
 		
+		/**
+		 * @private
+		 * 
+		 * @param	target
+		 */
 		public function onReleaseOutside(target:GraphicContainer):void
 		{
 			if (target == ctn_background)

@@ -79,6 +79,8 @@ package
 		//::////////////////////////////////////////////////////////////////////
 		
 		/**
+		 * @private
+		 * 
 		 * Initialize the module.
 		 */
 		public function main():void
@@ -99,6 +101,9 @@ package
 				"SpellsTracker::SpellsTrackerConfig");
 		}
 		
+		/**
+		 * Initialize the Api class.
+		 */
 		private function initApis():void
 		{
 			Api.fight = fightApi;
@@ -120,6 +125,8 @@ package
 		}
 		
 		/**
+		 * @private
+		 * 
 		 * Cleanup function.
 		 */
 		public function unload():void
@@ -282,11 +289,20 @@ package
 			containerUI.uiClass.addSpellButton(0, spellData);
 		}
 		
+		/**
+		 * Create a new spell window. Each spell window display severals
+		 * informations like the thrower and the cooldown of this spell.
+		 * 
+		 * @param	spellData	Parameters to send to the spell window ui.
+		 */
 		public function createSpellWindow(spellData:SpellData):void
 		{
 			SpellWindowManager.getInstance().createUi(spellData);
 		}
 		
+		/**
+		 * Close all spell windows create bye this module.
+		 */
 		public function closeSpellWindows():void
 		{
 			SpellWindowManager.getInstance().closeUis();
@@ -396,7 +412,16 @@ package
 			uiApi.unloadUi(containerUIInstanceName);
 		}
 		
-		
+		/**
+		 * This callback is process when the GameFightTurnStart hook is
+		 * dispatched. Catch the number of the last turn played by each fighter
+		 * and request the update of the displayed spell list if the auto update
+		 * is enable.
+		 * 
+		 * @param	fighterId	Identifier of the fighter who start his turn.
+		 * @param	waitTime	Maximum time alowed to the fighter to play (in ms).
+		 * @param	displayImage	(not used).
+		 */
 		private function onGameFightTurnStart(fighterId:int, waitTime:int, displayImage:Boolean):void
 		{
 			currentFighterId = fighterId;
@@ -405,36 +430,6 @@ package
 			if (currentFighterId == displayedFighterId && fightersAutoUpdate[fighterId])
 			{
 				requestAutoUpdate();
-			}
-		}
-		
-		//::////////////////////////////////////////////////////////////////////
-		//::// Debug
-		//::////////////////////////////////////////////////////////////////////
-		
-		/**
-		 * Wrapper for sysApi.log(2, ...).
-		 *
-		 * @param	object	The current object to display in the console.
-		 */
-		public function traceDofus(object:*):void
-		{
-			sysApi.log(2, object);
-		}
-		
-		/**
-		 * Display the spell list (sysApi.log).
-		 */
-		public function traceSpellList():void
-		{
-			traceDofus("***** Trace SpellList *****");
-			for (var key1:String in spellList)
-			{
-				traceDofus("	SpellList du combatant : " + key1);
-				for (var key2:String in spellList[key1])
-				{
-					traceDofus("		SpellList pour le tour " + key2 + ": " + spellList[key1][key2]);
-				}
 			}
 		}
 	}

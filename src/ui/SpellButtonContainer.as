@@ -234,10 +234,10 @@ package ui
 		}
 		
 		/**
-		 * ...
+		 * Actualize the size and position of the background asset.
 		 * 
-		 * @param	nbButtons
-		 * @param	nbLines
+		 * @param	nbButtons	The new width size (in number of buttons).
+		 * @param	nbLines	The new height size (in number of buttons).
 		 */
 		public function actualizeAssets(nbButtons:int = -1, nbLines:int = -1):void
 		{
@@ -257,9 +257,11 @@ package ui
 		}
 		
 		/**
-		 * ...
+		 * Actualize the position of the spell button <code>spellButton</code>.
 		 * 
-		 * @param	spellButton
+		 * @param	spellButton	The button to move.
+		 * @param	collumn	The collumn number where place the button.
+		 * @param	line	The line number where place the button.
 		 */
 		private function actualizeSpellButton(spellButton:Object, collumn:int, line:int):void
 		{
@@ -355,6 +357,8 @@ package ui
 		 * This callback is process when mouse roll out the button. Hide the
 		 * tooltips.
 		 * 
+		 * @private
+		 * 
 		 * @param	target	Button compoment.
 		 */
 		public function onRollOut(target:Object):void
@@ -363,20 +367,6 @@ package ui
 			{
 				uiApi.hideTooltip();
 			}
-		}
-		
-		//::////////////////////////////////////////////////////////////////////
-		//::// Debug
-		//::////////////////////////////////////////////////////////////////////
-		
-		/**
-		 * Wrapper for sysApi.log(2, ...).
-		 *
-		 * @param	object	The current object to display in the console.
-		 */
-		public function traceDofus(object:*):void
-		{
-			sysApi.log(2, object);
 		}
 	}
 }
