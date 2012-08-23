@@ -69,6 +69,50 @@ package managers
 		}
 		
 		/**
+		 * Unload the SpellWindow instance.
+		 */
+		public function closeUi(instanceName:String):void
+		{
+			var pos:int = _uiInstanceNames.indexOf(instanceName);
+			if (pos == -1)
+				return;
+			
+			Api.ui.unloadUi(_uiInstanceNames.splice(pos, 1)[0]);
+		}
+		
+		/**
+		 * Unload all the SpellWindow instances.
+		 */
+		public function closeUis():void
+		{
+			for each (var instanceName:String in _uiInstanceNames)
+			{
+				Api.ui.unloadUi(instanceName);
+			}
+			
+			_uiInstanceNames = new Array();
+		}
+		
+		/**
+		 * Initilize the position of <code>ui</code> according to
+		 * <code>refUi</code> positon.
+		 * 
+		 * @param	ui	Ui to move.
+		 * @param	refUi Reference Ui.
+		 */
+		private function initUiPosition(ui:Object, refUi:Object):void
+		{
+			if (refUi == null)
+				return
+			
+			var refUiContainer:Object = refUi.getElement(_uiMainContainerName);
+			var uiContainer:Object = ui.getElement(_uiMainContainerName);
+			
+			uiContainer.x = refUiContainer.x;
+			uiContainer.y = refUiContainer.y + refUiContainer.height;
+		}
+		
+		/**
 		 * Create an return a new instance name.
 		 *
 		 * @return	A new instance name.
@@ -101,56 +145,12 @@ package managers
 		}
 		
 		/**
-		 * Initilize the position of <code>ui</code> according to
-		 * <code>refUi</code> positon.
-		 * 
-		 * @param	ui	Ui to move.
-		 * @param	refUi Reference Ui.
-		 */
-		private function initUiPosition(ui:Object, refUi:Object):void
-		{
-			if (refUi == null)
-				return
-			
-			var refUiContainer:Object = refUi.getElement(_uiMainContainerName);
-			var uiContainer:Object = ui.getElement(_uiMainContainerName);
-			
-			uiContainer.x = refUiContainer.x;
-			uiContainer.y = refUiContainer.y + refUiContainer.height;
-		}
-		
-		/**
 		 * 
 		 * @param	ui
 		 */
 		private function trackUi(ui:Object):void
 		{
 			_uiInstanceNames.push(ui.name);
-		}
-		
-		/**
-		 * Unload all the SpellWindow instances.
-		 */
-		public function closeUis():void
-		{
-			for each (var instanceName:String in _uiInstanceNames)
-			{
-				Api.ui.unloadUi(instanceName);
-			}
-			
-			_uiInstanceNames = new Array();
-		}
-		
-		/**
-		 * Unload the SpellWindow instance
-		 */
-		public function closeUi(instanceName:String):void
-		{
-			var pos:int = _uiInstanceNames.indexOf(instanceName);
-			if (pos == -1)
-				return;
-			
-			Api.ui.unloadUi(_uiInstanceNames.splice(pos, 1)[0]);
 		}
 	}
 }
