@@ -14,6 +14,8 @@ package ui
 	import d2enums.ComponentHookList;
 	import d2enums.FightSpellCastCriticalEnum;
 	import d2enums.LocationEnum;
+	import managers.SpellButtonManager;
+	import managers.SpellWindowManager;
 	import types.SpellData;
 	
 	/**
@@ -60,14 +62,6 @@ package ui
 		public var tx_criticalHit:Texture;
 		public var tx_criticalFailure:Texture;
 		public var lbl_spellAreaLink:Label;
-		
-		[Module(name = "SpellsTracker")]
-		/**
-		 * @private
-		 * 
-		 * SpellsTracker module reference.
-		 */
-		public var modSpellsTracker:Object;
 		
 		// Divers
 		private var spellData:SpellData;
@@ -204,7 +198,7 @@ package ui
 		{
 			if (target == ctn_main)
 			{
-				modSpellsTracker.createSpellWindow(spellData);
+				SpellWindowManager.getInstance().createUi(spellData);
 			}
 		}
 	}

@@ -10,6 +10,7 @@ package
 	import d2hooks.GameFightTurnStart;
 	import d2hooks.UiLoaded;
 	import flash.display.Sprite;
+	import managers.SpellButtonManager;
 	import managers.SpellWindowManager;
 	import types.SpellData;
 	import ui.SpellButtonContainer;
@@ -71,9 +72,6 @@ package
 		
 		private var maxDisplayedTurn:int;
 		
-		private const containerUIName:String = "SpellButtonContainer";
-		private const containerUIInstanceName:String = "SpellTracker";
-		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Methods
 		//::////////////////////////////////////////////////////////////////////
@@ -93,7 +91,6 @@ package
 			sysApi.addHook(FightEvent, onFightEvent);
 			sysApi.addHook(GameFightEnd, onGameFightEnd);
 			sysApi.addHook(GameFightTurnStart, onGameFightTurnStart);
-			sysApi.addHook(UiLoaded, onUiLoaded);
 			
 			modCommon.addOptionItem("module_spellstracker",
 				"(M) Spells Tracker",
@@ -210,10 +207,6 @@ package
 		 */
 		private function updateSpells(turn:int):void
 		{
-			var containerUI:Object = uiApi.getUi(containerUIInstanceName);
-			if (!containerUI)
-				return;
-			
 			if (fightersLastPlayedTurn[displayedFighterId] == undefined)
 				fightersLastPlayedTurn[displayedFighterId] = 1;
 			
@@ -233,7 +226,7 @@ package
 				spellListArray.push(getSpellData(displayedFighterId, turn - ii));
 			}
 			
-			containerUI.uiClass.updateSpellButtons(spellListArray, spellListArraySize, turn);
+			SpellButtonManager.getInstance().updateSpellButtons(spellListArray, spellListArraySize, turn);
 		}
 		
 		/**
@@ -282,11 +275,11 @@ package
 			if (spellData._fighterId != displayedFighterId || fightApi.getTurnsCount() != fightersDisplayedTurn[displayedFighterId])
 				return;
 			
-			var containerUI:Object = uiApi.getUi(containerUIInstanceName);
-			if (!containerUI)
-				return;
+			var manager:SpellButtonManager = SpellButtonManager.getInstance();
+			if (!manager.isInterfaceLoaded())
+				return
 			
-			containerUI.uiClass.addSpellButton(0, spellData);
+			manager.addSpellButton(0, spellData);
 		}
 		
 		/**
@@ -306,6 +299,17 @@ package
 		public function closeSpellWindows():void
 		{
 			SpellWindowManager.getInstance().closeUis();
+		}
+		
+		private function uiLoadedCallback():void
+		{
+			if (fightersAutoUpdate[displayedFighterId] || fightersDisplayedTurn[displayedFighterId] == undefined)
+			{
+				requestAutoUpdate();
+				return;
+			}
+			
+			requestUpdateSpells(fightersDisplayedTurn[displayedFighterId]);
 		}
 		
 		//::////////////////////////////////////////////////////////////////////
@@ -351,17 +355,18 @@ package
 		 */
 		private function onFighterSelected(fighterId:int):void
 		{
-			var containerUI:Object = uiApi.getUi(containerUIInstanceName);
-			if (!containerUI)
+			if (!SpellButtonManager.getInstance().isInterfaceLoaded())
 			{
 				displayedFighterId = fighterId;
 				
-				uiApi.loadUi(containerUIName, containerUIInstanceName);
+				SpellButtonManager.getInstance().loadInterface(uiLoadedCallback);
 			}
 			else
 			{
 				if (fighterId == displayedFighterId)
-					uiApi.unloadUi(containerUIInstanceName);
+				{
+					SpellButtonManager.getInstance().unloadInterface();
+				}
 				else
 				{
 					displayedFighterId = fighterId;
@@ -378,26 +383,6 @@ package
 		}
 		
 		/**
-		 * This callback is process when the UiLoaded hook is raised. Update
-		 * the splell's buttons.
-		 *
-		 * @param	instanceName	Instance's name of the loaded ui.
-		 */
-		private function onUiLoaded(instanceName:String):void
-		{
-			if (instanceName == containerUIInstanceName)
-			{
-				if (fightersAutoUpdate[displayedFighterId] || fightersDisplayedTurn[displayedFighterId] == undefined)
-				{
-					requestAutoUpdate();
-					return;
-				}
-				
-				requestUpdateSpells(fightersDisplayedTurn[displayedFighterId]);
-			}
-		}
-		
-		/**
 		 * This callback is process when the GameFightEnd's hook is raised.
 		 * Unload the main ui.
 		 *
@@ -409,7 +394,11 @@ package
 			
 			closeSpellWindows()
 			
-			uiApi.unloadUi(containerUIInstanceName);
+			var manager:SpellButtonManager = SpellButtonManager.getInstance();
+			if (manager.isInterfaceLoaded())
+			{
+				manager.unloadInterface();
+			}
 		}
 		
 		/**

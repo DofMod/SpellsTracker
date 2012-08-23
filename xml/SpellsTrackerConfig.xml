@@ -7,8 +7,7 @@
 		<Constant name="css" value="[config.ui.skin]css/" />
 	</Constants>
 
-	<Container name="configUiCtr">
-		
+	<Container name="ctn_main">
 		<Label name="lbl_title1">
 			<Anchors>
 				<Anchor>

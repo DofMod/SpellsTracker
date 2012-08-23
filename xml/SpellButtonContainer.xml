@@ -4,20 +4,10 @@
 	<Constants>
 		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
 		<Constant name="css" value="[config.ui.skin]css/" />
-		
-		<Constant name="spellButtonWidth" value="44" type="int" />
-		<Constant name="spellButtonHeight" value="44" type="int" />
-		<Constant name="spellButtonX" value="-44" type="int" />
-		<Constant name="spellButtonY" value="9" type="int" />
-		<Constant name="spaceBetweenSpellButton" value="53" type="int" /> <!-- spellButtonWidth + spellButtonY -->
-		<Constant name="backgroundWidth" value="61" type="int" /> <!-- spellButtonWidth + 17 -->
-		<Constant name="backgroundHeight" value="62" type="int" />
-		<Constant name="backgroundX" value="0" type="int" />
-		<Constant name="backgroundY" value="0" type="int" />
 	</Constants>
 
 
-	<Container name="ctr_main">
+	<Container name="ctn_main">
 		<Anchors>
 			<Anchor relativePoint="BOTTOMRIGHT" point="BOTTOMRIGHT">
 				<AbsDimension x="0" y="-310" />
@@ -25,7 +15,7 @@
 		</Anchors>
 		<mouseEnabled>true</mouseEnabled>
 		
-		<Container name="ctr_concealable">
+		<Container name="ctn_concealable">
 			<Anchors>
 				<Anchor relativePoint="BOTTOMRIGHT" point="BOTTOMRIGHT">
 					<AbsDimension x="0" y="-10" />
@@ -39,6 +29,9 @@
 				<autoGrid>true</autoGrid>
 				<uri>[local.assets]TimeLine_tx_background</uri>
 			</Texture>
+			
+			<Container name="ctn_buttons">
+			</Container>
 			
 			<Label name="lbl_turn">
 				<Anchors>
