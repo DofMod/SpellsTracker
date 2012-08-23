@@ -329,7 +329,7 @@ package
 			var spellData:SpellData;
 			if (eventName == FightEventEnum.FIGHTER_CASTED_SPELL)
 			{
-				spellData = new SpellData(params[0], params[5], SpellData.SPELL_TYPE_SPELL, params[3], params[4], params[1], params[2]);
+				spellData = new SpellData(params[0], params[5], fightApi.getTurnsCount(), SpellData.SPELL_TYPE_SPELL, params[3], params[4], params[1], params[2]);
 				
 				trackSpellData(spellData);
 				
@@ -337,7 +337,7 @@ package
 			}
 			else if (eventName == FightEventEnum.FIGHTER_CLOSE_COMBAT)
 			{
-				spellData = new SpellData(params[0], params[2], SpellData.SPELL_TYPE_WEAPON, params[1]);
+				spellData = new SpellData(params[0], params[2], fightApi.getTurnsCount(), SpellData.SPELL_TYPE_WEAPON, params[1]);
 				
 				trackSpellData(spellData);
 				

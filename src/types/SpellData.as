@@ -40,6 +40,10 @@ package types
 		 * 1 : normal, 2 : cricial, 3 : critical failure ?
 		 */
 		public var _spellCritical:int;
+		/**
+		 * Turn when the spell was throwed.
+		 */
+		public var _turn:int;
 		
 		/**
 		 * Simple convenience function.
@@ -52,7 +56,7 @@ package types
 		 * @param	cellId
 		 * @param	sourceCellId
 		 */
-		public function SpellData(fighterId:int, critical:int, spellType:int, spellId:int, spellRank:int = 0, cellId:int = 0, sourceCellId:int = 0)
+		public function SpellData(fighterId:int, critical:int, turn:int, spellType:int, spellId:int, spellRank:int = 0, cellId:int = 0, sourceCellId:int = 0)
 		{
 			_fighterId = fighterId;
 			_spellCritical = critical;
