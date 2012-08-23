@@ -279,7 +279,7 @@ package
 			if (!manager.isInterfaceLoaded())
 				return
 			
-			manager.addSpellButton(0, spellData);
+			manager.addSpellButton(spellData);
 		}
 		
 		/**
