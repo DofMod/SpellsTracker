@@ -65,6 +65,7 @@ package types
 			_spellRank = spellRank;
 			_cellId = cellId;
 			_sourceCellId = sourceCellId;
+			_turn = turn;
 		}
 	}
 }
