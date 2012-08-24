@@ -10,6 +10,7 @@ package ui
 	import d2components.Texture;
 	import d2data.FighterInformations;
 	import d2enums.ComponentHookList;
+	import d2hooks.GameFightTurnEnd;
 	import flash.geom.Rectangle;
 	import managers.SpellWindowManager;
 	import types.SpellData;
@@ -59,6 +60,9 @@ package ui
 		public var btn_quit:ButtonContainer;
 		public var btn_expend:ButtonContainer;
 		
+		// Others
+		private var _spellData:SpellData;
+		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Methods
 		//::////////////////////////////////////////////////////////////////////
@@ -78,19 +82,24 @@ package ui
 			
 			uiApi.addComponentHook(btn_expend, ComponentHookList.ON_RELEASE);
 			
-			var spell:Object = dataApi.getSpellItem(spellData._spellId);
+			_spellData = spellData;
 			
-			tx_spellIcon.uri = spell.iconUri;
-			lbl_spellName.text = spell.name;
-			lbl_cooldown.text = "20";
-			
-			var fighter:FighterInformations = fightApi.getFighterInformations(spellData._fighterId);
+			var fighter:FighterInformations = fightApi.getFighterInformations(_spellData._fighterId);
 			if (fighter.team != "challenger")
 			{
 				lbl_fighter.cssClass = "opponent";
 			}
 			
-			lbl_fighter.text = fightApi.getFighterName(spellData._fighterId);
+			lbl_fighter.text = fightApi.getFighterName(_spellData._fighterId);
+			
+			var spell:Object = dataApi.getSpellItem(_spellData._spellId, _spellData._spellRank);
+			var cooldown:int = (_spellData._turn + spell.minCastInterval) - fightApi.getTurnsCount();
+			if (cooldown)
+				sysApi.addHook(GameFightTurnEnd, onGameFightTurnEnd);
+			
+			lbl_cooldown.text = cooldown.toString();
+			tx_spellIcon.uri = spell.iconUri;
+			lbl_spellName.text = spell.name;
 		}
 		
 		/**
@@ -121,6 +130,26 @@ package ui
 		private function dragUiStop() : void
 		{
 			ctn_main.stopDrag();
+		}
+		
+		/**
+		 * Update the cooldown label.
+		 */
+		private function updateCooldown():void
+		{
+			var spell:Object = dataApi.getSpellItem(_spellData._spellId, _spellData._spellRank);
+			var cooldown:int = (_spellData._turn + spell.minCastInterval - 1) - fightApi.getTurnsCount();
+			
+			if (cooldown > 0)
+			{
+				lbl_cooldown.text = cooldown.toString();
+			}
+			else
+			{
+				sysApi.removeHook(GameFightTurnEnd);
+				
+				lbl_cooldown.text = (0).toString();
+			}
 		}
 		
 		//::////////////////////////////////////////////////////////////////////
@@ -167,6 +196,20 @@ package ui
 			if (target == ctn_background)
 			{
 				dragUiStop();
+			}
+		}
+		
+		/**
+		 * 
+		 * @param	fighterId
+		 * @param	waitTime
+		 * @param	displayImage
+		 */
+		private function onGameFightTurnEnd(fighterId:int):void
+		{
+			if (fighterId == _spellData._fighterId)
+			{
+				updateCooldown()
 			}
 		}
 	}
