@@ -276,7 +276,6 @@ package managers
 			if (_uiSpellButtonInstanceNames[line] == undefined)
 				_uiSpellButtonInstanceNames[line] = new Array();
 			
-			Api.system.log(2, "track line: " + line);
 			_uiSpellButtonInstanceNames[line].push(instanceName);
 		}
 		
