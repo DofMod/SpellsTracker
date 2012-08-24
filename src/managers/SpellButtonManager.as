@@ -140,7 +140,7 @@ package managers
 			unloadSpellButtons();
 			
 			var background:GraphicContainer = getInterfaceScript().getBackground();
-			updateBackgroundHeight(background, spellListSize);
+			updateBackgroundHeight(background, (spellListSize > 0) ? spellListSize : 1);
 			updateBackgroundWidth(background, 0);
 			
 			getInterfaceScript().displayTurn(turn);

@@ -65,20 +65,23 @@ package helpers
 		 */
 		public function getLastTurnPlayed(fighterId:int):int
 		{
-			// TODO assert if not in fight (Api.fight.preFightIsActive)
+			if (!Api.system.isFightContext())
+				throw Error("Unalowed call to getLastTurnPlayer while not in fight context");
 			
 			if (fightersLastPlayedTurn[fighterId] == undefined)
 			{
-				if (Api.fight.getTurnsCount() <= 0)
+				if (Api.fight.getTurnsCount() == 0)
 				{
-					fightersLastPlayedTurn[fighterId] = 0;
+					for each (var playerId:int in Api.fight.getFighters())
+					{
+						fightersLastPlayedTurn[fighterId] = 0;
+					}
 				}
-				else // In fight connection
+				else
 				{
 					// TODO fix when we can get the fighter who is playing his turn
-					Api.system.log(2, "In fight connection");
 					
-					fightersLastPlayedTurn[fighterId] = 1;
+					fightersLastPlayedTurn[fighterId] = 0;
 				}
 			}
 			
