@@ -10,6 +10,7 @@ package
 	import d2hooks.GameFightTurnStart;
 	import d2hooks.UiLoaded;
 	import flash.display.Sprite;
+	import helpers.PlayedTurnTracker;
 	import managers.SpellButtonManager;
 	import managers.SpellWindowManager;
 	import types.SpellData;
@@ -67,7 +68,6 @@ package
 		private var displayedFighterId:int;
 		private var fightersDisplayedTurn:Array;
 		private var fightersAutoUpdate:Array;
-		private var fightersLastPlayedTurn:Array;
 		private var spellList:Array;
 		
 		private var maxDisplayedTurn:int;
@@ -117,7 +117,6 @@ package
 			displayedFighterId = 0;
 			fightersDisplayedTurn = new Array();
 			fightersAutoUpdate = new Array();
-			fightersLastPlayedTurn = new Array();
 			spellList = new Array();
 		}
 		
@@ -207,11 +206,9 @@ package
 		 */
 		private function updateSpells(turn:int):void
 		{
-			if (fightersLastPlayedTurn[displayedFighterId] == undefined)
-				fightersLastPlayedTurn[displayedFighterId] = 1;
-			
-			if (turn > fightersLastPlayedTurn[displayedFighterId])
-				turn = fightersLastPlayedTurn[displayedFighterId];
+			var lastPlayedTurn:int = PlayedTurnTracker.getInstance().getLastTurnPlayed(displayedFighterId);
+			if (turn > lastPlayedTurn)
+				turn = lastPlayedTurn;
 			
 			var spellListArray:Array = new Array();
 			var spellListArraySize:int = maxDisplayedTurn;
@@ -403,9 +400,8 @@ package
 		
 		/**
 		 * This callback is process when the GameFightTurnStart hook is
-		 * dispatched. Catch the number of the last turn played by each fighter
-		 * and request the update of the displayed spell list if the auto update
-		 * is enable.
+		 * dispatched. Request the update of the displayed spell list if the
+		 * auto update mode is enable.
 		 * 
 		 * @param	fighterId	Identifier of the fighter who start his turn.
 		 * @param	waitTime	Maximum time alowed to the fighter to play (in ms).
@@ -414,7 +410,6 @@ package
 		private function onGameFightTurnStart(fighterId:int, waitTime:int, displayImage:Boolean):void
 		{
 			currentFighterId = fighterId;
-			fightersLastPlayedTurn[fighterId] = fightApi.getTurnsCount();
 			
 			if (currentFighterId == displayedFighterId && fightersAutoUpdate[fighterId])
 			{
