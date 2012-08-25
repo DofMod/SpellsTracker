@@ -23,6 +23,11 @@ package managers
 		private const _uiInstanceNamePrefix:String = "SpellWindow_";
 		private const _uiMainContainerName:String = "ctn_main";
 		
+		private const windowMinX:int = 0;
+		private const windowMinY:int = 0;
+		private const windowMaxY:int = 800;
+		private const windowMaxX:int = 1050;
+		
 		// Others
 		private var _uniqueId:int = 0;
 		private var _uiInstanceNames:Array = new Array();
@@ -106,14 +111,22 @@ package managers
 		 */
 		private function initUiPosition(ui:Object, refUi:Object):void
 		{
-			if (refUi == null)
+			if (ui == null || refUi == null)
 				return
 			
 			var refUiContainer:Object = refUi.getElement(_uiMainContainerName);
 			var uiContainer:Object = ui.getElement(_uiMainContainerName);
 			
-			uiContainer.x = refUiContainer.x;
-			uiContainer.y = refUiContainer.y + refUiContainer.height;
+			var x:int = refUiContainer.x;
+			var y:int = refUiContainer.y + refUiContainer.height;
+			
+			if (y >= windowMinY && y <= windowMaxY)
+				uiContainer.y = y;
+			else
+				x += 100;
+			
+			if (x >= windowMinX && x <= windowMaxX)
+				uiContainer.x = x;
 		}
 		
 		/**

@@ -59,6 +59,9 @@ package ui
 		public var btn_quit:ButtonContainer;
 		public var btn_expend:ButtonContainer;
 		
+		// Constants
+		private const bannerHeight:int = 165;
+		
 		// Others
 		private var _spellData:SpellData;
 		
@@ -117,7 +120,7 @@ package ui
 						5,
 						5,
 						uiApi.getStageWidth() - ctn_main.width,
-						uiApi.getStageHeight() - ctn_main.height - 165)
+						uiApi.getStageHeight() - ctn_main.height - bannerHeight)
 				);
 		}
 		
