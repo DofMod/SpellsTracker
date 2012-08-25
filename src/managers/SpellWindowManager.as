@@ -1,5 +1,6 @@
 package managers
 {
+	import d2hooks.GameFightTurnEnd;
 	import types.SpellData;
 	
 	/**
@@ -40,6 +41,8 @@ package managers
 		{
 			if (_instance)
 				throw Error("SpellWindowManager already initilized.");
+			
+			Api.system.addHook(GameFightTurnEnd, onGameFightTurnEnd);
 		}
 		
 		/**
@@ -151,6 +154,26 @@ package managers
 		private function trackUi(ui:Object):void
 		{
 			_uiInstanceNames.push(ui.name);
+		}
+		
+		//::////////////////////////////////////////////////////////////////////
+		//::// Events
+		//::////////////////////////////////////////////////////////////////////
+		
+		/**
+		 * 
+		 * @param	fighterId
+		 */
+		private function onGameFightTurnEnd(fighterId:int):void
+		{
+			for each (var instanceName:String in _uiInstanceNames)
+			{
+				var ui:Object = Api.ui.getUi(instanceName);
+				if (ui && fighterId == ui.uiClass.getDisplayedFighterId())
+				{
+						ui.uiClass.updateCooldown()
+				}
+			}
 		}
 	}
 }

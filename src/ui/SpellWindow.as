@@ -10,7 +10,6 @@ package ui
 	import d2components.Texture;
 	import d2data.FighterInformations;
 	import d2enums.ComponentHookList;
-	import d2hooks.GameFightTurnEnd;
 	import flash.geom.Rectangle;
 	import managers.SpellWindowManager;
 	import types.SpellData;
@@ -94,8 +93,6 @@ package ui
 			
 			var spell:Object = dataApi.getSpellItem(_spellData._spellId, _spellData._spellRank);
 			var cooldown:int = (_spellData._turn + spell.minCastInterval) - fightApi.getTurnsCount();
-			if (cooldown)
-				sysApi.addHook(GameFightTurnEnd, onGameFightTurnEnd);
 			
 			lbl_cooldown.text = cooldown.toString();
 			tx_spellIcon.uri = spell.iconUri;
@@ -132,24 +129,22 @@ package ui
 			ctn_main.stopDrag();
 		}
 		
+		public function getDisplayedFighterId():int
+		{
+			return _spellData._fighterId;
+		}
+		
 		/**
 		 * Update the cooldown label.
 		 */
-		private function updateCooldown():void
+		public function updateCooldown():void
 		{
 			var spell:Object = dataApi.getSpellItem(_spellData._spellId, _spellData._spellRank);
 			var cooldown:int = (_spellData._turn + spell.minCastInterval - 1) - fightApi.getTurnsCount();
 			
-			if (cooldown > 0)
-			{
-				lbl_cooldown.text = cooldown.toString();
-			}
-			else
-			{
-				sysApi.removeHook(GameFightTurnEnd);
-				
-				lbl_cooldown.text = (0).toString();
-			}
+			cooldown = (cooldown > 0) ? cooldown : 0;
+			
+			lbl_cooldown.text = cooldown.toString();
 		}
 		
 		//::////////////////////////////////////////////////////////////////////
@@ -196,20 +191,6 @@ package ui
 			if (target == ctn_background)
 			{
 				dragUiStop();
-			}
-		}
-		
-		/**
-		 * 
-		 * @param	fighterId
-		 * @param	waitTime
-		 * @param	displayImage
-		 */
-		private function onGameFightTurnEnd(fighterId:int):void
-		{
-			if (fighterId == _spellData._fighterId)
-			{
-				updateCooldown()
 			}
 		}
 	}
