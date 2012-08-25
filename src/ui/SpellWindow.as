@@ -114,10 +114,10 @@ package ui
 			ctn_main.startDrag(
 				false,
 				new Rectangle(
-						0,
-						0,
+						5,
+						5,
 						uiApi.getStageWidth() - ctn_main.width,
-						uiApi.getStageHeight() - ctn_main.height - 160)
+						uiApi.getStageHeight() - ctn_main.height - 165)
 				);
 		}
 		

@@ -1,5 +1,6 @@
 package managers
 {
+	import d2enums.StrataEnum;
 	import d2hooks.GameFightTurnEnd;
 	import types.SpellData;
 	
@@ -65,7 +66,7 @@ package managers
 		 */
 		public function createUi(spellData:SpellData):void
 		{
-			var newUi:Object = Api.ui.loadUi(_uiName, createInstanceName(), spellData);
+			var newUi:Object = Api.ui.loadUi(_uiName, createInstanceName(), spellData, StrataEnum.STRATA_LOW);
 			
 			initUiPosition(newUi, getLastUi());
 			trackUi(newUi);
