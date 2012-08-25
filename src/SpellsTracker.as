@@ -64,7 +64,6 @@ package
 		public var modCommon:Object;
 		
 		// Divers
-		private var currentFighterId:int;
 		private var displayedFighterId:int;
 		private var fightersDisplayedTurn:Array;
 		private var fightersAutoUpdate:Array;
@@ -113,7 +112,6 @@ package
 		 */
 		private function initGlobals():void
 		{
-			currentFighterId = 0;
 			displayedFighterId = 0;
 			fightersDisplayedTurn = new Array();
 			fightersAutoUpdate = new Array();
@@ -409,9 +407,7 @@ package
 		 */
 		private function onGameFightTurnStart(fighterId:int, waitTime:int, displayImage:Boolean):void
 		{
-			currentFighterId = fighterId;
-			
-			if (currentFighterId == displayedFighterId && fightersAutoUpdate[fighterId])
+			if (fighterId == displayedFighterId && fightersAutoUpdate[fighterId])
 			{
 				requestAutoUpdate();
 			}
