@@ -86,6 +86,10 @@ package
 			initGlobals();
 			reloadConfig();
 			
+			// Hack, make sur PlayedTurnTracker catch the GameFightTurnStart
+			// hook before SpellsTracker.
+			PlayedTurnTracker.getInstance();
+			
 			sysApi.addHook(FighterSelected, onFighterSelected);
 			sysApi.addHook(FightEvent, onFightEvent);
 			sysApi.addHook(GameFightEnd, onGameFightEnd);
