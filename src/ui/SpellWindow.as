@@ -11,6 +11,7 @@ package ui
 	import d2data.FighterInformations;
 	import d2enums.ComponentHookList;
 	import flash.geom.Rectangle;
+	import helpers.PlayedTurnTracker;
 	import managers.SpellWindowManager;
 	import types.SpellData;
 	/**
@@ -95,11 +96,11 @@ package ui
 			lbl_fighter.text = fightApi.getFighterName(_spellData._fighterId);
 			
 			var spell:Object = dataApi.getSpellItem(_spellData._spellId, _spellData._spellRank);
-			var cooldown:int = (_spellData._turn + spell.minCastInterval) - fightApi.getTurnsCount();
 			
-			lbl_cooldown.text = cooldown.toString();
 			tx_spellIcon.uri = spell.iconUri;
 			lbl_spellName.text = spell.name;
+			
+			updateCooldown();
 		}
 		
 		/**
@@ -142,8 +143,13 @@ package ui
 		 */
 		public function updateCooldown():void
 		{
+			var turnTracker:PlayedTurnTracker = PlayedTurnTracker.getInstance();
 			var spell:Object = dataApi.getSpellItem(_spellData._spellId, _spellData._spellRank);
-			var cooldown:int = (_spellData._turn + spell.minCastInterval - 1) - fightApi.getTurnsCount();
+			var lastTurn:int = turnTracker.getLastTurnPlayed(_spellData._fighterId);
+			var cooldown:int = (_spellData._turn + spell.minCastInterval - 1) - lastTurn;
+			
+			if (turnTracker.getCurrentPlayingFighter() == _spellData._fighterId && !turnTracker.isTurnDone())
+				cooldown += 1;
 			
 			cooldown = (cooldown > 0) ? cooldown : 0;
 			

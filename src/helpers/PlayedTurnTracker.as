@@ -6,7 +6,11 @@ package helpers
 	import d2hooks.GameFightTurnStart;
 	
 	/**
-	 * Manager for the main fight UI.
+	 * This class is an helper for the turn tracking. A Turn begin with the
+	 * reception of the hook GameFightTurnStart and end with the hook
+	 * GameFightTurnEnd. If you want to call this class within some handler of
+	 * these two hook, be sure that the handler of this class has been process
+	 * first, else you will get wrong informations.
 	 *
 	 * @author Relena
 	 */
@@ -20,8 +24,10 @@ package helpers
 		private static var _instance:PlayedTurnTracker;
 		
 		// Others
+		private var _initialized:Boolean;
 		private var _fightersLastPlayedTurn:Array;
 		private var _currentPlayingFighter:int;
+		private var _turnDone:Boolean;
 		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Methods
@@ -66,8 +72,45 @@ package helpers
 		 */
 		private function resetGlobals():void
 		{
+			_initialized = false;
 			_fightersLastPlayedTurn = new Array();
 			_currentPlayingFighter = 0;
+			_turnDone = false;
+		}
+		
+		/**
+		 * Initialise the class.
+		 * 
+		 * @param	playingFighterId Identifier of the current playing fighter.
+		 */
+		private function initialize(playingFighterId:int = 0):void
+		{
+			var fighterId:int;
+			var currentTurn:int = Api.fight.getTurnsCount();
+			if (currentTurn == 0)
+			{
+				for each (fighterId in Api.fight.getFighters())
+				{
+					_fightersLastPlayedTurn[fighterId] = 0;
+				}
+			}
+			else if (playingFighterId != 0)
+			{
+				for each (fighterId in Api.fight.getFighters())
+				{
+					_fightersLastPlayedTurn[fighterId] = currentTurn;
+					
+					if (fighterId == playingFighterId)
+						currentTurn--;
+				}
+			}
+			else
+			{
+				// Debug.
+				throw Error("Turn is not 0 and we do not know the current playing fighter ?")
+			}
+			
+			_initialized = true;
 		}
 		
 		/**
@@ -77,29 +120,15 @@ package helpers
 		 *
 		 * @return	The last turn played.
 		 * 
-		 * @throws	Error	Unalowed call to getLastTurnPlayer while not in fight context
+		 * @throws	Error	Unalowed call to getLastTurnPlayer while not in fight context.
 		 */
 		public function getLastTurnPlayed(fighterId:int):int
 		{
 			if (!Api.system.isFightContext())
 				throw Error("Unalowed call to getLastTurnPlayer while not in fight context");
 			
-			if (_fightersLastPlayedTurn[fighterId] == undefined)
-			{
-				if (Api.fight.getTurnsCount() == 0)
-				{
-					for each (var playerId:int in Api.fight.getFighters())
-					{
-						_fightersLastPlayedTurn[fighterId] = 0;
-					}
-				}
-				else
-				{
-					// TODO fix when we can get the fighter who is playing his turn
-					
-					_fightersLastPlayedTurn[fighterId] = 0;
-				}
-			}
+			if (!_initialized)
+				initialize();
 			
 			return _fightersLastPlayedTurn[fighterId];
 		}
@@ -107,15 +136,30 @@ package helpers
 		/**
 		 * Return the current playing fighter.
 		 * 
-		 * @return	Identifier of the current playing fighter. 0 if between two player turn.
+		 * @return	Identifier of the current playing fighter.
 		 * 
-		 * @throws	Error	Unalowed call to getLastTurnPlayer while not in fight context
+		 * @throws	Error	Unalowed call to getLastTurnPlayer while not in fight context.
 		 */
 		public function getCurrentPlayingFighter():int {
 			if (!Api.system.isFightContext())
 				throw Error("Unalowed call to getLastTurnPlayer while not in fight context");
 			
 			return _currentPlayingFighter;
+		}
+		
+		/**
+		 * The meaning of this function is to know if the current fighter has
+		 * finish his turn.
+		 * 
+		 * @return	True of we are between the turn of two consecutive fighter.
+		 * 
+		 * @throws	Error	Unalowed call to isTurnDone while not in fight context.
+		 */
+		public function isTurnDone():Boolean {
+			if (!Api.system.isFightContext())
+				throw Error("Unalowed call to isTurnDone while not in fight context");
+			
+			return _turnDone;
 		}
 		
 		//::////////////////////////////////////////////////////////////////////
@@ -134,6 +178,10 @@ package helpers
 		{
 			_fightersLastPlayedTurn[fighterId] = Api.fight.getTurnsCount();
 			_currentPlayingFighter = fighterId;
+			_turnDone = false;
+			
+			if (!_initialized)
+				initialize(_currentPlayingFighter);
 		}
 		
 		/**
@@ -142,7 +190,7 @@ package helpers
 		 */
 		private function onGameFightTurnEnd(fighterId:int):void
 		{
-			_currentPlayingFighter = 0;
+			_turnDone = true;
 		}
 		
 		/**
