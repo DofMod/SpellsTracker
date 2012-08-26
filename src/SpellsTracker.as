@@ -208,10 +208,6 @@ package
 		 */
 		private function updateSpells(turn:int):void
 		{
-			var lastPlayedTurn:int = PlayedTurnTracker.getInstance().getLastTurnPlayed(displayedFighterId);
-			if (turn > lastPlayedTurn)
-				turn = lastPlayedTurn;
-			
 			var spellListArray:Array = new Array();
 			var spellListArraySize:int = maxDisplayedTurn;
 			for (var ii:int = 0; ii < maxDisplayedTurn; ii++)
@@ -240,7 +236,7 @@ package
 			if (turn < 1)
 				return;
 			
-			if (turn > fightApi.getTurnsCount())
+			if (turn > PlayedTurnTracker.getInstance().getLastTurnPlayed(displayedFighterId))
 				return;
 			
 			fightersAutoUpdate[displayedFighterId] = false;
@@ -254,7 +250,7 @@ package
 		 */
 		public function requestAutoUpdate():void
 		{
-			var turn:int = fightApi.getTurnsCount();
+			var turn:int = PlayedTurnTracker.getInstance().getLastTurnPlayed(displayedFighterId);
 			
 			fightersAutoUpdate[displayedFighterId] = true;
 			fightersDisplayedTurn[displayedFighterId] = (turn > 0) ? turn : 1;
