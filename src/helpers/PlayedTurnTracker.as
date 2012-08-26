@@ -1,6 +1,8 @@
 package helpers
 {
 	import d2hooks.GameFightEnd;
+	import d2hooks.GameFightLeave;
+	import d2hooks.GameFightTurnEnd;
 	import d2hooks.GameFightTurnStart;
 	
 	/**
@@ -18,7 +20,8 @@ package helpers
 		private static var _instance:PlayedTurnTracker;
 		
 		// Others
-		private var fightersLastPlayedTurn:Array;
+		private var _fightersLastPlayedTurn:Array;
+		private var _currentPlayingFighter:int;
 		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Methods
@@ -37,10 +40,12 @@ package helpers
 			if (_instance)
 				throw Error("PlayedTurnTracker already initilized.");
 			
-			fightersLastPlayedTurn = new Array();
+			resetGlobals();
 			
 			Api.system.addHook(GameFightTurnStart, onGameFightTurnStart);
+			Api.system.addHook(GameFightTurnEnd, onGameFightTurnEnd);
 			Api.system.addHook(GameFightEnd, onGameFightEnd);
+			Api.system.addHook(GameFightLeave, onGameFightLeave);
 		}
 		
 		/**
@@ -57,35 +62,60 @@ package helpers
 		}
 		
 		/**
+		 * Initialize the globals.
+		 */
+		private function resetGlobals():void
+		{
+			_fightersLastPlayedTurn = new Array();
+			_currentPlayingFighter = 0;
+		}
+		
+		/**
 		 * Get the number of the last turn played by a fighter.
 		 *
 		 * @param	fighterId	The fighter identifier.
 		 *
 		 * @return	The last turn played.
+		 * 
+		 * @throws	Error	Unalowed call to getLastTurnPlayer while not in fight context
 		 */
 		public function getLastTurnPlayed(fighterId:int):int
 		{
 			if (!Api.system.isFightContext())
 				throw Error("Unalowed call to getLastTurnPlayer while not in fight context");
 			
-			if (fightersLastPlayedTurn[fighterId] == undefined)
+			if (_fightersLastPlayedTurn[fighterId] == undefined)
 			{
 				if (Api.fight.getTurnsCount() == 0)
 				{
 					for each (var playerId:int in Api.fight.getFighters())
 					{
-						fightersLastPlayedTurn[fighterId] = 0;
+						_fightersLastPlayedTurn[fighterId] = 0;
 					}
 				}
 				else
 				{
 					// TODO fix when we can get the fighter who is playing his turn
 					
-					fightersLastPlayedTurn[fighterId] = 0;
+					_fightersLastPlayedTurn[fighterId] = 0;
 				}
 			}
 			
-			return fightersLastPlayedTurn[fighterId];
+			return _fightersLastPlayedTurn[fighterId];
+		}
+		
+		/**
+		 * Return the current playing fighter.
+		 * 
+		 * @return	Identifier of the current playing fighter. 0 if between two player turn.
+		 * 
+		 * @throws	Error	Unalowed call to getLastTurnPlayer while not in fight context
+		 */
+		public function getCurrentPlayingFighter():int {
+			if (!Api.system.isFightContext())
+				throw Error("Unalowed call to getLastTurnPlayer while not in fight context");
+			
+			return _currentPlayingFighter;
 		}
 		
 		//::////////////////////////////////////////////////////////////////////
@@ -102,7 +132,17 @@ package helpers
 		 */
 		private function onGameFightTurnStart(fighterId:int, waitTime:int, displayImage:Boolean):void
 		{
-			fightersLastPlayedTurn[fighterId] = Api.fight.getTurnsCount();
+			_fightersLastPlayedTurn[fighterId] = Api.fight.getTurnsCount();
+			_currentPlayingFighter = fighterId;
+		}
+		
+		/**
+		 * 
+		 * @param	fighterId
+		 */
+		private function onGameFightTurnEnd(fighterId:int):void
+		{
+			_currentPlayingFighter = 0;
 		}
 		
 		/**
@@ -113,7 +153,21 @@ package helpers
 		 */
 		private function onGameFightEnd(params:Object):void
 		{
-			fightersLastPlayedTurn = new Array();
+			resetGlobals();
+		}
+		
+		/**
+		 * This callback is process when the GameFightLeave hook is dispatched.
+		 * Reset the class variables.
+		 * 
+		 * @param	fighterId
+		 */
+		private function onGameFightLeave(fighterId:int):void
+		{
+			if (fighterId == Api.fight.getCurrentPlayedFighterId())
+			{
+				resetGlobals();
+			}
 		}
 	}
 }
