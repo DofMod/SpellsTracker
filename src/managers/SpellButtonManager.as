@@ -226,7 +226,7 @@ package managers
 		 * @param	background
 		 * @param	nbButtons
 		 */
-		public function updateBackgroundWidth(background:GraphicContainer, nbButtons:int):void
+		private function updateBackgroundWidth(background:GraphicContainer, nbButtons:int):void
 		{
 			var width:int = _spaceBetweenSpellButton * nbButtons;
 			background.width = _backgroundWidth + width;
@@ -239,7 +239,7 @@ package managers
 		 * @param	background
 		 * @param	nbLines
 		 */
-		public function updateBackgroundHeight(background:GraphicContainer, nbLines:int):void
+		private function updateBackgroundHeight(background:GraphicContainer, nbLines:int):void
 		{
 			var height:int = _backgroundHeight * (nbLines - 1);
 			background.height = _backgroundHeight + height;
