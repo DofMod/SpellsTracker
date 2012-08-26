@@ -202,7 +202,6 @@ package
 		
 		/**
 		 * Select the wright turn, and display the spell's list of this turn.
-		 * <code>Turn</code> must be between 1 and fightApi.getTurnCount().
 		 *
 		 * @param	turn	Turn of the spell's list to display.
 		 */
@@ -229,7 +228,7 @@ package
 		 * <code>turn</code> of the current displayed fighter.
 		 *
 		 * @param	turn	Turn of the spell's list to display. Must be between
-		 * 1 and fightApi.getTurnCount().
+		 * 1 and the last played turn.
 		 */
 		public function requestUpdateSpells(turn:int):void
 		{
@@ -267,7 +266,10 @@ package
 		 */
 		private function tryDisplaySpellData(spellData:SpellData):void
 		{
-			if (spellData._fighterId != displayedFighterId || fightApi.getTurnsCount() != fightersDisplayedTurn[displayedFighterId])
+			if (spellData._fighterId != displayedFighterId)
+				return;
+			
+			if (PlayedTurnTracker.getInstance().getLastTurnPlayed(displayedFighterId) != fightersDisplayedTurn[displayedFighterId])
 				return;
 			
 			var manager:SpellButtonManager = SpellButtonManager.getInstance();
