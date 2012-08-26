@@ -185,7 +185,7 @@ package managers
 				var ui:Object = Api.ui.getUi(instanceName);
 				if (ui && fighterId == ui.uiClass.getDisplayedFighterId())
 				{
-						ui.uiClass.updateCooldown()
+					ui.uiClass.updateCooldown()
 				}
 			}
 		}
