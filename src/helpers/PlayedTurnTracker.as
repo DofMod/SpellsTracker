@@ -40,8 +40,7 @@ package helpers
 		 *
 		 * @private
 		 *
-		 * @throws	Error	The PlayedTurnTracker instance is already
-		 * initialized.
+		 * @throws	SingletonError	Can't create instance.
 		 */
 		public function PlayedTurnTracker()
 		{

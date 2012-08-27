@@ -43,7 +43,7 @@ package managers
 		 *
 		 * @private
 		 *
-		 * @throws	Error	The SpellWindow instance is already initialized.
+		 * @throws	SingletonError	Can't create instance.
 		 */
 		public function SpellWindowManager()
 		{
