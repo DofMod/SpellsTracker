@@ -2,6 +2,7 @@ package managers
 {
 	import d2enums.StrataEnum;
 	import d2hooks.GameFightTurnEnd;
+	import errors.SingletonError;
 	import types.SpellData;
 	
 	/**
@@ -16,7 +17,8 @@ package managers
 		//::////////////////////////////////////////////////////////////////////
 		
 		// Statics
-		private static var _instance:SpellWindowManager;
+		private static var _instance:SpellWindowManager = null;
+		private static var _allowInstance:Boolean = false;
 		
 		// Constants
 		private const _uiName:String = "SpellWindow";
@@ -45,8 +47,8 @@ package managers
 		 */
 		public function SpellWindowManager()
 		{
-			if (_instance)
-				throw Error("SpellWindowManager already initilized.");
+			if (!_allowInstance)
+				throw new SingletonError();
 			
 			Api.system.addHook(GameFightTurnEnd, onGameFightTurnEnd);
 		}
@@ -59,7 +61,11 @@ package managers
 		public static function getInstance():SpellWindowManager
 		{
 			if (!_instance)
+			{
+				_allowInstance = true;
 				_instance = new SpellWindowManager();
+				_allowInstance = false;
+			}
 			
 			return _instance;
 		}

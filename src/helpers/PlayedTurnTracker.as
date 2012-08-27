@@ -4,6 +4,7 @@ package helpers
 	import d2hooks.GameFightLeave;
 	import d2hooks.GameFightTurnEnd;
 	import d2hooks.GameFightTurnStart;
+	import errors.SingletonError;
 	
 	/**
 	 * This class is an helper for the turn tracking. A Turn begin with the
@@ -21,7 +22,8 @@ package helpers
 		//::////////////////////////////////////////////////////////////////////
 		
 		// Statics
-		private static var _instance:PlayedTurnTracker;
+		private static var _instance:PlayedTurnTracker = null;
+		private static var _allowInstance:Boolean = false;
 		
 		// Others
 		private var _initialized:Boolean;
@@ -43,8 +45,8 @@ package helpers
 		 */
 		public function PlayedTurnTracker()
 		{
-			if (_instance)
-				throw Error("PlayedTurnTracker already initilized.");
+			if (!_allowInstance)
+				throw new SingletonError();
 			
 			resetGlobals();
 			
@@ -62,7 +64,11 @@ package helpers
 		public static function getInstance():PlayedTurnTracker
 		{
 			if (!_instance)
+			{
+				_allowInstance = true;
 				_instance = new PlayedTurnTracker();
+				_allowInstance = false;
+			}
 			
 			return _instance;
 		}
