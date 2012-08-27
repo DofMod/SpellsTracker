@@ -7,6 +7,7 @@ package
 	import d2hooks.FighterSelected;
 	import d2hooks.FightEvent;
 	import d2hooks.GameFightEnd;
+	import d2hooks.GameFightLeave;
 	import d2hooks.GameFightTurnStart;
 	import d2hooks.UiLoaded;
 	import flash.display.Sprite;
@@ -93,6 +94,7 @@ package
 			sysApi.addHook(FighterSelected, onFighterSelected);
 			sysApi.addHook(FightEvent, onFightEvent);
 			sysApi.addHook(GameFightEnd, onGameFightEnd);
+			sysApi.addHook(GameFightLeave, onGameFightLeave);
 			sysApi.addHook(GameFightTurnStart, onGameFightTurnStart);
 			
 			modCommon.addOptionItem("module_spellstracker",
@@ -395,6 +397,28 @@ package
 			if (manager.isInterfaceLoaded())
 			{
 				manager.unloadInterface();
+			}
+		}
+		
+		/**
+		 * This callback is process when the GameFightLeave hook is dispatched.
+		 * Unload the main ui.
+		 *
+		 * @param	fighterId	Identifier of the fighter
+		 */
+		private function onGameFightLeave(fighterId:int):void
+		{
+			if (fighterId == fightApi.getCurrentPlayedFighterId())
+			{
+				initGlobals();
+				
+				closeSpellWindows()
+				
+				var manager:SpellButtonManager = SpellButtonManager.getInstance();
+				if (manager.isInterfaceLoaded())
+				{
+					manager.unloadInterface();
+				}
 			}
 		}
 		
