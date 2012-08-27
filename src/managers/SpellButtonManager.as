@@ -3,6 +3,7 @@ package managers
 	import d2components.GraphicContainer;
 	import d2components.Texture;
 	import d2hooks.UiLoaded;
+	import errors.SingletonError;
 	import types.SpellData;
 	import ui.SpellButtonContainer;
 	/**
@@ -17,7 +18,8 @@ package managers
 		//::////////////////////////////////////////////////////////////////////
 		
 		// Statics
-		private static var _instance:SpellButtonManager;
+		private static var _instance:SpellButtonManager = null;
+		private static var _allowInstance:Boolean = false;
 		
 		// Constants
 		private const _uiContainerName:String = "SpellButtonContainer";
@@ -54,8 +56,8 @@ package managers
 		 */
 		public function SpellButtonManager()
 		{
-			if (_instance)
-				throw Error("SpellButtonManager already initilized.");
+			if (!_allowInstance)
+				throw new SingletonError();
 		}
 		
 		/**
@@ -66,7 +68,11 @@ package managers
 		public static function getInstance():SpellButtonManager
 		{
 			if (!_instance)
+			{
+				_allowInstance = true;
 				_instance = new SpellButtonManager();
+				_allowInstance = false;
+			}
 			
 			return _instance;
 		}
