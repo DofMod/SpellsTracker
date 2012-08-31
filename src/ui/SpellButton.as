@@ -16,6 +16,7 @@ package ui
 	import d2enums.LocationEnum;
 	import managers.SpellButtonManager;
 	import managers.SpellWindowManager;
+	import types.CountdownData;
 	import types.SpellData;
 	
 	/**
@@ -64,7 +65,8 @@ package ui
 		public var lbl_spellAreaLink:Label;
 		
 		// Divers
-		private var spellData:SpellData;
+		private var _spellData:SpellData;
+		private var _countdownData:CountdownData;
 		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Methods
@@ -77,7 +79,14 @@ package ui
 		 */
 		public function main(spellData:SpellData):void
 		{
-			this.spellData = spellData;
+			_spellData = spellData;
+			
+			_countdownData = new CountdownData();
+			_countdownData._fighterId = spellData._fighterId;
+			_countdownData._spellId = spellData._spellId;
+			_countdownData._start = spellData._turn;
+			_countdownData._countdown = (dataApi.getSpellWrapper(_spellData._spellId, _spellData._spellRank) as Object).minCastInterval;
+			_countdownData._description = "";
 			
 			updateSpellTexture(spellData._spellType, spellData._spellId);
 			displayCritical(spellData._spellCritical);
@@ -107,7 +116,7 @@ package ui
 		{
 			if (spellType == SpellData.SPELL_TYPE_SPELL)
 			{
-				btn_spell_tx.uri = dataApi.getSpellItem(spellId).iconUri;
+				btn_spell_tx.uri = dataApi.getSpellWrapper(spellId).iconUri;
 			}
 			else if (spellType == SpellData.SPELL_TYPE_WEAPON)
 			{
@@ -122,10 +131,10 @@ package ui
 		 */
 		private function displayCritical(spellCritical:int):void
 		{
-			if (spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_FAIL)
+			if (_spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_FAIL)
 				tx_criticalFailure.visible = true;
 			
-			if (spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_HIT)
+			if (_spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_HIT)
 				tx_criticalHit.visible = true;
 		}
 		
@@ -137,17 +146,17 @@ package ui
 		private function showTooltip(target:Object):void
 		{
 			var cacheName:String;
-			if (spellData._spellType == SpellData.SPELL_TYPE_SPELL)
+			if (_spellData._spellType == SpellData.SPELL_TYPE_SPELL)
 			{
-				var spell:Object = dataApi.getSpellItem(spellData._spellId, spellData._spellRank);
-				cacheName = "spell-id" + spellData._spellId + "-lvl" + spellData._spellRank;
+				var spell:Object = dataApi.getSpellWrapper(_spellData._spellId, _spellData._spellRank);
+				cacheName = "spell-id" + _spellData._spellId + "-lvl" + _spellData._spellRank;
 				
 				uiApi.showTooltip(spell, target, false, "standard", LocationEnum.POINT_BOTTOMRIGHT, LocationEnum.POINT_TOPRIGHT, 3, null, null, null, cacheName);
 			}
-			else if (spellData._spellType == SpellData.SPELL_TYPE_WEAPON)
+			else if (_spellData._spellType == SpellData.SPELL_TYPE_WEAPON)
 			{
-				var weapon:ItemWrapper = dataApi.getItemWrapper(spellData._spellId);
-				cacheName = "weapon-id" + spellData._spellId;
+				var weapon:ItemWrapper = dataApi.getItemWrapper(_spellData._spellId);
+				cacheName = "weapon-id" + _spellData._spellId;
 				
 				uiApi.showTooltip(weapon, target, false, "standard", LocationEnum.POINT_BOTTOMRIGHT, LocationEnum.POINT_TOPRIGHT, 3, null, null, null, cacheName);
 			}
@@ -198,7 +207,7 @@ package ui
 		{
 			if (target == ctn_main)
 			{
-				SpellWindowManager.getInstance().createUi(spellData);
+				SpellWindowManager.getInstance().createUi(_countdownData);
 			}
 		}
 	}

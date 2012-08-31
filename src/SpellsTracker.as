@@ -14,6 +14,7 @@ package
 	import helpers.PlayedTurnTracker;
 	import managers.SpellButtonManager;
 	import managers.SpellWindowManager;
+	import types.CountdownData;
 	import types.SpellData;
 	import ui.SpellButtonContainer;
 	import ui.SpellButton;
@@ -282,14 +283,24 @@ package
 		}
 		
 		/**
-		 * Create a new spell window. Each spell window display severals
-		 * informations like the thrower and the cooldown of this spell.
+		 * Create a coundown windows.
 		 * 
-		 * @param	spellData	Parameters to send to the spell window ui.
+		 * @param	fighterId	Identifier of the fighter.
+		 * @param	spellId	Identifier of the spell.
+		 * @param	start	Turn when the countdown end.
+		 * @param	countdown	Initial value of the countdown.
+		 * @param	description	Description of the countdown.
 		 */
-		public function createSpellWindow(spellData:SpellData):void
+		public function createSpellWindow(fighterId:int, spellId:int, start:int, countdown:int, description:String):void
 		{
-			SpellWindowManager.getInstance().createUi(spellData);
+			var countdownData:CountdownData = new CountdownData();
+			countdownData._fighterId = fighterId;
+			countdownData._spellId = spellId;
+			countdownData._start = start;
+			countdownData._countdown = countdown;
+			countdownData._description = description;
+			
+			SpellWindowManager.getInstance().createUi(countdownData);
 		}
 		
 		/**

@@ -55,8 +55,8 @@
 			<css>[local.localCss]tooltip.css</css>
 		</Label>
 		
-		<!-- Cooldown -->
-		<Label name="lbl_cooldown">
+		<!-- Coundown -->
+		<Label name="lbl_countdown">
 			<Anchors>
 				<Anchor>
 					<AbsDimension x="200" y="0" />
@@ -67,7 +67,7 @@
 				<AbsDimension x="50" y="50" />
 			</Size>
 			
-			<cssClass>cooldown</cssClass>
+			<cssClass>countdown</cssClass>
 			<css>[local.localCss]tooltip.css</css>
 		</Label>
 		

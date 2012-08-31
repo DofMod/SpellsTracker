@@ -13,7 +13,7 @@ package ui
 	import flash.geom.Rectangle;
 	import helpers.PlayedTurnTracker;
 	import managers.SpellWindowManager;
-	import types.SpellData;
+	import types.CountdownData;
 	/**
 	 * ...
 	 * @author Relena
@@ -56,7 +56,7 @@ package ui
 		public var tx_spellIcon:Texture;
 		public var lbl_spellName:Label;
 		public var lbl_fighter:Label;
-		public var lbl_cooldown:Label;
+		public var lbl_countdown:Label;
 		public var btn_quit:ButtonContainer;
 		public var btn_expend:ButtonContainer;
 		
@@ -64,7 +64,7 @@ package ui
 		private const bannerHeight:int = 165;
 		
 		// Others
-		private var _spellData:SpellData;
+		private var _countdownData:CountdownData;
 		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Methods
@@ -75,8 +75,10 @@ package ui
 		 *
 		 * @param	params	(not used)
 		 */
-		public function main(spellData:SpellData):void
+		public function main(coundownData:CountdownData):void
 		{
+			_countdownData = coundownData;
+			
 			uiApi.addComponentHook(ctn_background, ComponentHookList.ON_PRESS);
 			uiApi.addComponentHook(ctn_background, ComponentHookList.ON_RELEASE);
 			uiApi.addComponentHook(ctn_background, ComponentHookList.ON_RELEASE_OUTSIDE);
@@ -85,22 +87,20 @@ package ui
 			
 			uiApi.addComponentHook(btn_expend, ComponentHookList.ON_RELEASE);
 			
-			_spellData = spellData;
-			
-			var fighter:FighterInformations = fightApi.getFighterInformations(_spellData._fighterId);
+			var fighter:FighterInformations = fightApi.getFighterInformations(_countdownData._fighterId);
 			if (fighter.team != "challenger")
 			{
 				lbl_fighter.cssClass = "opponent";
 			}
 			
-			lbl_fighter.text = fightApi.getFighterName(_spellData._fighterId);
+			lbl_fighter.text = fightApi.getFighterName(_countdownData._fighterId);
 			
-			var spell:Object = dataApi.getSpellItem(_spellData._spellId, _spellData._spellRank);
+			var spell:Object = dataApi.getSpellWrapper(_countdownData._spellId);
 			
 			tx_spellIcon.uri = spell.iconUri;
 			lbl_spellName.text = spell.name;
 			
-			updateCooldown();
+			updateCountdown();
 		}
 		
 		/**
@@ -135,25 +135,25 @@ package ui
 		
 		public function getDisplayedFighterId():int
 		{
-			return _spellData._fighterId;
+			return _countdownData._fighterId;
 		}
 		
 		/**
-		 * Update the cooldown label.
+		 * Update the countdown label.
 		 */
-		public function updateCooldown():void
+		public function updateCountdown():void
 		{
+			sysApi.log(2, "update");
 			var turnTracker:PlayedTurnTracker = PlayedTurnTracker.getInstance();
-			var spell:Object = dataApi.getSpellItem(_spellData._spellId, _spellData._spellRank);
-			var lastTurn:int = turnTracker.getLastTurnPlayed(_spellData._fighterId);
-			var cooldown:int = (_spellData._turn + spell.minCastInterval - 1) - lastTurn;
+			var lastTurn:int = turnTracker.getLastTurnPlayed(_countdownData._fighterId);
+			var countdown:int = (_countdownData._start + _countdownData._countdown - 1) - lastTurn;
 			
-			if (turnTracker.getCurrentPlayingFighter() == _spellData._fighterId && !turnTracker.isTurnDone())
-				cooldown += 1;
+			if (turnTracker.getCurrentPlayingFighter() == _countdownData._fighterId && !turnTracker.isTurnDone())
+				countdown += 1;
 			
-			cooldown = (cooldown > 0) ? cooldown : 0;
+			countdown = (countdown > 0) ? countdown : 0;
 			
-			lbl_cooldown.text = cooldown.toString();
+			lbl_countdown.text = countdown.toString();
 		}
 		
 		//::////////////////////////////////////////////////////////////////////

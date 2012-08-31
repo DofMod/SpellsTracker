@@ -3,7 +3,7 @@ package managers
 	import d2enums.StrataEnum;
 	import d2hooks.GameFightTurnEnd;
 	import errors.SingletonError;
-	import types.SpellData;
+	import types.CountdownData;
 	
 	/**
 	 * Manager for the SpellWindow UIs.
@@ -73,11 +73,11 @@ package managers
 		/**
 		 * Create a new instance of the SpellWindow UI.
 		 *
-		 * @param	spellData	Parameter to send to the SpellWindow instance.
+		 * @param	countdownData	Parameter to send to the SpellWindow instance.
 		 */
-		public function createUi(spellData:SpellData):void
+		public function createUi(counddownData:CountdownData):void
 		{
-			var newUi:Object = Api.ui.loadUi(_uiName, createInstanceName(), spellData, StrataEnum.STRATA_LOW);
+			var newUi:Object = Api.ui.loadUi(_uiName, createInstanceName(), counddownData, StrataEnum.STRATA_LOW);
 			
 			initUiPosition(newUi, getLastUi());
 			trackUi(newUi);
@@ -191,7 +191,7 @@ package managers
 				var ui:Object = Api.ui.getUi(instanceName);
 				if (ui && fighterId == ui.uiClass.getDisplayedFighterId())
 				{
-					ui.uiClass.updateCooldown()
+					ui.uiClass.updateCountdown()
 				}
 			}
 		}
