@@ -143,7 +143,6 @@ package ui
 		 */
 		public function updateCountdown():void
 		{
-			sysApi.log(2, "update");
 			var turnTracker:PlayedTurnTracker = PlayedTurnTracker.getInstance();
 			var lastTurn:int = turnTracker.getLastTurnPlayed(_countdownData._fighterId);
 			var countdown:int = (_countdownData._start + _countdownData._countdown - 1) - lastTurn;
