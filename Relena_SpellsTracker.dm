@@ -7,7 +7,7 @@
 		<!-- Version du module -->
 		<version>0.501</version>
 		<!-- Dernière version de dofus pour laquelle ce module fonctionne -->
-		<dofusVersion>2.6.0</dofusVersion>
+		<dofusVersion>2.8.0</dofusVersion>
 		<!-- Auteur du module -->
 		<author>Relena</author>
 		<!-- Courte description -->
