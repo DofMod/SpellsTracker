@@ -1,5 +1,6 @@
 package
 {
+	import d2api.ConfigApi;
 	import d2api.FightApi;
 	import d2api.SystemApi;
 	import d2api.UiApi;
@@ -37,6 +38,12 @@ package
 		private var includes:Array = [SpellButtonContainer, SpellButton, SpellWindow, SpellsTrackerConfig];
 		
 		// APIs
+		/**
+		 * @private
+		 * 
+		 * ?
+		 */
+		public var configApi:ConfigApi;
 		/**
 		 * @private
 		 *
@@ -109,6 +116,7 @@ package
 		 */
 		private function initApis():void
 		{
+			Api.config = configApi;
 			Api.fight = fightApi;
 			Api.system = sysApi;
 			Api.ui = uiApi;
