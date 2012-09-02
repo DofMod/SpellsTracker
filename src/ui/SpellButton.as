@@ -14,7 +14,6 @@ package ui
 	import d2enums.ComponentHookList;
 	import d2enums.FightSpellCastCriticalEnum;
 	import d2enums.LocationEnum;
-	import managers.SpellButtonManager;
 	import managers.SpellWindowManager;
 	import types.CountdownData;
 	import types.SpellData;

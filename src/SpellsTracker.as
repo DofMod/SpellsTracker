@@ -13,7 +13,8 @@ package
 	import d2hooks.UiLoaded;
 	import flash.display.Sprite;
 	import helpers.PlayedTurnTracker;
-	import managers.SpellButtonManager;
+	import managers.interfaces.SpellButtonManager;
+	import managers.SpellButtonManagerImp;
 	import managers.SpellWindowManager;
 	import types.CountdownData;
 	import types.SpellData;
@@ -72,6 +73,9 @@ package
 		 */
 		public var modCommon:Object;
 		
+		// Dependencies
+		private var spellButtonManager:SpellButtonManager;
+		
 		// Divers
 		private var displayedFighterId:int;
 		private var fightersDisplayedTurn:Array;
@@ -92,12 +96,14 @@ package
 		public function main():void
 		{
 			initApis();
-			initGlobals();
-			reloadConfig();
 			
 			// Hack, make sur PlayedTurnTracker catch the GameFightTurnStart
 			// hook before SpellsTracker.
 			PlayedTurnTracker.getInstance();
+			
+			initDependencies();
+			initGlobals();
+			reloadConfig();
 			
 			sysApi.addHook(FighterSelected, onFighterSelected);
 			sysApi.addHook(FightEvent, onFightEvent);
@@ -120,6 +126,14 @@ package
 			Api.fight = fightApi;
 			Api.system = sysApi;
 			Api.ui = uiApi;
+		}
+		
+		/**
+		 * Initialize dependencies.
+		 */
+		private function initDependencies():void
+		{
+			spellButtonManager = new SpellButtonManagerImp();
 		}
 		
 		/**
@@ -231,7 +245,7 @@ package
 				spellListArray.push(getSpellData(displayedFighterId, turn - ii));
 			}
 			
-			SpellButtonManager.getInstance().updateSpellButtons(spellListArray, spellListArraySize, turn);
+			spellButtonManager.updateSpellButtons(spellListArray, spellListArraySize, turn);
 		}
 		
 		/**
@@ -283,11 +297,10 @@ package
 			if (PlayedTurnTracker.getInstance().getLastTurnPlayed(displayedFighterId) != fightersDisplayedTurn[displayedFighterId])
 				return;
 			
-			var manager:SpellButtonManager = SpellButtonManager.getInstance();
-			if (!manager.isInterfaceLoaded())
+			if (!spellButtonManager.isInterfaceLoaded())
 				return
 			
-			manager.addSpellButton(spellData);
+			spellButtonManager.addSpellButton(spellData);
 		}
 		
 		/**
@@ -373,17 +386,17 @@ package
 		 */
 		private function onFighterSelected(fighterId:int):void
 		{
-			if (!SpellButtonManager.getInstance().isInterfaceLoaded())
+			if (!spellButtonManager.isInterfaceLoaded())
 			{
 				displayedFighterId = fighterId;
 				
-				SpellButtonManager.getInstance().loadInterface(uiLoadedCallback);
+				spellButtonManager.loadInterface(uiLoadedCallback);
 			}
 			else
 			{
 				if (fighterId == displayedFighterId)
 				{
-					SpellButtonManager.getInstance().unloadInterface();
+					spellButtonManager.unloadInterface();
 				}
 				else
 				{
@@ -412,10 +425,9 @@ package
 			
 			closeSpellWindows()
 			
-			var manager:SpellButtonManager = SpellButtonManager.getInstance();
-			if (manager.isInterfaceLoaded())
+			if (spellButtonManager.isInterfaceLoaded())
 			{
-				manager.unloadInterface();
+				spellButtonManager.unloadInterface();
 			}
 		}
 		
@@ -433,10 +445,9 @@ package
 				
 				closeSpellWindows()
 				
-				var manager:SpellButtonManager = SpellButtonManager.getInstance();
-				if (manager.isInterfaceLoaded())
+				if (spellButtonManager.isInterfaceLoaded())
 				{
-					manager.unloadInterface();
+					spellButtonManager.unloadInterface();
 				}
 			}
 		}

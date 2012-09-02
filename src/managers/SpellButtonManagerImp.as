@@ -4,6 +4,7 @@ package managers
 	import d2components.Texture;
 	import d2hooks.UiLoaded;
 	import errors.SingletonError;
+	import managers.interfaces.SpellButtonManager;
 	import types.SpellData;
 	import ui.SpellButtonContainer;
 	/**
@@ -11,15 +12,11 @@ package managers
 	 *
 	 * @author Relena
 	 */
-	public class SpellButtonManager
+	public class SpellButtonManagerImp implements SpellButtonManager
 	{
 		//::////////////////////////////////////////////////////////////////////
 		//::// Properties
 		//::////////////////////////////////////////////////////////////////////
-		
-		// Statics
-		private static var _instance:SpellButtonManager = null;
-		private static var _allowInstance:Boolean = false;
 		
 		// Constants
 		private const _uiContainerName:String = "SpellButtonContainer";
@@ -45,36 +42,6 @@ package managers
 		//::////////////////////////////////////////////////////////////////////
 		//::// Methods
 		//::////////////////////////////////////////////////////////////////////
-		
-		/**
-		 * Constructor (do not call!).
-		 *
-		 * @private
-		 *
-		 * @throws	SingletonError	Can't create instance.
-		 */
-		public function SpellButtonManager()
-		{
-			if (!_allowInstance)
-				throw new SingletonError();
-		}
-		
-		/**
-		 * Return the unique instance of the SpellButtonManager class.
-		 *
-		 * @return	The unique instance of the SpellButtonManager class.
-		 */
-		public static function getInstance():SpellButtonManager
-		{
-			if (!_instance)
-			{
-				_allowInstance = true;
-				_instance = new SpellButtonManager();
-				_allowInstance = false;
-			}
-			
-			return _instance;
-		}
 		
 		/**
 		 * Load the button container.
