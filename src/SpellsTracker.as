@@ -14,8 +14,9 @@ package
 	import flash.display.Sprite;
 	import helpers.PlayedTurnTracker;
 	import managers.interfaces.SpellButtonManager;
+	import managers.interfaces.SpellWindowManager;
 	import managers.SpellButtonManagerImp;
-	import managers.SpellWindowManager;
+	import managers.SpellWindowManagerImp;
 	import types.CountdownData;
 	import types.SpellData;
 	import ui.SpellButtonContainer;
@@ -75,6 +76,7 @@ package
 		
 		// Dependencies
 		private var spellButtonManager:SpellButtonManager;
+		private var spellWindowManager:SpellWindowManager;
 		
 		// Divers
 		private var displayedFighterId:int;
@@ -133,7 +135,8 @@ package
 		 */
 		private function initDependencies():void
 		{
-			spellButtonManager = new SpellButtonManagerImp();
+			spellWindowManager = new SpellWindowManagerImp();
+			spellButtonManager = new SpellButtonManagerImp(spellWindowManager);
 		}
 		
 		/**
@@ -321,7 +324,7 @@ package
 			countdownData._countdown = countdown;
 			countdownData._description = description;
 			
-			SpellWindowManager.getInstance().createUi(countdownData);
+			spellWindowManager.createUi(countdownData);
 		}
 		
 		/**
@@ -329,7 +332,7 @@ package
 		 */
 		public function closeSpellWindows():void
 		{
-			SpellWindowManager.getInstance().closeUis();
+			spellWindowManager.closeUis();
 		}
 		
 		private function uiLoadedCallback():void

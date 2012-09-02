@@ -5,6 +5,7 @@ package managers
 	import d2hooks.UiLoaded;
 	import errors.SingletonError;
 	import managers.interfaces.SpellButtonManager;
+	import managers.interfaces.SpellWindowManager;
 	import types.SpellData;
 	import ui.SpellButtonContainer;
 	/**
@@ -17,6 +18,9 @@ package managers
 		//::////////////////////////////////////////////////////////////////////
 		//::// Properties
 		//::////////////////////////////////////////////////////////////////////
+		
+		// Dependencies
+		private var _spellWindowManager:SpellWindowManager;
 		
 		// Constants
 		private const _uiContainerName:String = "SpellButtonContainer";
@@ -43,6 +47,13 @@ package managers
 		//::// Methods
 		//::////////////////////////////////////////////////////////////////////
 		
+		public function SpellButtonManagerImp(spellWindowManager:SpellWindowManager)
+		{
+			_spellWindowManager = spellWindowManager;
+			
+			Api.system.addHook(UiLoaded, onUiLoaded);
+		}
+		
 		/**
 		 * Load the button container.
 		 * 
@@ -51,14 +62,13 @@ package managers
 		 * 
 		 * @throws	Error	SpellButtonContainer already loaded.
 		 */
-		public function loadInterface(callback:Function):void
+		public function loadInterface(callback:Function = null):void
 		{
 			if (isInterfaceLoaded())
 				throw Error("SpellButtonContainer already loaded");
 			
 			_onUiLoadedCallback = callback;
 			
-			Api.system.addHook(UiLoaded, onUiLoaded);
 			Api.ui.loadUi(_uiContainerName, _uiContainerInstanceName);
 		}
 		
@@ -153,9 +163,9 @@ package managers
 			var interfaceScript:SpellButtonContainer = getInterfaceScript();
 			var instanceName:String = createSpellButtonInstanceName();
 			
-			var spellButton:Object = Api.ui.loadUiInside(_uiSpellButtonName, interfaceScript.getSpellButtonContainer(), instanceName, spellData);
-			
 			trackSpellButton(line, instanceName);
+			
+			var spellButton:Object = Api.ui.loadUiInside(_uiSpellButtonName, interfaceScript.getSpellButtonContainer(), instanceName, spellData);
 			
 			initSpellButtonPosition(spellButton, getNbSpellButtons(line) - 1, line);
 			
@@ -252,6 +262,22 @@ package managers
 		}
 		
 		/**
+		 * Check if a spellButton instance is track.
+		 * 
+		 * @param	instanceName
+		 * 
+		 * @return	True or False.
+		 */
+		private function isTrackedSpellButton(instanceName:String):Boolean
+		{
+			for each (var list:Array in _uiSpellButtonInstanceNames)
+				if (list.indexOf(instanceName) != -1)
+					return true;
+			
+			return false;
+		}
+		
+		/**
 		 * Get the number of spell buttons of the line <code>line</code>.
 		 *
 		 * @return The number of spell buttons.
@@ -293,9 +319,20 @@ package managers
 		{
 			if (instanceName == _uiContainerInstanceName)
 			{
-				Api.system.removeHook(UiLoaded);
+				if (_onUiLoadedCallback == null)
+					return;
 				
 				_onUiLoadedCallback();
+			}
+			else if (isTrackedSpellButton(instanceName))
+			{
+				var uiInstance:Object = Api.ui.getUi(instanceName);
+				if (!uiInstance)
+					return;
+				
+				var uiClass:ui.SpellButton = uiInstance.uiClass;
+				uiClass.initDependencies(_spellWindowManager);
+				uiClass.initUi();
 			}
 		}
 	}

@@ -14,7 +14,7 @@ package ui
 	import d2enums.ComponentHookList;
 	import d2enums.FightSpellCastCriticalEnum;
 	import d2enums.LocationEnum;
-	import managers.SpellWindowManager;
+	import managers.interfaces.SpellWindowManager;
 	import types.CountdownData;
 	import types.SpellData;
 	
@@ -55,6 +55,9 @@ package ui
 		 */
 		public var dataApi:DataApi;
 		
+		// Dependencies
+		private var _spellWindowManager:SpellWindowManager;
+		
 		// Conponents
 		public var ctn_main:GraphicContainer;
 		public var btn_spell:ButtonContainer;
@@ -72,29 +75,45 @@ package ui
 		//::////////////////////////////////////////////////////////////////////
 		
 		/**
-		 * Initialize the ui.
+		 * Initialise function, automatically call bye the core.
 		 *
-		 * @param	params	(not used).
+		 * @param	spellData	Spell data.
 		 */
 		public function main(spellData:SpellData):void
 		{
 			_spellData = spellData;
-			
+		}
+		
+		/**
+		 * Initialise the dependencies.
+		 * 
+		 * @param	spellWindowManager
+		 */
+		public function initDependencies(spellWindowManager:SpellWindowManager):void
+		{
+			_spellWindowManager = spellWindowManager;
+		}
+		
+		/**
+		 * Initialise the UI.
+		 */
+		public function initUi():void
+		{	
 			_countdownData = new CountdownData();
-			_countdownData._fighterId = spellData._fighterId;
-			_countdownData._spellId = spellData._spellId;
-			_countdownData._start = spellData._turn;
+			_countdownData._fighterId = _spellData._fighterId;
+			_countdownData._spellId = _spellData._spellId;
+			_countdownData._start = _spellData._turn;
 			_countdownData._countdown = (dataApi.getSpellWrapper(_spellData._spellId, _spellData._spellRank) as Object).minCastInterval;
 			_countdownData._description = "";
 			
-			updateSpellTexture(spellData._spellType, spellData._spellId);
-			displayCritical(spellData._spellCritical);
+			updateSpellTexture(_spellData._spellType, _spellData._spellId);
+			displayCritical(_spellData._spellCritical);
 			
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OVER);
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OUT);
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_RELEASE);
 			
-			lbl_spellAreaLink.text = "<a href='event:spellEffectArea," + spellData._fighterId + "," + spellData._cellId + "," + spellData._sourceCellId + "," + spellData._spellId + "," + spellData._spellRank + "'><b>+</b></a>";
+			lbl_spellAreaLink.text = "<a href='event:spellEffectArea," + _spellData._fighterId + "," + _spellData._cellId + "," + _spellData._sourceCellId + "," + _spellData._spellId + "," + _spellData._spellRank + "'><b>+</b></a>";
 		}
 		
 		/**
@@ -206,7 +225,7 @@ package ui
 		{
 			if (target == ctn_main)
 			{
-				SpellWindowManager.getInstance().createUi(_countdownData);
+				_spellWindowManager.createUi(_countdownData);
 			}
 		}
 	}

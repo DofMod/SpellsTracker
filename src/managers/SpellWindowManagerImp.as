@@ -2,23 +2,22 @@ package managers
 {
 	import d2enums.StrataEnum;
 	import d2hooks.GameFightTurnEnd;
+	import d2hooks.UiLoaded;
 	import errors.SingletonError;
+	import managers.interfaces.SpellWindowManager;
 	import types.CountdownData;
+	import ui.SpellWindow;
 	
 	/**
 	 * Manager for the SpellWindow UIs.
 	 *
 	 * @author Relena
 	 */
-	public class SpellWindowManager
+	public class SpellWindowManagerImp implements SpellWindowManager
 	{
 		//::////////////////////////////////////////////////////////////////////
 		//::// Properties
 		//::////////////////////////////////////////////////////////////////////
-		
-		// Statics
-		private static var _instance:SpellWindowManager = null;
-		private static var _allowInstance:Boolean = false;
 		
 		// Constants
 		private const _uiName:String = "SpellWindow";
@@ -39,35 +38,12 @@ package managers
 		//::////////////////////////////////////////////////////////////////////
 		
 		/**
-		 * Constructor (do not call!).
-		 *
-		 * @private
-		 *
-		 * @throws	SingletonError	Can't create instance.
+		 * 
 		 */
-		public function SpellWindowManager()
+		public function SpellWindowManagerImp()
 		{
-			if (!_allowInstance)
-				throw new SingletonError();
-			
+			Api.system.addHook(UiLoaded, onUiLoaded);
 			Api.system.addHook(GameFightTurnEnd, onGameFightTurnEnd);
-		}
-		
-		/**
-		 * Return the unique instance of the SpellWindowManager class.
-		 *
-		 * @return	The unique instance of the SpellWindowManager class.
-		 */
-		public static function getInstance():SpellWindowManager
-		{
-			if (!_instance)
-			{
-				_allowInstance = true;
-				_instance = new SpellWindowManager();
-				_allowInstance = false;
-			}
-			
-			return _instance;
 		}
 		
 		/**
@@ -121,7 +97,7 @@ package managers
 				return
 			
 			var refUiContainer:Object = refUi.getElement(_uiMainContainerName);
-			var uiContainer:Object = ui.getElement(_uiMainContainerName);
+			var uiContainer:Object = Object(ui).getElement(_uiMainContainerName);
 			
 			var x:int = refUiContainer.x;
 			var y:int = refUiContainer.y + refUiContainer.height;
@@ -173,7 +149,7 @@ package managers
 		 */
 		private function trackUi(ui:Object):void
 		{
-			_uiInstanceNames.push(ui.name);
+			_uiInstanceNames.push(Object(ui).name);
 		}
 		
 		//::////////////////////////////////////////////////////////////////////
@@ -186,13 +162,38 @@ package managers
 		 */
 		private function onGameFightTurnEnd(fighterId:int):void
 		{
+			var uiInstance:Object;
+			var uiClass:SpellWindow;
 			for each (var instanceName:String in _uiInstanceNames)
 			{
-				var ui:Object = Api.ui.getUi(instanceName);
-				if (ui && fighterId == ui.uiClass.getDisplayedFighterId())
+				uiInstance = Api.ui.getUi(instanceName);
+				if (!uiInstance)
+					continue;
+				
+				uiClass = uiInstance.uiClass;
+				if (fighterId == uiClass.getDisplayedFighterId())
 				{
-					ui.uiClass.updateCountdown()
+					uiClass.updateCountdown();
 				}
+			}
+		}
+		
+		/**
+		 * This callback is process when the UiLoaded hook is raised.
+		 *
+		 * @param	instanceName	Instance's name of the loaded ui.
+		 */
+		private function onUiLoaded(instanceName:String):void
+		{
+			if (_uiInstanceNames.indexOf(instanceName) != -1)
+			{
+				var uiInstance:Object = Api.ui.getUi(instanceName);
+				if (!uiInstance)
+					return;
+				
+				var uiClass:SpellWindow = uiInstance.uiClass;
+				uiClass.initDependencies(this);
+				uiClass.initUi();
 			}
 		}
 	}

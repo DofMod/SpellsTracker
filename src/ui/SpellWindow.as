@@ -12,7 +12,7 @@ package ui
 	import d2enums.ComponentHookList;
 	import flash.geom.Rectangle;
 	import helpers.PlayedTurnTracker;
-	import managers.SpellWindowManager;
+	import managers.interfaces.SpellWindowManager;
 	import types.CountdownData;
 	/**
 	 * ...
@@ -50,6 +50,9 @@ package ui
 		 */
 		public var dataApi:DataApi;
 		
+		// Dependencies
+		private var _spellWindowManager:SpellWindowManager;
+		
 		// Conponents
 		public var ctn_main:GraphicContainer;
 		public var ctn_background:GraphicContainer;
@@ -71,14 +74,30 @@ package ui
 		//::////////////////////////////////////////////////////////////////////
 		
 		/**
-		 * Initialize the ui.
+		 * Initialise function, automatically call bye the core.
 		 *
-		 * @param	params	(not used)
+		 * @param	countdownData
 		 */
-		public function main(coundownData:CountdownData):void
+		public function main(countdownData:CountdownData):void
 		{
-			_countdownData = coundownData;
-			
+			_countdownData = countdownData;
+		}
+		
+		/**
+		 * Initialise the dependencies.
+		 * 
+		 * @param	spellWindowManager
+		 */
+		public function initDependencies(spellWindowManager:SpellWindowManager):void
+		{
+			_spellWindowManager = spellWindowManager;
+		}
+		
+		/**
+		 * Initialise the UI.
+		 */
+		public function initUi():void
+		{	
 			uiApi.addComponentHook(ctn_background, ComponentHookList.ON_PRESS);
 			uiApi.addComponentHook(ctn_background, ComponentHookList.ON_RELEASE);
 			uiApi.addComponentHook(ctn_background, ComponentHookList.ON_RELEASE_OUTSIDE);
@@ -185,7 +204,7 @@ package ui
 			}
 			else if (target == btn_quit)
 			{
-				SpellWindowManager.getInstance().closeUi(uiApi.me().name);
+				_spellWindowManager.closeUi(uiApi.me().name);
 			}
 		}
 		

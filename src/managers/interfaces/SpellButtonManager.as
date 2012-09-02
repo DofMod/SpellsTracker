@@ -9,7 +9,7 @@ package managers.interfaces
 	 */
 	public interface SpellButtonManager
 	{
-		function loadInterface(callback:Function):void;
+		function loadInterface(callback:Function = null):void;
 		function unloadInterface():void;
 		function isInterfaceLoaded():Boolean
 		function updateSpellButtons(spellList:Array, spellListSize:int, turn:int):void;
