@@ -21,7 +21,7 @@ package ui
 	
 	/**
 	 * Spell's button UI.
-	 * 
+	 *
 	 * @author Relena
 	 */
 	public class SpellButton
@@ -33,25 +33,25 @@ package ui
 		// APIs
 		/**
 		 * @private
-		 * 
+		 *
 		 * ?
 		 */
 		public var hlApi:HighlightApi;
 		/**
 		 * @private
-		 * 
+		 *
 		 * log
 		 */
 		public var sysApi:SystemApi;
 		/**
 		 * @private
-		 * 
+		 *
 		 * createUri
 		 */
 		public var uiApi:UiApi;
 		/**
 		 * @private
-		 * 
+		 *
 		 * getSpellItem, getItemWrapper
 		 */
 		public var dataApi:DataApi;
@@ -112,11 +112,11 @@ package ui
 		
 		/**
 		 * Display the write spell asset.
-		 * 
+		 *
 		 * @param	spellType
 		 * @param	spellId
 		 */
-		private function updateSpellTexture(spellType:int,  spellId:int):void
+		private function updateSpellTexture(spellType:int, spellId:int):void
 		{
 			if (spellType == SpellData.SPELL_TYPE_SPELL)
 			{
@@ -130,7 +130,7 @@ package ui
 		
 		/**
 		 * Display the criticals assets.
-		 * 
+		 *
 		 * @param	spellCritical
 		 */
 		private function displayCritical(spellCritical:int):void
@@ -144,7 +144,7 @@ package ui
 		
 		/**
 		 * Display a tooltip.
-		 * 
+		 *
 		 * @param	target
 		 */
 		private function showTooltip(target:Object):void
@@ -172,9 +172,9 @@ package ui
 		
 		/**
 		 * Display a tooltip.
-		 * 
+		 *
 		 * @private
-		 * 
+		 *
 		 * @param	target
 		 */
 		public function onRollOver(target:Object):void
@@ -187,9 +187,9 @@ package ui
 		
 		/**
 		 * Hide ths tooltips.
-		 * 
+		 *
 		 * @private
-		 * 
+		 *
 		 * @param	target
 		 */
 		public function onRollOut(target:Object):void
@@ -202,9 +202,9 @@ package ui
 		
 		/**
 		 * Request the creation of a new spell window.
-		 * 
+		 *
 		 * @private
-		 * 
+		 *
 		 * @param	target
 		 */
 		public function onRelease(target:Object):void

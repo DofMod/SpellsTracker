@@ -1,4 +1,4 @@
-package ui 
+package ui
 {
 	import d2api.DataApi;
 	import d2api.FightApi;
@@ -15,11 +15,12 @@ package ui
 	import managers.interfaces.SpellWindowManager;
 	import types.CountdownData;
 	import types.SpellWindowParams;
+	
 	/**
 	 * ...
 	 * @author Relena
 	 */
-	public class SpellWindow 
+	public class SpellWindow
 	{
 		//::////////////////////////////////////////////////////////////////////
 		//::// Properties
@@ -28,25 +29,25 @@ package ui
 		// APIs
 		/**
 		 * @private
-		 * 
+		 *
 		 * getFighterName
 		 */
 		public var fightApi:FightApi;
 		/**
 		 * @private
-		 * 
+		 *
 		 * log
 		 */
 		public var sysApi:SystemApi;
 		/**
 		 * @private
-		 * 
+		 *
 		 * ?
 		 */
 		public var uiApi:UiApi;
 		/**
 		 * @private
-		 * 
+		 *
 		 * getSpellItem
 		 */
 		public var dataApi:DataApi;
@@ -120,22 +121,21 @@ package ui
 		/**
 		 * Drag the current ui.
 		 */
-		private function dragUiStart() : void
+		private function dragUiStart():void
 		{
 			ctn_main.startDrag(
 				false,
 				new Rectangle(
-						-5,
-						-5,
-						uiApi.getStageWidth() - ctn_main.width,
-						uiApi.getStageHeight() - ctn_main.height - bannerHeight)
-				);
+					-5,
+					-5,
+					uiApi.getStageWidth() - ctn_main.width,
+					uiApi.getStageHeight() - ctn_main.height - bannerHeight));
 		}
 		
 		/**
 		 * Drop the current ui.
 		 */
-		private function dragUiStop() : void
+		private function dragUiStop():void
 		{
 			ctn_main.stopDrag();
 		}
@@ -167,7 +167,7 @@ package ui
 		
 		/**
 		 * @private
-		 * 
+		 *
 		 * @param	target
 		 */
 		public function onPress(target:GraphicContainer):void
@@ -180,7 +180,7 @@ package ui
 		
 		/**
 		 * @private
-		 * 
+		 *
 		 * @param	target
 		 */
 		public function onRelease(target:GraphicContainer):void
@@ -197,7 +197,7 @@ package ui
 		
 		/**
 		 * @private
-		 * 
+		 *
 		 * @param	target
 		 */
 		public function onReleaseOutside(target:GraphicContainer):void

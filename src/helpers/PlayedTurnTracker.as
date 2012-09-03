@@ -56,7 +56,7 @@ package helpers
 		
 		/**
 		 * Initialise the class.
-		 * 
+		 *
 		 * @param	playingFighterId Identifier of the current playing fighter.
 		 */
 		private function initialize(playingFighterId:int = 0):void
@@ -95,7 +95,7 @@ package helpers
 		 * @param	fighterId	The fighter identifier.
 		 *
 		 * @return	The last turn played.
-		 * 
+		 *
 		 * @throws	Error	Unalowed call to getLastTurnPlayer while not in fight context.
 		 */
 		public function getLastTurnPlayed(fighterId:int):int
@@ -111,12 +111,13 @@ package helpers
 		
 		/**
 		 * Return the current playing fighter.
-		 * 
+		 *
 		 * @return	Identifier of the current playing fighter.
-		 * 
+		 *
 		 * @throws	Error	Unalowed call to getLastTurnPlayer while not in fight context.
 		 */
-		public function getCurrentPlayingFighter():int {
+		public function getCurrentPlayingFighter():int
+		{
 			if (!Api.system.isFightContext())
 				throw Error("Unalowed call to getLastTurnPlayer while not in fight context");
 			
@@ -126,12 +127,13 @@ package helpers
 		/**
 		 * The meaning of this function is to know if the current fighter has
 		 * finish his turn.
-		 * 
+		 *
 		 * @return	True of we are between the turn of two consecutive fighter.
-		 * 
+		 *
 		 * @throws	Error	Unalowed call to isTurnDone while not in fight context.
 		 */
-		public function isTurnDone():Boolean {
+		public function isTurnDone():Boolean
+		{
 			if (!Api.system.isFightContext())
 				throw Error("Unalowed call to isTurnDone while not in fight context");
 			
@@ -161,7 +163,7 @@ package helpers
 		}
 		
 		/**
-		 * 
+		 *
 		 * @param	fighterId
 		 */
 		private function onGameFightTurnEnd(fighterId:int):void
@@ -183,7 +185,7 @@ package helpers
 		/**
 		 * This callback is process when the GameFightLeave hook is dispatched.
 		 * Reset the class variables.
-		 * 
+		 *
 		 * @param	fighterId
 		 */
 		private function onGameFightLeave(fighterId:int):void

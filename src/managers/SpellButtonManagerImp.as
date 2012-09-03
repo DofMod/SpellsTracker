@@ -1,5 +1,5 @@
 package managers
-{	
+{
 	import d2components.GraphicContainer;
 	import d2components.Texture;
 	import d2hooks.UiLoaded;
@@ -8,6 +8,7 @@ package managers
 	import types.SpellButtonParams;
 	import types.SpellData;
 	import ui.SpellButtonContainer;
+	
 	/**
 	 * Manager for the main fight UI.
 	 *
@@ -27,7 +28,7 @@ package managers
 		private const _uiContainerInstanceName:String = "SpellButtonContainer";
 		private const _uiSpellButtonName:String = "SpellButton";
 		private const _uiSpellButtonInstanceNamePrefix:String = "SpellButton_";
-				
+		
 		private const _spellButtonWidth:int = 44;
 		private const _spellButtonHeight:int = 44;
 		private const _spellButtonX:int = -44;
@@ -49,7 +50,7 @@ package managers
 		
 		/**
 		 * Constructor.
-		 * 
+		 *
 		 * @param	spellWindowManager
 		 */
 		public function SpellButtonManagerImp(spellWindowManager:SpellWindowManager)
@@ -61,10 +62,10 @@ package managers
 		
 		/**
 		 * Load the button container.
-		 * 
+		 *
 		 * @param	callback	Function call when the button container is
 		 * loaded.
-		 * 
+		 *
 		 * @throws	Error	SpellButtonContainer already loaded.
 		 */
 		public function loadInterface(callback:Function = null):void
@@ -79,7 +80,7 @@ package managers
 		
 		/**
 		 * Unload the button container.
-		 * 
+		 *
 		 * @throws	Error	SpellButtonContainer is not loaded.
 		 */
 		public function unloadInterface():void
@@ -94,7 +95,7 @@ package managers
 		
 		/**
 		 * Test if the button container is loaded.
-		 * 
+		 *
 		 * @return	True if the button container is loaded, else false.
 		 */
 		public function isInterfaceLoaded():Boolean
@@ -104,7 +105,7 @@ package managers
 		
 		/**
 		 * Return the button container instance.
-		 * 
+		 *
 		 * @return	The button container instance.
 		 */
 		private function getInterfaceScript():SpellButtonContainer
@@ -118,7 +119,7 @@ package managers
 		 * @param	spellList	Spell's list to display.
 		 * @param	spellListSize	The size of the spell list.
 		 * @param	turn	Turn's number to display.
-		 * 
+		 *
 		 * @throws	Error	SpellButtonContainer is not loaded.
 		 */
 		public function updateSpellButtons(spellList:Array, spellListSize:int, turn:int):void
@@ -147,7 +148,7 @@ package managers
 		 * Display a new spell's button in the button's list.
 		 *
 		 * @param	spellData	Spell's data to display.
-		 * 
+		 *
 		 * @throws	Error	SpellButtonContainer is not loaded.
 		 */
 		public function addSpellButton(spellData:SpellData):void
@@ -200,7 +201,7 @@ package managers
 		
 		/**
 		 * Initialize the position of the spell button <code>spellButton</code>.
-		 * 
+		 *
 		 * @param	spellButton	The button to move.
 		 * @param	collumn	The collumn number where place the button.
 		 * @param	line	The line number where place the button.
@@ -213,7 +214,7 @@ package managers
 		
 		/**
 		 * Update the with of the background.
-		 * 
+		 *
 		 * @param	background
 		 * @param	nbButtons
 		 */
@@ -226,7 +227,7 @@ package managers
 		
 		/**
 		 * Update the height of the background.
-		 * 
+		 *
 		 * @param	background
 		 * @param	nbLines
 		 */
@@ -272,9 +273,9 @@ package managers
 		
 		/**
 		 * Check if a spellButton instance is track.
-		 * 
+		 *
 		 * @param	instanceName
-		 * 
+		 *
 		 * @return	True or False.
 		 */
 		private function isTrackedSpellButton(instanceName:String):Boolean

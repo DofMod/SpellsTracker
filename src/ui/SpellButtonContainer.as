@@ -102,7 +102,7 @@ package ui
 		
 		/**
 		 * Return the buttons container.
-		 * 
+		 *
 		 * @return	The button container.
 		 */
 		public function getSpellButtonContainer():GraphicContainer
@@ -112,7 +112,7 @@ package ui
 		
 		/**
 		 * Return the background component.
-		 * 
+		 *
 		 * @return	The background component.
 		 */
 		public function getBackground():Texture
@@ -166,7 +166,7 @@ package ui
 			if (target == btn_minimize)
 			{
 				if (ctn_concealable.visible)
-					uiApi.showTooltip("Cacher les informations de suivi", target);	
+					uiApi.showTooltip("Cacher les informations de suivi", target);
 				else
 					uiApi.showTooltip("Afficher les informations de suivi", target);
 			}
@@ -187,9 +187,9 @@ package ui
 		/**
 		 * This callback is process when mouse roll out the button. Hide the
 		 * tooltips.
-		 * 
+		 *
 		 * @private
-		 * 
+		 *
 		 * @param	target	Button compoment.
 		 */
 		public function onRollOut(target:Object):void
