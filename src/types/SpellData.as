@@ -3,11 +3,15 @@ package types
 	
 	/**
 	 * Spell's data container.
-	 * 
+	 *
 	 * @author Relena
 	 */
 	public class SpellData
 	{
+		//::////////////////////////////////////////////////////////////////////
+		//::// Properties
+		//::////////////////////////////////////////////////////////////////////
+		
 		public static const SPELL_TYPE_SPELL:int = 0;
 		public static const SPELL_TYPE_WEAPON:int = 1;
 		public static const SPELL_TYPE_MOVEMENT:int = 2;
@@ -45,9 +49,13 @@ package types
 		 */
 		public var _turn:int;
 		
+		//::////////////////////////////////////////////////////////////////////
+		//::// Methods
+		//::////////////////////////////////////////////////////////////////////
+		
 		/**
 		 * Simple convenience function.
-		 * 
+		 *
 		 * @param	fighterId
 		 * @param	critical
 		 * @param	spellType

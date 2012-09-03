@@ -10,9 +10,17 @@ package types
 	 */
 	public class SpellWindowParams
 	{
+		//::////////////////////////////////////////////////////////////////////
+		//::// Properties
+		//::////////////////////////////////////////////////////////////////////
+		
 		public var countdownData:CountdownData;
 		public var spellWindowManager:SpellWindowManager;
 		public var playedTurnTracker:PlayedTurnTracker;
+		
+		//::////////////////////////////////////////////////////////////////////
+		//::// Methods
+		//::////////////////////////////////////////////////////////////////////
 		
 		public function SpellWindowParams(countdownData:CountdownData, spellWindowManager:SpellWindowManager, playedTurnTracker:PlayedTurnTracker)
 		{
