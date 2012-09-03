@@ -14,6 +14,7 @@ package ui
 	import helpers.PlayedTurnTracker;
 	import managers.interfaces.SpellWindowManager;
 	import types.CountdownData;
+	import types.SpellWindowParams;
 	/**
 	 * ...
 	 * @author Relena
@@ -79,27 +80,12 @@ package ui
 		 *
 		 * @param	countdownData
 		 */
-		public function main(countdownData:CountdownData):void
+		public function main(spellWindowParams:SpellWindowParams):void
 		{
-			_countdownData = countdownData;
-		}
-		
-		/**
-		 * Initialise the dependencies.
-		 * 
-		 * @param	spellWindowManager
-		 */
-		public function initDependencies(spellWindowManager:SpellWindowManager, playedTurnTracker:PlayedTurnTracker):void
-		{
-			_spellWindowManager = spellWindowManager;
-			_playedTurnTracker = playedTurnTracker;
-		}
-		
-		/**
-		 * Initialise the UI.
-		 */
-		public function initUi():void
-		{
+			_spellWindowManager = spellWindowParams.spellWindowManager;
+			_playedTurnTracker = spellWindowParams.playedTurnTracker;
+			_countdownData = spellWindowParams.countdownData;
+			
 			uiApi.addComponentHook(ctn_background, ComponentHookList.ON_PRESS);
 			uiApi.addComponentHook(ctn_background, ComponentHookList.ON_RELEASE);
 			uiApi.addComponentHook(ctn_background, ComponentHookList.ON_RELEASE_OUTSIDE);

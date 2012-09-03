@@ -48,7 +48,6 @@ package managers
 		{
 			_playedTurnTracker = playedTurnTracker;
 			
-			Api.system.addHook(UiLoaded, onUiLoaded);
 			Api.system.addHook(GameFightTurnEnd, onGameFightTurnEnd);
 		}
 		
@@ -181,25 +180,6 @@ package managers
 				{
 					uiClass.updateCountdown();
 				}
-			}
-		}
-		
-		/**
-		 * This callback is process when the UiLoaded hook is raised.
-		 *
-		 * @param	instanceName	Instance's name of the loaded ui.
-		 */
-		private function onUiLoaded(instanceName:String):void
-		{
-			if (_uiInstanceNames.indexOf(instanceName) != -1)
-			{
-				var uiInstance:Object = Api.ui.getUi(instanceName);
-				if (!uiInstance)
-					return;
-				
-				var uiClass:SpellWindow = uiInstance.uiClass;
-				uiClass.initDependencies(this, _playedTurnTracker);
-				uiClass.initUi();
 			}
 		}
 	}
