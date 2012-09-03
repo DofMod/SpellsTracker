@@ -21,10 +21,6 @@ package helpers
 		//::// Properties
 		//::////////////////////////////////////////////////////////////////////
 		
-		// Statics
-		private static var _instance:PlayedTurnTracker = null;
-		private static var _allowInstance:Boolean = false;
-		
 		// Others
 		private var _initialized:Boolean;
 		private var _fightersLastPlayedTurn:Array;
@@ -44,32 +40,12 @@ package helpers
 		 */
 		public function PlayedTurnTracker()
 		{
-			if (!_allowInstance)
-				throw new SingletonError();
-			
 			resetGlobals();
 			
 			Api.system.addHook(GameFightTurnStart, onGameFightTurnStart);
 			Api.system.addHook(GameFightTurnEnd, onGameFightTurnEnd);
 			Api.system.addHook(GameFightEnd, onGameFightEnd);
 			Api.system.addHook(GameFightLeave, onGameFightLeave);
-		}
-		
-		/**
-		 * Return the unique instance of the PlayedTurnTracker class.
-		 *
-		 * @return	The unique instance of the PlayedTurnTracker class.
-		 */
-		public static function getInstance():PlayedTurnTracker
-		{
-			if (!_instance)
-			{
-				_allowInstance = true;
-				_instance = new PlayedTurnTracker();
-				_allowInstance = false;
-			}
-			
-			return _instance;
 		}
 		
 		/**

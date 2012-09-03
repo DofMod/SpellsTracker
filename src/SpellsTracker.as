@@ -77,6 +77,7 @@ package
 		// Dependencies
 		private var spellButtonManager:SpellButtonManager;
 		private var spellWindowManager:SpellWindowManager;
+		private var playedTurnTracker:PlayedTurnTracker;
 		
 		// Divers
 		private var displayedFighterId:int;
@@ -98,11 +99,6 @@ package
 		public function main():void
 		{
 			initApis();
-			
-			// Hack, make sur PlayedTurnTracker catch the GameFightTurnStart
-			// hook before SpellsTracker.
-			PlayedTurnTracker.getInstance();
-			
 			initDependencies();
 			initGlobals();
 			reloadConfig();
@@ -135,7 +131,8 @@ package
 		 */
 		private function initDependencies():void
 		{
-			spellWindowManager = new SpellWindowManagerImp();
+			playedTurnTracker = new PlayedTurnTracker();
+			spellWindowManager = new SpellWindowManagerImp(playedTurnTracker);
 			spellButtonManager = new SpellButtonManagerImp(spellWindowManager);
 		}
 		
@@ -263,7 +260,7 @@ package
 			if (turn < 1)
 				return;
 			
-			if (turn > PlayedTurnTracker.getInstance().getLastTurnPlayed(displayedFighterId))
+			if (turn > playedTurnTracker.getLastTurnPlayed(displayedFighterId))
 				return;
 			
 			fightersAutoUpdate[displayedFighterId] = false;
@@ -277,7 +274,7 @@ package
 		 */
 		public function requestAutoUpdate():void
 		{
-			var turn:int = PlayedTurnTracker.getInstance().getLastTurnPlayed(displayedFighterId);
+			var turn:int = playedTurnTracker.getLastTurnPlayed(displayedFighterId);
 			
 			fightersAutoUpdate[displayedFighterId] = true;
 			fightersDisplayedTurn[displayedFighterId] = (turn > 0) ? turn : 1;
@@ -297,7 +294,7 @@ package
 			if (spellData._fighterId != displayedFighterId)
 				return;
 			
-			if (PlayedTurnTracker.getInstance().getLastTurnPlayed(displayedFighterId) != fightersDisplayedTurn[displayedFighterId])
+			if (playedTurnTracker.getLastTurnPlayed(displayedFighterId) != fightersDisplayedTurn[displayedFighterId])
 				return;
 			
 			if (!spellButtonManager.isInterfaceLoaded())

@@ -4,6 +4,7 @@ package managers
 	import d2hooks.GameFightTurnEnd;
 	import d2hooks.UiLoaded;
 	import errors.SingletonError;
+	import helpers.PlayedTurnTracker;
 	import managers.interfaces.SpellWindowManager;
 	import types.CountdownData;
 	import ui.SpellWindow;
@@ -18,6 +19,9 @@ package managers
 		//::////////////////////////////////////////////////////////////////////
 		//::// Properties
 		//::////////////////////////////////////////////////////////////////////
+		
+		// Dependencies
+		private var _playedTurnTracker:PlayedTurnTracker;
 		
 		// Constants
 		private const _uiName:String = "SpellWindow";
@@ -40,8 +44,10 @@ package managers
 		/**
 		 * 
 		 */
-		public function SpellWindowManagerImp()
+		public function SpellWindowManagerImp(playedTurnTracker:PlayedTurnTracker)
 		{
+			_playedTurnTracker = playedTurnTracker;
+			
 			Api.system.addHook(UiLoaded, onUiLoaded);
 			Api.system.addHook(GameFightTurnEnd, onGameFightTurnEnd);
 		}
@@ -192,7 +198,7 @@ package managers
 					return;
 				
 				var uiClass:SpellWindow = uiInstance.uiClass;
-				uiClass.initDependencies(this);
+				uiClass.initDependencies(this, _playedTurnTracker);
 				uiClass.initUi();
 			}
 		}

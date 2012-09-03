@@ -52,6 +52,7 @@ package ui
 		
 		// Dependencies
 		private var _spellWindowManager:SpellWindowManager;
+		private var _playedTurnTracker:PlayedTurnTracker;
 		
 		// Conponents
 		public var ctn_main:GraphicContainer;
@@ -88,16 +89,17 @@ package ui
 		 * 
 		 * @param	spellWindowManager
 		 */
-		public function initDependencies(spellWindowManager:SpellWindowManager):void
+		public function initDependencies(spellWindowManager:SpellWindowManager, playedTurnTracker:PlayedTurnTracker):void
 		{
 			_spellWindowManager = spellWindowManager;
+			_playedTurnTracker = playedTurnTracker;
 		}
 		
 		/**
 		 * Initialise the UI.
 		 */
 		public function initUi():void
-		{	
+		{
 			uiApi.addComponentHook(ctn_background, ComponentHookList.ON_PRESS);
 			uiApi.addComponentHook(ctn_background, ComponentHookList.ON_RELEASE);
 			uiApi.addComponentHook(ctn_background, ComponentHookList.ON_RELEASE_OUTSIDE);
@@ -137,8 +139,8 @@ package ui
 			ctn_main.startDrag(
 				false,
 				new Rectangle(
-						5,
-						5,
+						-5,
+						-5,
 						uiApi.getStageWidth() - ctn_main.width,
 						uiApi.getStageHeight() - ctn_main.height - bannerHeight)
 				);
@@ -162,11 +164,10 @@ package ui
 		 */
 		public function updateCountdown():void
 		{
-			var turnTracker:PlayedTurnTracker = PlayedTurnTracker.getInstance();
-			var lastTurn:int = turnTracker.getLastTurnPlayed(_countdownData._fighterId);
+			var lastTurn:int = _playedTurnTracker.getLastTurnPlayed(_countdownData._fighterId);
 			var countdown:int = (_countdownData._start + _countdownData._countdown - 1) - lastTurn;
 			
-			if (turnTracker.getCurrentPlayingFighter() == _countdownData._fighterId && !turnTracker.isTurnDone())
+			if (_playedTurnTracker.getCurrentPlayingFighter() == _countdownData._fighterId && !_playedTurnTracker.isTurnDone())
 				countdown += 1;
 			
 			countdown = (countdown > 0) ? countdown : 0;
