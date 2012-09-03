@@ -3,7 +3,6 @@ package managers
 	import d2enums.StrataEnum;
 	import d2hooks.GameFightTurnEnd;
 	import d2hooks.UiLoaded;
-	import errors.SingletonError;
 	import helpers.PlayedTurnTracker;
 	import managers.interfaces.SpellWindowManager;
 	import types.CountdownData;
@@ -43,7 +42,7 @@ package managers
 		//::////////////////////////////////////////////////////////////////////
 		
 		/**
-		 * 
+		 * Constructor.
 		 */
 		public function SpellWindowManagerImp(playedTurnTracker:PlayedTurnTracker)
 		{
