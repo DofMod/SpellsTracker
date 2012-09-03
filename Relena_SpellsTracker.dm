@@ -5,7 +5,7 @@
 		<!-- Nom affiché dans la liste des modules -->
 		<name>SpellsTracker</name>
 		<!-- Version du module -->
-		<version>0.517</version>
+		<version>0.523</version>
 		<!-- Dernière version de dofus pour laquelle ce module fonctionne -->
 		<dofusVersion>2.8.0</dofusVersion>
 		<!-- Auteur du module -->

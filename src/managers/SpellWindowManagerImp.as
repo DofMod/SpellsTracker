@@ -7,6 +7,7 @@ package managers
 	import helpers.PlayedTurnTracker;
 	import managers.interfaces.SpellWindowManager;
 	import types.CountdownData;
+	import types.SpellWindowParams;
 	import ui.SpellWindow;
 	
 	/**
@@ -58,7 +59,9 @@ package managers
 		 */
 		public function createUi(counddownData:CountdownData):void
 		{
-			var newUi:Object = Api.ui.loadUi(_uiName, createInstanceName(), counddownData, StrataEnum.STRATA_LOW);
+			var spellWindowParams:SpellWindowParams = new SpellWindowParams(counddownData, this, _playedTurnTracker);
+			
+			var newUi:Object = Api.ui.loadUi(_uiName, createInstanceName(), spellWindowParams, StrataEnum.STRATA_LOW);
 			
 			initUiPosition(newUi, getLastUi());
 			trackUi(newUi);
