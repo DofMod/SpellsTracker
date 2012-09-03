@@ -82,6 +82,8 @@ package managers
 			if (!isInterfaceLoaded())
 				throw Error("SpellButtonContainer is not loaded");
 			
+			unloadSpellButtons();
+			
 			Api.ui.unloadUi(_uiContainerInstanceName);
 		}
 		
