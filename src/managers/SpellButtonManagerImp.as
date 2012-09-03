@@ -6,6 +6,7 @@ package managers
 	import errors.SingletonError;
 	import managers.interfaces.SpellButtonManager;
 	import managers.interfaces.SpellWindowManager;
+	import types.SpellButtonParams;
 	import types.SpellData;
 	import ui.SpellButtonContainer;
 	/**
@@ -165,9 +166,11 @@ package managers
 			var interfaceScript:SpellButtonContainer = getInterfaceScript();
 			var instanceName:String = createSpellButtonInstanceName();
 			
-			trackSpellButton(line, instanceName);
+			var spellButtonParams:SpellButtonParams = new SpellButtonParams(spellData, _spellWindowManager);
 			
-			var spellButton:Object = Api.ui.loadUiInside(_uiSpellButtonName, interfaceScript.getSpellButtonContainer(), instanceName, spellData);
+			var spellButton:Object = Api.ui.loadUiInside(_uiSpellButtonName, interfaceScript.getSpellButtonContainer(), instanceName, spellButtonParams);
+			
+			trackSpellButton(line, instanceName);
 			
 			initSpellButtonPosition(spellButton, getNbSpellButtons(line) - 1, line);
 			
@@ -325,16 +328,6 @@ package managers
 					return;
 				
 				_onUiLoadedCallback();
-			}
-			else if (isTrackedSpellButton(instanceName))
-			{
-				var uiInstance:Object = Api.ui.getUi(instanceName);
-				if (!uiInstance)
-					return;
-				
-				var uiClass:ui.SpellButton = uiInstance.uiClass;
-				uiClass.initDependencies(_spellWindowManager);
-				uiClass.initUi();
 			}
 		}
 	}

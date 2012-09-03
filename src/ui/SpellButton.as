@@ -16,6 +16,7 @@ package ui
 	import d2enums.LocationEnum;
 	import managers.interfaces.SpellWindowManager;
 	import types.CountdownData;
+	import types.SpellButtonParams;
 	import types.SpellData;
 	
 	/**
@@ -79,26 +80,11 @@ package ui
 		 *
 		 * @param	spellData	Spell data.
 		 */
-		public function main(spellData:SpellData):void
+		public function main(spellButtonParams:SpellButtonParams):void
 		{
-			_spellData = spellData;
-		}
-		
-		/**
-		 * Initialise the dependencies.
-		 * 
-		 * @param	spellWindowManager
-		 */
-		public function initDependencies(spellWindowManager:SpellWindowManager):void
-		{
-			_spellWindowManager = spellWindowManager;
-		}
-		
-		/**
-		 * Initialise the UI.
-		 */
-		public function initUi():void
-		{	
+			_spellWindowManager = spellButtonParams.spellWindowManager;
+			_spellData = spellButtonParams.spellData;
+			
 			_countdownData = new CountdownData();
 			_countdownData._fighterId = _spellData._fighterId;
 			_countdownData._spellId = _spellData._spellId;
