@@ -272,22 +272,6 @@ package managers
 		}
 		
 		/**
-		 * Check if a spellButton instance is track.
-		 *
-		 * @param	instanceName
-		 *
-		 * @return	True or False.
-		 */
-		private function isTrackedSpellButton(instanceName:String):Boolean
-		{
-			for each (var list:Array in _uiSpellButtonInstanceNames)
-				if (list.indexOf(instanceName) != -1)
-					return true;
-			
-			return false;
-		}
-		
-		/**
 		 * Get the number of spell buttons of the line <code>line</code>.
 		 *
 		 * @return The number of spell buttons.
