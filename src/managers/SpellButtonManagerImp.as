@@ -41,7 +41,7 @@ package managers
 		
 		// Others
 		private var _uniqueId:int = 0;
-		private var _uiSpellButtonInstanceNames:Array = new Array();
+		private var _nbSpellButtonByLine:Array = new Array();
 		private var _onUiLoadedCallback:Function;
 		
 		//::////////////////////////////////////////////////////////////////////
@@ -175,7 +175,7 @@ package managers
 			
 			var spellButton:Object = Api.ui.loadUiInside(_uiSpellButtonName, interfaceScript.getSpellButtonContainer(), instanceName, spellButtonParams);
 			
-			trackSpellButton(line, instanceName);
+			incrementNbSpellButton(line);
 			
 			initSpellButtonPosition(spellButton, getNbSpellButtons(line) - 1, line);
 			
@@ -188,15 +188,15 @@ package managers
 		 */
 		private function unloadSpellButtons():void
 		{
-			for each (var list:Array in _uiSpellButtonInstanceNames)
+			for each (var uiInstance:Object in Api.ui.getUiInstances())
 			{
-				for each (var instanceName:String in list)
+				if (uiInstance.name.indexOf(_uiSpellButtonInstanceNamePrefix) == 0)
 				{
-					Api.ui.unloadUi(instanceName);
+					Api.ui.unloadUi(uiInstance.name);
 				}
 			}
 			
-			_uiSpellButtonInstanceNames = new Array();
+			_nbSpellButtonByLine = new Array();
 		}
 		
 		/**
@@ -259,29 +259,31 @@ package managers
 		}
 		
 		/**
-		 * Add the spell's button instance name to the instance name list.
+		 * Increment the number of spell button of line <code>line</code>.
 		 *
-		 * @param	instanceName	Instance name to tack.
+		 * @param	line
 		 */
-		private function trackSpellButton(line:int, instanceName:String):void
+		private function incrementNbSpellButton(line:int):void
 		{
-			if (_uiSpellButtonInstanceNames[line] == undefined)
-				_uiSpellButtonInstanceNames[line] = new Array();
+			if (_nbSpellButtonByLine[line] == undefined)
+				_nbSpellButtonByLine[line] = 0;
 			
-			_uiSpellButtonInstanceNames[line].push(instanceName);
+			_nbSpellButtonByLine[line]++;
 		}
 		
 		/**
 		 * Get the number of spell buttons of the line <code>line</code>.
 		 *
+		 * @param	line
+		 *
 		 * @return The number of spell buttons.
 		 */
 		private function getNbSpellButtons(line:int):int
 		{
-			if (_uiSpellButtonInstanceNames[line] == undefined)
+			if (_nbSpellButtonByLine[line] == undefined)
 				return 0;
 			
-			return _uiSpellButtonInstanceNames[line].length;
+			return _nbSpellButtonByLine[line];
 		}
 		
 		/**
@@ -293,9 +295,9 @@ package managers
 		{
 			var max:int = 0;
 			
-			for each (var list:Array in _uiSpellButtonInstanceNames)
-				if (list.length > max)
-					max = list.length;
+			for each (var nbButton:int in _nbSpellButtonByLine)
+				if (nbButton > max)
+					max = nbButton;
 			
 			return max;
 		}
