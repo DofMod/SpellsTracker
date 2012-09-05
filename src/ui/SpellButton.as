@@ -133,10 +133,20 @@ package ui
 		private function updateCritical(spellCritical:int):void
 		{
 			if (_spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_FAIL)
+			{
 				tx_criticalFailure.visible = true;
-			
-			if (_spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_HIT)
+				tx_criticalHit.visible = false;
+			}
+			else if (_spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_HIT)
+			{
+				tx_criticalFailure.visible = false;
 				tx_criticalHit.visible = true;
+			}
+			else
+			{
+				tx_criticalFailure.visible = false;
+				tx_criticalHit.visible = false;
+			}
 		}
 		
 		/**
