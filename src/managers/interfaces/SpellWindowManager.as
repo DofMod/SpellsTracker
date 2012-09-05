@@ -9,7 +9,7 @@ package managers.interfaces
 	 */
 	public interface SpellWindowManager
 	{
-		function createUi(counddownData:CountdownData):void;
+		function createUi(countdownData:CountdownData):void;
 		function closeUi(instanceName:String):void;
 		function closeUis():void;
 	}

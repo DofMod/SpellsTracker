@@ -56,9 +56,9 @@ package managers
 		 *
 		 * @param	countdownData	Parameter to send to the SpellWindow instance.
 		 */
-		public function createUi(counddownData:CountdownData):void
+		public function createUi(countdownData:CountdownData):void
 		{
-			var spellWindowParams:SpellWindowParams = new SpellWindowParams(counddownData, this, _playedTurnTracker);
+			var spellWindowParams:SpellWindowParams = new SpellWindowParams(countdownData, this, _playedTurnTracker);
 			
 			var newUi:Object = Api.ui.loadUi(_uiName, createInstanceName(), spellWindowParams, StrataEnum.STRATA_LOW);
 			
