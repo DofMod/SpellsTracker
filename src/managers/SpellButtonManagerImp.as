@@ -1,7 +1,6 @@
 package managers
 {
 	import d2components.GraphicContainer;
-	import d2components.Texture;
 	import d2hooks.UiLoaded;
 	import managers.interfaces.SpellButtonManager;
 	import managers.interfaces.SpellWindowManager;

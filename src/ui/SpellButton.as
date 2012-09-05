@@ -8,9 +8,7 @@ package ui
 	import d2components.GraphicContainer;
 	import d2components.Label;
 	import d2components.Texture;
-	import d2data.Item;
 	import d2data.ItemWrapper;
-	import d2data.Spell;
 	import d2enums.ComponentHookList;
 	import d2enums.FightSpellCastCriticalEnum;
 	import d2enums.LocationEnum;

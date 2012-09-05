@@ -2,7 +2,6 @@ package managers
 {
 	import d2enums.StrataEnum;
 	import d2hooks.GameFightTurnEnd;
-	import d2hooks.UiLoaded;
 	import helpers.PlayedTurnTracker;
 	import managers.interfaces.SpellWindowManager;
 	import types.CountdownData;

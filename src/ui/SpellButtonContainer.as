@@ -7,7 +7,6 @@ package ui
 	import d2components.Label;
 	import d2components.Texture;
 	import d2enums.ComponentHookList;
-	import types.SpellData;
 	
 	/**
 	 * The main conainer UI of the module. Display and track several spell's
