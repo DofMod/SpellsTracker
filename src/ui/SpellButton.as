@@ -91,13 +91,12 @@ package ui
 			_countdownData._description = "";
 			
 			updateSpellTexture(_spellData._spellType, _spellData._spellId);
-			displayCritical(_spellData._spellCritical);
+			updateCritical(_spellData._spellCritical);
+			updateZoneEffect(_spellData);
 			
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OVER);
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OUT);
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_RELEASE);
-			
-			lbl_spellAreaLink.text = "<a href='event:spellEffectArea," + _spellData._fighterId + "," + _spellData._cellId + "," + _spellData._sourceCellId + "," + _spellData._spellId + "," + _spellData._spellRank + "'><b>+</b></a>";
 		}
 		
 		/**
@@ -131,13 +130,23 @@ package ui
 		 *
 		 * @param	spellCritical
 		 */
-		private function displayCritical(spellCritical:int):void
+		private function updateCritical(spellCritical:int):void
 		{
 			if (_spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_FAIL)
 				tx_criticalFailure.visible = true;
 			
 			if (_spellData._spellCritical == FightSpellCastCriticalEnum.CRITICAL_HIT)
 				tx_criticalHit.visible = true;
+		}
+		
+		/**
+		 * Update the show zone effect button.
+		 *
+		 * @param	spellData
+		 */
+		private function updateZoneEffect(spellData:SpellData):void
+		{
+			lbl_spellAreaLink.text = "<a href='event:spellEffectArea," + spellData._fighterId + "," + spellData._cellId + "," + spellData._sourceCellId + "," + spellData._spellId + "," + spellData._spellRank + "'><b>+</b></a>";
 		}
 		
 		/**
