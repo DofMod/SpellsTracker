@@ -226,7 +226,7 @@ package
 		}
 		
 		/**
-		 * Select the wright turn, and display the spell's list of this turn.
+		 * Select the right turn, and display the spell's list of this turn.
 		 *
 		 * @param	turn	Turn of the spell's list to display.
 		 */
