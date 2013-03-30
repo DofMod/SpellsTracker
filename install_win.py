@@ -11,7 +11,7 @@ moduleCssName = "css"
 moduleAssetsName = "assets"
 
 srcPath = "."
-dstPath = op.normpath(op.join(os.environ['PROGRAMFILES(X86)'], "Dofus2BetaModule/app/ui", moduleName))
+dstPath = op.normpath(op.join(os.environ['PROGRAMFILES(X86)'], "Dofus2Beta/app/ui", moduleName))
 
 def upVersion(fileDmPath):
 	dom = xml.dom.minidom.parse(fileDmPath)
