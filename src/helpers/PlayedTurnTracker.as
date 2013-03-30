@@ -20,6 +20,9 @@ package helpers
 		//::// Properties
 		//::////////////////////////////////////////////////////////////////////
 		
+		// Constants
+		private static const positioningTurn:int = 0;
+		
 		// Others
 		private var _initialized:Boolean;
 		private var _fightersLastPlayedTurn:Array;
@@ -63,7 +66,7 @@ package helpers
 		{
 			var fighterId:int;
 			var currentTurn:int = Api.fight.getTurnsCount();
-			if (currentTurn == 0)
+			if (currentTurn == positioningTurn)
 			{
 				for each (fighterId in Api.fight.getFighters())
 				{
