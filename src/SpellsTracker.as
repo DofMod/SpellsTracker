@@ -9,18 +9,17 @@ package
 	import d2hooks.FightEvent;
 	import d2hooks.GameFightEnd;
 	import d2hooks.GameFightLeave;
-	import d2hooks.GameFightTurnStart;
-	import d2hooks.UiLoaded;
 	import flash.display.Sprite;
 	import helpers.PlayedTurnTracker;
+	import hooks.SpellsTrackerGameFightTurnStart;
 	import managers.interfaces.SpellButtonManager;
 	import managers.interfaces.SpellWindowManager;
 	import managers.SpellButtonManagerImp;
 	import managers.SpellWindowManagerImp;
 	import types.CountdownData;
 	import types.SpellData;
-	import ui.SpellButtonContainer;
 	import ui.SpellButton;
+	import ui.SpellButtonContainer;
 	import ui.SpellsTrackerConfig;
 	import ui.SpellWindow;
 	
@@ -42,7 +41,7 @@ package
 		// APIs
 		/**
 		 * @private
-		 * 
+		 *
 		 * ?
 		 */
 		public var configApi:ConfigApi;
@@ -66,10 +65,10 @@ package
 		public var uiApi:UiApi;
 		
 		// Components
-		[Module(name = "Ankama_Common")]
+		[Module(name="Ankama_Common")]
 		/**
 		 * Module Ankama_Common reference.
-		 * 
+		 *
 		 * @private
 		 */
 		public var modCommon:Object;
@@ -93,7 +92,7 @@ package
 		
 		/**
 		 * @private
-		 * 
+		 *
 		 * Initialize the module.
 		 */
 		public function main():void
@@ -107,12 +106,9 @@ package
 			sysApi.addHook(FightEvent, onFightEvent);
 			sysApi.addHook(GameFightEnd, onGameFightEnd);
 			sysApi.addHook(GameFightLeave, onGameFightLeave);
-			sysApi.addHook(GameFightTurnStart, onGameFightTurnStart);
+			sysApi.addHook(SpellsTrackerGameFightTurnStart, onGameFightTurnStart);
 			
-			modCommon.addOptionItem("module_spellstracker",
-				"(M) Spells Tracker",
-				"Ces options servent à configurer le module SpellsTracker",
-				"SpellsTracker::SpellsTrackerConfig");
+			modCommon.addOptionItem("module_spellstracker", "(M) Spells Tracker", "Ces options servent à configurer le module SpellsTracker", "SpellsTracker::SpellsTrackerConfig");
 		}
 		
 		/**
@@ -149,7 +145,7 @@ package
 		
 		/**
 		 * @private
-		 * 
+		 *
 		 * Cleanup function.
 		 */
 		public function unload():void
@@ -298,14 +294,14 @@ package
 				return;
 			
 			if (!spellButtonManager.isInterfaceLoaded())
-				return
+				return;
 			
 			spellButtonManager.addSpellButton(spellData);
 		}
 		
 		/**
 		 * Create a coundown windows.
-		 * 
+		 *
 		 * @param	fighterId	Identifier of the fighter.
 		 * @param	spellId	Identifier of the spell.
 		 * @param	start	Turn when the countdown end.
@@ -453,15 +449,13 @@ package
 		}
 		
 		/**
-		 * This callback is process when the GameFightTurnStart hook is
-		 * dispatched. Request the update of the displayed spell list if the
-		 * auto update mode is enable.
-		 * 
+		 * This callback is process when the SpellsTrackerGameFightTurnStart
+		 * hook is dispatched. Request the update of the displayed spell list
+		 * if the auto update mode is enable.
+		 *
 		 * @param	fighterId	Identifier of the fighter who start his turn.
-		 * @param	waitTime	Maximum time alowed to the fighter to play (in ms).
-		 * @param	displayImage	(not used).
 		 */
-		private function onGameFightTurnStart(fighterId:int, waitTime:int, displayImage:Boolean):void
+		private function onGameFightTurnStart(fighterId:int):void
 		{
 			if (fighterId == displayedFighterId && fightersAutoUpdate[fighterId])
 			{

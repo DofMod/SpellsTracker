@@ -4,6 +4,7 @@ package helpers
 	import d2hooks.GameFightLeave;
 	import d2hooks.GameFightTurnEnd;
 	import d2hooks.GameFightTurnStart;
+	import hooks.SpellsTrackerGameFightTurnStart;
 	
 	/**
 	 * This class is an helper for the turn tracking. A Turn begin with the
@@ -39,6 +40,8 @@ package helpers
 		public function PlayedTurnTracker()
 		{
 			resetGlobals();
+			
+			Api.system.createHook("SpellsTrackerGameFightTurnStart");
 			
 			Api.system.addHook(GameFightTurnStart, onGameFightTurnStart);
 			Api.system.addHook(GameFightTurnEnd, onGameFightTurnEnd);
@@ -163,6 +166,8 @@ package helpers
 			
 			if (!_initialized)
 				initialize(_currentPlayingFighter);
+			
+			Api.system.dispatchHook(SpellsTrackerGameFightTurnStart, fighterId);
 		}
 		
 		/**
