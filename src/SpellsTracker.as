@@ -189,11 +189,11 @@ package
 		 * @param	castId		Id of the spell's list.
 		 *
 		 * @return If <code>fighterId == 0</code>, return the spell's list of
-		 * all the turn of all the fighter. Else, if <code>turn == -1</code>,
-		 * return the spell's list of all the turn of the fighter
+		 * all the turns of all the fighters. Else, if <code>turn == -1</code>,
+		 * return the spell's list of all the turns of the fighter
 		 * <code>fighterId</code>. Else, if <code>castId == -1</code>, return
 		 * the spell's list of the fighter <code>fighterId</code> of the turn
-		 * <code>turn</code>. Elle, return the spell's data of the fighter
+		 * <code>turn</code>. Else, return the spell's data of the fighter
 		 * <code>fighterId</code> of the turn <code>turn</code> of the
 		 * <code>castId</code>.
 		 * Return <code>null</code> if the spell's list requested doesn't exist.
