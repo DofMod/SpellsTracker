@@ -229,15 +229,9 @@ package
 		private function updateSpells(turn:int):void
 		{
 			var spellListArray:Array = new Array();
-			var spellListArraySize:int = maxDisplayedTurn;
-			for (var ii:int = 0; ii < maxDisplayedTurn; ii++)
+			var spellListArraySize:int = (turn < maxDisplayedTurn) ? turn : maxDisplayedTurn;
+			for (var ii:int = 0; ii < spellListArraySize; ii++)
 			{
-				if (turn - ii < 1)
-				{
-					spellListArraySize = ii;
-					break;
-				}
-				
 				spellListArray.push(getSpellData(displayedFighterId, turn - ii));
 			}
 			
