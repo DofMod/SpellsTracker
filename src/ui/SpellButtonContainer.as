@@ -179,7 +179,7 @@ package ui
 			}
 			else if (target == btn_lastTurn)
 			{
-				uiApi.showTooltip("Afficher les informations du dernier tour", target);
+				uiApi.showTooltip("Afficher les informations du dernier tour\n(active l'actualisation automatique)", target);
 			}
 		}
 		
