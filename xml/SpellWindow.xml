@@ -21,6 +21,9 @@
 					<AbsDimension x="3" y="3" /> 
 				</Anchor>
 			</Anchors>
+			<Size>
+				<AbsDimension x="44" y="44" />
+			</Size>
 		</Texture>
 		
 		<!-- Nom du sort -->
