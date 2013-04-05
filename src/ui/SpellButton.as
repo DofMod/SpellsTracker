@@ -97,6 +97,8 @@ package ui
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OVER);
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OUT);
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_RELEASE);
+			
+			uiApi.addComponentHook(lbl_spellAreaLink, ComponentHookList.ON_RELEASE);
 		}
 		
 		/**

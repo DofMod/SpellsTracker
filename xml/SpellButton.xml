@@ -34,6 +34,18 @@
 			<visible>false</visible>
 		</Texture>
 		
+		<Texture>
+			<Anchors>
+				<Anchor relativePoint="TOPRIGHT" point="TOPRIGHT">
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="20" />
+			</Size>
+			<uri>[local.assets]TimeLine_tx_background</uri>
+		</Texture>
+		
 		<Label name="lbl_spellAreaLink">
 			<Anchors>
 				<Anchor relativePoint="TOPRIGHT" point="TOPRIGHT">
