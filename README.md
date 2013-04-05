@@ -1,16 +1,19 @@
 SpellsTracker
 =============
 
-I. Generic install:
+Generic install:
+----------------
 
-1) Download the [dofus module library].
-3) Compile the module with the library.
+1. Download the [dofus module library].
+2. Compile the module with the library.
 
-II. Linux install:
+Linux install:
+--------------
 
-$cd SpellsTracker
-$mxmlc -output SpellsTracker.swf -source-path src -compiler.library-path+=modules-library-2.8.0.swc -keep-as3-metadata Api Module DevMode -- src/SpellsTracker.as
+1. cd SpellsTracker
+2. mxmlc -output SpellsTracker.swf -source-path src -compiler.library-path+=modules-library-2.8.0.swc -keep-as3-metadata Api Module DevMode -- src/SpellsTracker.as
 
-III. Other informations:
+Other informations:
+-------------------
 
 http://forum.dofus.com/fr/1147-modules/1629454-spelltracker-combat
