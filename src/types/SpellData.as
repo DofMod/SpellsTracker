@@ -58,6 +58,7 @@ package types
 		 *
 		 * @param	fighterId
 		 * @param	critical
+		 * @param	turn
 		 * @param	spellType
 		 * @param	spellId
 		 * @param	spellRank
