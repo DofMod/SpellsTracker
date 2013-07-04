@@ -1,19 +1,40 @@
 SpellsTracker
 =============
 
-Generic install:
-----------------
+By *Relena*
 
-1. Download the [dofus module library].
-2. Compile the module with the library.
+Ce module enregistre tous les sorts lancé au cours du combat et les rend accessible dans son interface.
 
-Linux install:
---------------
+Les sorts sont trié par lanceur, tour de lancement et ordre de lancement.
 
-1. cd SpellsTracker
-2. mxmlc -output SpellsTracker.swf -source-path src -compiler.library-path+=modules-library-2.8.0.swc -keep-as3-metadata Api Module DevMode -- src/SpellsTracker.as
+!["infobulle du premier sort lancé par un monstre au tour 8"](http://img145.imageshack.us/img145/639/1objuct2.png "infobulle du premier sort lancé par un monstre au tour 8")
 
-Other informations:
+Quand on clique sur un sort, le module ouvre une mini-fenêtre déplaçable affichant le temps restant avant la prochaine relance du sort :
+
+![fenêtres affichant le temps restant avant la prochaine relance des sorts](http://img708.imageshack.us/img708/2518/23stwxkr.png "fenêtres affichant le temps restant avant la prochaine relance des sorts")
+
+Une vidéo de présentation du module est visualisable sur la chaine Youtube [DofusModules](https://www.youtube.com/user/dofusModules "Youtube, DofusModules"):
+
+[Lien vers la vidéo](https://www.youtube.com/watch?v=QCbPwEKUqrE "Vidéo de présentation du module")
+
+Download + Compile:
 -------------------
 
-http://forum.dofus.com/fr/1147-modules/1629454-spelltracker-combat
+1. Install Git
+2. git clone https://github.com/Dofus/SpellsTracker.git
+3. mxmlc -output SpellsTracker.swf -compiler.library-path+=./modules-library.swc -source-path src -keep-as3-metadata Api Module DevMode -- src/SpellsTracker.as
+
+Installation:
+=============
+
+1. Create a new *SpellsTracker* folder in the *ui* folder present in your Dofus instalation folder. (i.e. *ui/SpellsTracker*)
+2. Copy the following files in this new folder:
+    * xml/
+    * assets/
+    * css/
+    * SpellsTracker.swf
+    * Relena_SpellsTracker.dm
+3. Launch Dofus
+4. Enable the module in your config menu.
+5. ...
+6. Profit!
