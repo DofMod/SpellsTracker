@@ -20,7 +20,6 @@
 	<uis>
 		<ui class="ui::SpellButtonContainer" file="xml/SpellButtonContainer.xml" name="SpellButtonContainer"/>
 		<ui class="ui::SpellButton" file="xml/SpellButton.xml" name="SpellButton"/>
-		<ui class="ui::SpellWindow" file="xml/SpellWindow.xml" name="SpellWindow"/>
 		<ui class="ui::SpellsTrackerConfig" file="xml/SpellsTrackerConfig.xml" name="SpellsTrackerConfig"/>
 	</uis>
 	

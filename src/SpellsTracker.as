@@ -13,15 +13,11 @@ package
 	import helpers.PlayedTurnTracker;
 	import hooks.SpellsTrackerGameFightTurnStart;
 	import managers.interfaces.SpellButtonManager;
-	import managers.interfaces.SpellWindowManager;
 	import managers.SpellButtonManagerImp;
-	import managers.SpellWindowManagerImp;
-	import types.CountdownData;
 	import types.SpellData;
 	import ui.SpellButton;
 	import ui.SpellButtonContainer;
 	import ui.SpellsTrackerConfig;
-	import ui.SpellWindow;
 	
 	/**
 	 * Main function of the SpellsTracker module. Tracks the spell's data and
@@ -36,7 +32,7 @@ package
 		//::////////////////////////////////////////////////////////////////////
 		
 		// Includes
-		private var includes:Array = [SpellButtonContainer, SpellButton, SpellWindow, SpellsTrackerConfig];
+		private var includes:Array = [SpellButtonContainer, SpellButton, SpellsTrackerConfig];
 		
 		// APIs
 		/**
@@ -75,7 +71,6 @@ package
 		
 		// Dependencies
 		private var spellButtonManager:SpellButtonManager;
-		private var spellWindowManager:SpellWindowManager;
 		private var playedTurnTracker:PlayedTurnTracker;
 		
 		// Divers
@@ -128,8 +123,7 @@ package
 		private function initDependencies():void
 		{
 			playedTurnTracker = new PlayedTurnTracker();
-			spellWindowManager = new SpellWindowManagerImp(playedTurnTracker);
-			spellButtonManager = new SpellButtonManagerImp(spellWindowManager);
+			spellButtonManager = new SpellButtonManagerImp();
 		}
 		
 		/**
@@ -293,35 +287,6 @@ package
 			spellButtonManager.addSpellButton(spellData);
 		}
 		
-		/**
-		 * Create a coundown windows.
-		 *
-		 * @param	fighterId	Identifier of the fighter.
-		 * @param	spellId	Identifier of the spell.
-		 * @param	start	Turn when the countdown end.
-		 * @param	countdown	Initial value of the countdown.
-		 * @param	description	Description of the countdown.
-		 */
-		public function createSpellWindow(fighterId:int, spellId:int, start:int, countdown:int, description:String):void
-		{
-			var countdownData:CountdownData = new CountdownData();
-			countdownData._fighterId = fighterId;
-			countdownData._spellId = spellId;
-			countdownData._start = start;
-			countdownData._countdown = countdown;
-			countdownData._description = description;
-			
-			spellWindowManager.createUi(countdownData);
-		}
-		
-		/**
-		 * Close all spell windows create bye this module.
-		 */
-		public function closeSpellWindows():void
-		{
-			spellWindowManager.closeUis();
-		}
-		
 		private function uiLoadedCallback():void
 		{
 			if (fightersAutoUpdate[displayedFighterId] || fightersDisplayedTurn[displayedFighterId] == undefined)
@@ -413,8 +378,6 @@ package
 		{
 			initGlobals();
 			
-			closeSpellWindows()
-			
 			if (spellButtonManager.isInterfaceLoaded())
 			{
 				spellButtonManager.unloadInterface();
@@ -432,8 +395,6 @@ package
 			if (fighterId == fightApi.getCurrentPlayedFighterId())
 			{
 				initGlobals();
-				
-				closeSpellWindows()
 				
 				if (spellButtonManager.isInterfaceLoaded())
 				{

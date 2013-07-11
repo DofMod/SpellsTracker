@@ -12,9 +12,6 @@ package ui
 	import d2enums.ComponentHookList;
 	import d2enums.FightSpellCastCriticalEnum;
 	import d2enums.LocationEnum;
-	import managers.interfaces.SpellWindowManager;
-	import types.CountdownData;
-	import types.SpellButtonParams;
 	import types.SpellData;
 	
 	/**
@@ -54,9 +51,6 @@ package ui
 		 */
 		public var dataApi:DataApi;
 		
-		// Dependencies
-		private var _spellWindowManager:SpellWindowManager;
-		
 		// Conponents
 		public var ctn_main:GraphicContainer;
 		public var btn_spell:ButtonContainer;
@@ -67,7 +61,6 @@ package ui
 		
 		// Divers
 		private var _spellData:SpellData;
-		private var _countdownData:CountdownData;
 		
 		//::////////////////////////////////////////////////////////////////////
 		//::// Methods
@@ -78,17 +71,9 @@ package ui
 		 *
 		 * @param	spellData	Spell data.
 		 */
-		public function main(spellButtonParams:SpellButtonParams):void
+		public function main(spellData:SpellData):void
 		{
-			_spellWindowManager = spellButtonParams.spellWindowManager;
-			_spellData = spellButtonParams.spellData;
-			
-			_countdownData = new CountdownData();
-			_countdownData._fighterId = _spellData._fighterId;
-			_countdownData._spellId = _spellData._spellId;
-			_countdownData._start = _spellData._turn;
-			_countdownData._countdown = (dataApi.getSpellWrapper(_spellData._spellId, _spellData._spellRank) as Object).minCastInterval;
-			_countdownData._description = "";
+			_spellData = spellData;
 			
 			updateSpellTexture(_spellData._spellType, _spellData._spellId);
 			updateCritical(_spellData._spellCritical);
@@ -96,7 +81,6 @@ package ui
 			
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OVER);
 			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_ROLL_OUT);
-			uiApi.addComponentHook(ctn_main, ComponentHookList.ON_RELEASE);
 			
 			uiApi.addComponentHook(lbl_spellAreaLink, ComponentHookList.ON_RELEASE);
 		}
@@ -216,21 +200,6 @@ package ui
 			if (target == ctn_main)
 			{
 				uiApi.hideTooltip();
-			}
-		}
-		
-		/**
-		 * Request the creation of a new spell window.
-		 *
-		 * @private
-		 *
-		 * @param	target
-		 */
-		public function onRelease(target:Object):void
-		{
-			if (target == ctn_main)
-			{
-				_spellWindowManager.createUi(_countdownData);
 			}
 		}
 	}

@@ -3,8 +3,6 @@ package managers
 	import d2components.GraphicContainer;
 	import d2hooks.UiLoaded;
 	import managers.interfaces.SpellButtonManager;
-	import managers.interfaces.SpellWindowManager;
-	import types.SpellButtonParams;
 	import types.SpellData;
 	import ui.SpellButtonContainer;
 	
@@ -18,9 +16,6 @@ package managers
 		//::////////////////////////////////////////////////////////////////////
 		//::// Properties
 		//::////////////////////////////////////////////////////////////////////
-		
-		// Dependencies
-		private var _spellWindowManager:SpellWindowManager;
 		
 		// Constants
 		private const _uiContainerName:String = "SpellButtonContainer";
@@ -52,10 +47,8 @@ package managers
 		 *
 		 * @param	spellWindowManager
 		 */
-		public function SpellButtonManagerImp(spellWindowManager:SpellWindowManager)
+		public function SpellButtonManagerImp()
 		{
-			_spellWindowManager = spellWindowManager;
-			
 			Api.system.addHook(UiLoaded, onUiLoaded);
 		}
 		
@@ -170,9 +163,7 @@ package managers
 			var interfaceScript:SpellButtonContainer = getInterfaceScript();
 			var instanceName:String = createSpellButtonInstanceName();
 			
-			var spellButtonParams:SpellButtonParams = new SpellButtonParams(spellData, _spellWindowManager);
-			
-			var spellButton:Object = Api.ui.loadUiInside(_uiSpellButtonName, interfaceScript.getSpellButtonContainer(), instanceName, spellButtonParams);
+			var spellButton:Object = Api.ui.loadUiInside(_uiSpellButtonName, interfaceScript.getSpellButtonContainer(), instanceName, spellData);
 			
 			incrementNbSpellButton(line);
 			
