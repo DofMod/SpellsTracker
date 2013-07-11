@@ -9,10 +9,6 @@ Les sorts sont trié par lanceur, tour de lancement et ordre de lancement.
 
 !["infobulle du premier sort lancé par un monstre au tour 8"](http://img145.imageshack.us/img145/639/1objuct2.png "infobulle du premier sort lancé par un monstre au tour 8")
 
-Quand on clique sur un sort, le module ouvre une mini-fenêtre déplaçable affichant le temps restant avant la prochaine relance du sort :
-
-![fenêtres affichant le temps restant avant la prochaine relance des sorts](http://img708.imageshack.us/img708/2518/23stwxkr.png "fenêtres affichant le temps restant avant la prochaine relance des sorts")
-
 Une vidéo de présentation du module est visualisable sur la chaine Youtube [DofusModules](https://www.youtube.com/user/dofusModules "Youtube, DofusModules"):
 
 [Lien vers la vidéo](https://www.youtube.com/watch?v=QCbPwEKUqrE "Vidéo de présentation du module")
