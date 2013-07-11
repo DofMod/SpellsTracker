@@ -41,7 +41,7 @@ package helpers
 		{
 			resetGlobals();
 			
-			Api.system.createHook("SpellsTrackerGameFightTurnStart");
+			Api.system.createHook(SpellsTrackerGameFightTurnStart.name);
 			
 			Api.system.addHook(GameFightTurnStart, onGameFightTurnStart);
 			Api.system.addHook(GameFightTurnEnd, onGameFightTurnEnd);
