@@ -22,7 +22,7 @@ package helpers
 		//::////////////////////////////////////////////////////////////////////
 		
 		// Constants
-		private static const positioningTurn:int = 0;
+		private static const POSITIONING_TURN:int = 0;
 		
 		// Others
 		private var _initialized:Boolean;
@@ -69,7 +69,7 @@ package helpers
 		{
 			var fighterId:int;
 			var currentTurn:int = Api.fight.getTurnsCount();
-			if (currentTurn == positioningTurn)
+			if (currentTurn == POSITIONING_TURN)
 			{
 				for each (fighterId in Api.fight.getFighters())
 				{
