@@ -64,6 +64,8 @@ package helpers
 		 * Initialise the class.
 		 *
 		 * @param	playingFighterId Identifier of the current playing fighter.
+		 * 
+		 * @throws	Error	Initialisation error.
 		 */
 		private function initialize(playingFighterId:int = 0):void
 		{
@@ -103,6 +105,7 @@ package helpers
 		 * @return	The last turn played.
 		 *
 		 * @throws	Error	Unalowed call to getLastTurnPlayer while not in fight context.
+		 * @throws	Error	Initialisation error.
 		 */
 		public function getLastTurnPlayed(fighterId:int):int
 		{
@@ -157,6 +160,8 @@ package helpers
 		 * @param	fighterId	Identifier of the fighter who start his turn.
 		 * @param	waitTime	Maximum time alowed to the fighter to play (in ms).
 		 * @param	displayImage	(not used).
+		 * 
+		 * @throws	Error	Initialisation error.
 		 */
 		private function onGameFightTurnStart(fighterId:int, waitTime:int, displayImage:Boolean):void
 		{
