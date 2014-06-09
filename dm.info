@@ -10,7 +10,9 @@
 	</header>
 
 	<uis>
-		<!-- <ui class="ui::SpellsTrackerConfig" file="xml/SpellsTrackerConfig.xml" name="SpellsTrackerConfig"/> -->
+		<ui class="ui::SpellButtonContainer" file="xml/SpellButtonContainer.xml" name="SpellButtonContainer"/>
+		<ui class="ui::SpellButton" file="xml/SpellButton.xml" name="SpellButton"/>
+		<ui class="ui::SpellsTrackerConfig" file="xml/SpellsTrackerConfig.xml" name="SpellsTrackerConfig"/>
 	</uis>
 	
 	<script>${name}.swf</script>
