@@ -2,7 +2,7 @@
 {
     "name": "SpellsTracker",
     "author": "Relena",
-    "contributos": [],
+    "contributors": [],
     "url": "https://github.com/DofMod/SpellsTracker/releases/download/v2.11_1.0/SpellsTracker_2.11_1.0.zip",
     "description": "This module track/log the differents spells used during the fight",
     "category": "Fight",

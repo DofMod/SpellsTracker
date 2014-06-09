@@ -2,10 +2,10 @@
 {
     "name": "${name}",
     "author": "${author}",
-    "contributos": ${contributors},
-    "url": "https://github.com/DofMod/${name}/releases/download/${tag}/${filename}.zip",
-    "description": "This module track/log the differents spells used during the fight",
-    "category": "Fight",
+    "contributors": ${contributors},
+    "url": "https://github.com/DofMod/${name}/releases/download/${tag}/${name}_${dofusVersion}_${version}.zip",
+    "description": "${descriptionShort}",
+    "category": "${categories}",
     "version": "${version}",
     "dofusVersion": "${dofusVersion}",
     "lastUpdateDate": "${date}"
